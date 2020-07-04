@@ -17,10 +17,6 @@ const pathAvailableBlockTypes: EHouseParticles[] = [
 
 export class NavigationLogic {
 
-  static findBlockTo(row: IPathRelatedBlock, usedBlockIds: string[]) {
-
-  }
-
   private readonly blocks: FlatBlockEntity[][];
   private readonly pathRelatedBlocks: IPathRelatedBlock[];
 
@@ -29,13 +25,40 @@ export class NavigationLogic {
     this.pathRelatedBlocks = [];
   }
 
+  private findPathRelatedBlock(block: FlatBlockEntity): IPathRelatedBlock {
+    return this.pathRelatedBlocks.find((row) => row.block.objID === block.objID);
+  }
+
+  private findPath(path: FlatBlockEntity[], block: FlatBlockEntity, usedBlockIds: string[]): FlatBlockEntity[] {
+    const currentPathBlock = this.findPathRelatedBlock(path[path.length - 1]);
+    const relatedFinalBlock = currentPathBlock.relatedPathBlocks.find((b) => b.objID === block.objID);
+
+    // we find the last block
+    if (relatedFinalBlock) {
+      path.push(relatedFinalBlock);
+
+      return path;
+    }
+
+    // look in to the all related blocks and find path with them recusevly
+    let result = new Array(100000);
+    for (const relatedBlock of currentPathBlock.relatedPathBlocks) {
+      if (usedBlockIds.indexOf(relatedBlock.objID) !== -1) continue;
+
+      const _path = this.findPath([...path, relatedBlock], block, [...usedBlockIds, relatedBlock.objID]);
+      if (_path.length < result.length) result = _path;
+    }
+
+    // if there was no return then it's dead end
+    return result;
+  }
+
   generatePath(fromBlock: FlatBlockEntity, block: FlatBlockEntity): FlatBlockEntity[] {
     let path: FlatBlockEntity[] = [];
 
     for (let i = 0; i < 100; i++) {
-      const usedBlocksIds: string[] = [fromBlock.objID];
-
-
+      const _path = this.findPath([fromBlock], block, [fromBlock.objID]);
+      if (_path.length < path.length || path.length === 0) path = _path;
     }
 
     return path;
@@ -48,7 +71,7 @@ export class NavigationLogic {
       const row = this.blocks[y];
 
       for (let x = 0; x < row.length; x++) {
-        if (pathAvailableBlockTypes.indexOf(row[x].blockType) === -1) return;
+        if (pathAvailableBlockTypes.indexOf(row[x].blockType) === -1) continue;
 
         this.pathRelatedBlocks.push({
           block: row[x],
