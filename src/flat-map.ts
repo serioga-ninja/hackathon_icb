@@ -4,35 +4,40 @@ import { Point } from "./core/point";
 import { RoomGroup } from "./groups/room.group";
 
 const sprayMap = [
-  'gray', 'white', 'red', 'green'
+  'wallVert', 
+  'wallHor',
+  'floor', 
+  'windowHor',
+  'windowVert', 
+  'floor'
 ];
 
 const houseStringMap: any =
-  '####@@@######@@@####@@@#####@@###\n' +
-  '#.........#..............#......#\n' +
-  '#.........#..............#......#\n' +
-  '#.........#..............=......#\n' +
-  '@.........=..............=......#\n' +
-  '@.........=..............#......#\n' +
-  '@.........=..............#......#\n' +
-  '#.........#..............###==###\n' +
-  '#.........#..............#......#\n' +
-  '#.........#..............#......#\n' +
-  '####===######==###########......#\n' +
-  '#.........#......#.......#......#\n' +
-  '#.........#......#.......#......#\n' +
-  '#.........#......#.......#......#\n' +
-  '@.........=......=.......#......#\n' +
-  '@.........=......=.......#......#\n' +
-  '#.........#......#.......#......#\n' +
-  '#.........#......#.......#......#\n' +
-  '#.........#......#.......#......#\n' +
-  '@.........#......#########......#\n' +
-  '@.........#......#.......#......#\n' +
-  '#.........#......=.......#......#\n' +
-  '#.........#......=.......#......#\n' +
-  '#.........#......#.......#......#\n' +
-  '####@@@######==###########@@@@@@#';
+  '1223@@@222222@@@2222@@@22222@@222\n' +
+  '1.........1..............1......1\n' +
+  '1.........1..............1......1\n' +
+  '1.........1..............=......1\n' +
+  '$.........=..............=......1\n' +
+  '$.........=..............1......1\n' +
+  '$.........=..............1......1\n' +
+  '1.........1..............222==222\n' +
+  '1.........1..............1......1\n' +
+  '1.........1..............1......1\n' +
+  '1222===222222==22222222222......1\n' +
+  '1.........1......1.......1......1\n' +
+  '1.........1......1.......1......1\n' +
+  '1.........1......1.......1......1\n' +
+  '$.........=......=.......1......1\n' +
+  '$.........=......=.......1......1\n' +
+  '1.........1......1.......1......1\n' +
+  '1.........1......1.......1......1\n' +
+  '1.........1......1.......1......1\n' +
+  '$.........1......122222221......1\n' +
+  '$.........1......1.......1......1\n' +
+  '1.........1......=.......1......1\n' +
+  '1.........1......=.......1......1\n' +
+  '1.........1......1.......1......1\n' +
+  '1222@@@222222==22222222222======1'; 
 
 
 export enum EHouseGroup{
@@ -63,16 +68,15 @@ export class FlatMap{
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
-    const blockWidth = gameConfig.width / this.regenerateMapSymbolToEnum()[0].length;
-    const blockHeight = gameConfig.height / this.regenerateMapSymbolToEnum().length;
+    const tileSize = gameConfig.height / this.regenerateMapSymbolToEnum().length;
 
     this.sectorChecker();
 
     this.generatedBlocks = this.regenerateMapSymbolToEnum().map((row, y) => {
       return row.map((blockType, x) => {
-        return new FlatBlockEntity(scene, x * blockWidth, y * blockHeight, sprayMap[blockType], {
-          width: blockWidth,
-          height: blockHeight,
+        return new FlatBlockEntity(scene, (x * tileSize) + (tileSize / 2), (y * tileSize) + (tileSize / 2), sprayMap[blockType], {
+          width: tileSize,
+          height: tileSize,
           blockType
         });
       })
@@ -84,9 +88,11 @@ export class FlatMap{
 
     let enumTypeMap = houseStringMap
       .trim()
-      .replace(/#/g, EHouseParticles.Wall)
+      .replace(/1/g, EHouseParticles.WallVertical)
+      .replace(/2/g, EHouseParticles.WallHorizontal)
       .replace(/=/g, EHouseParticles.Door)
-      .replace(/@/g, EHouseParticles.Window)
+      .replace(/@/g, EHouseParticles.WindowHorizontal)
+      .replace(/\$/g, EHouseParticles.WindowVertical)
       .replace(/\./g, EHouseParticles.FreeSpace)
       .match(/.{1,33}/g);
 

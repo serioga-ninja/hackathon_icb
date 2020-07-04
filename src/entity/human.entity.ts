@@ -25,7 +25,7 @@ export class HumanEntity extends SpriteEntity {
 
     this._state = EHumanState.waiting;
     this._navigationLogic = options.navigationLogic;
-    this.setDisplaySize(80, 80);
+    this.setDisplaySize(15, 15);
     this._currentBlock = options.startBlock;
   }
 
