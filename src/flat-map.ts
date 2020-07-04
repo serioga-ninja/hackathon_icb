@@ -1,12 +1,9 @@
 import gameConfig from './core/game.config';
-import { FlatBlockEntity } from './entity/flat-block.entity';
+import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 
-export enum HouseParticles {
-  Wall,
-  FreeSpace,
-  Window,
-  Door,
-}
+const sprayMap = [
+  'gray', 'white', 'red', 'green'
+];
 
 const houseStringMap: any =
   '####@@@######@@@####@@@#####@@###\n' +
@@ -35,47 +32,43 @@ const houseStringMap: any =
   '#.........#......#.......#......#\n' +
   '####@@@######==###########@@@@@@#';
 
-const kitchenRoom: HouseParticles[][] = [
-  [HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Window, HouseParticles.Window, HouseParticles.Window, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall,],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Window, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.Door],
-  [HouseParticles.Window, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.Door],
-  [HouseParticles.Window, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.Door],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Door, HouseParticles.Door, HouseParticles.Door, HouseParticles.Door, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall]
-];
-
 
 export class FlatMap {
 
-  getMap() {
-    return this.regenerateMapSymbolToEnum();
+  generatedBlocks: FlatBlockEntity[][];
+
+  get startBlock() {
+    return this.generatedBlocks[1][1];
+  }
+
+  constructor() {
+    this.generatedBlocks = [];
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
     const blockWidth = gameConfig.width / this.regenerateMapSymbolToEnum()[0].length;
     const blockHeight = gameConfig.height / this.regenerateMapSymbolToEnum().length;
 
-    return this.regenerateMapSymbolToEnum().map((row, x) => {
-      return row.map((blockPice, y) => {
-        return new FlatBlockEntity(scene, x * blockWidth, y * blockHeight, 'white');
+    this.generatedBlocks = this.regenerateMapSymbolToEnum().map((row, y) => {
+      return row.map((blockType, x) => {
+        return new FlatBlockEntity(scene, x * blockWidth, y * blockHeight, sprayMap[blockType], {
+          width: blockWidth,
+          height: blockHeight,
+          blockType
+        });
       })
     });
   }
 
-  regenerateMapSymbolToEnum(): HouseParticles[][] {
-    let complitedMap: HouseParticles[][] = [];
+  regenerateMapSymbolToEnum(): EHouseParticles[][] {
+    let complitedMap: EHouseParticles[][] = [];
 
     let enumTypeMap = houseStringMap
       .trim()
-      .replace(/#/g, HouseParticles.Wall)
-      .replace(/=/g, HouseParticles.Door)
-      .replace(/@/g, HouseParticles.Window)
-      .replace(/\./g, HouseParticles.FreeSpace)
+      .replace(/#/g, EHouseParticles.Wall)
+      .replace(/=/g, EHouseParticles.Door)
+      .replace(/@/g, EHouseParticles.Window)
+      .replace(/\./g, EHouseParticles.FreeSpace)
       .match(/.{1,33}/g);
 
     enumTypeMap.forEach((houseLine: string) => {

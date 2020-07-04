@@ -1,3 +1,4 @@
+import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
@@ -7,7 +8,8 @@ export class GameScene extends Phaser.Scene {
 
   private humanEntity: HumanEntity;
   private flatRoomsGroups: RoomGroup[];
-  private allFlatBlocks: FlatBlockEntity[][];
+  private navigationLogic: NavigationLogic;
+  private flatMap: FlatMap;
 
   constructor() {
     super({
@@ -16,7 +18,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   generateRoom() {
-    const flatMap = new FlatMap().generateFlatSpriteBlocks(this);
+    this.flatMap = new FlatMap();
+    this.flatMap.generateFlatSpriteBlocks(this);
   }
 
   /**
@@ -33,6 +36,9 @@ export class GameScene extends Phaser.Scene {
    */
   preload(): void {
     this.load.image('white', 'white.png');
+    this.load.image('gray', 'gray.png');
+    this.load.image('green', 'green.png');
+    this.load.image('red', 'red.png');
   }
 
   /**
@@ -40,8 +46,16 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
-    this.humanEntity = new HumanEntity(this, 0, 0, 'human');
     this.generateRoom();
+
+    this.navigationLogic = new NavigationLogic(this.flatMap.generatedBlocks);
+    this.navigationLogic.generatePaths();
+
+    const startBlock = this.flatMap.startBlock;
+    this.humanEntity = new HumanEntity(this, startBlock.position.x, startBlock.position.y, 'human', {
+      startBlock,
+      navigationLogic: this.navigationLogic
+    });
   }
 
   /**
