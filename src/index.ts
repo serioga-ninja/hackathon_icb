@@ -16,7 +16,11 @@ const config: GameConfig = {
             debug: true
         }
     },
-    backgroundColor: '#a3a3a3'
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    backgroundColor: '#ddd'
 };
 
 export class SmartHouseGame extends Phaser.Game {
@@ -26,6 +30,12 @@ export class SmartHouseGame extends Phaser.Game {
 }
 
 window.onload = () => {
-    const game = new SmartHouseGame(config);
-    document.getElementById('game').focus();
+    const game = new SmartHouseGame(config),
+          gameObj = document.getElementById('game');
+
+    gameObj.focus();
+
+    window.addEventListener('resize', () => {  
+        game.scene.game.scale.updateScale();
+    });
 };

@@ -46,14 +46,13 @@ export class FlatMap {
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
-    const blockWidth = gameConfig.width / this.regenerateMapSymbolToEnum()[0].length;
-    const blockHeight = gameConfig.height / this.regenerateMapSymbolToEnum().length;
+    const tileSize = gameConfig.height / this.regenerateMapSymbolToEnum().length;
 
     this.generatedBlocks = this.regenerateMapSymbolToEnum().map((row, y) => {
       return row.map((blockType, x) => {
-        return new FlatBlockEntity(scene, x * blockWidth, y * blockHeight, sprayMap[blockType], {
-          width: blockWidth,
-          height: blockHeight,
+        return new FlatBlockEntity(scene, (x * tileSize) + (tileSize / 2), (y * tileSize) + (tileSize / 2), sprayMap[blockType], {
+          width: tileSize,
+          height: tileSize,
           blockType
         });
       })

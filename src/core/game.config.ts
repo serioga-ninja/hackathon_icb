@@ -1,6 +1,6 @@
 const gameConfig = {
-  width: 1100,
-  height: 1100,
+  width: window.innerWidth - 20,
+  height: window.innerHeight - 20,
 };
 
 export default gameConfig;
