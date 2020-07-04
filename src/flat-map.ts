@@ -70,7 +70,7 @@ export class FlatMap{
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
     const tileSize = gameConfig.height / this.regenerateMapSymbolToEnum().length;
 
-    // this.sectorChecker();
+    this.sectorChecker();
 
     this.generatedBlocks = this.regenerateMapSymbolToEnum().map((row, y) => {
       return row.map((blockType, x) => {
