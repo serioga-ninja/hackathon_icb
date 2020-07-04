@@ -16,8 +16,12 @@ export enum EHouseParticles {
 
 export class FlatBlockEntity extends SpriteEntity {
 
-  private _blockType: EHouseParticles;
-  private _position: Point;
+  private readonly _blockType: EHouseParticles;
+  private readonly _position: Point;
+
+  get position() {
+    return this._position;
+  }
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string, options: IFlatBlockOptions) {
     super(scene, x, y, key);

@@ -16,7 +16,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   generateRoom() {
-    const flatMap = new FlatMap().generateFlatSpriteBlocks(this);
+    this.allFlatBlocks = new FlatMap().generateFlatSpriteBlocks(this);
   }
 
   /**
@@ -40,8 +40,10 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
-    this.humanEntity = new HumanEntity(this, 0, 0, 'human');
     this.generateRoom();
+    this.humanEntity = new HumanEntity(this, 0, 0, 'human', {
+      startBlockEntity: this.allFlatBlocks[0][0]
+    });
   }
 
   /**
