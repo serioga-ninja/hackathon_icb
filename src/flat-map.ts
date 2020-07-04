@@ -1,25 +1,19 @@
 import gameConfig from './core/game.config';
-import { FlatBlockEntity } from './entity/flat-block.entity';
+import { FlatBlockEntity, EHouseParticles } from './entity/flat-block.entity';
 
-export enum HouseParticles {
-  Wall,
-  FreeSpace,
-  Window,
-  Door,
-}
 
-const kitchenRoom: HouseParticles[][] = [
-  [HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Window, HouseParticles.Window, HouseParticles.Window, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall,],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Window, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.Door],
-  [HouseParticles.Window, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.Door],
-  [HouseParticles.Window, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.Door],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, HouseParticles.FreeSpace, , HouseParticles.Wall],
-  [HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Door, HouseParticles.Door, HouseParticles.Door, HouseParticles.Door, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall, HouseParticles.Wall]
+const kitchenRoom: EHouseParticles[][] = [
+  [EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Window, EHouseParticles.Window, EHouseParticles.Window, EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Wall,],
+  [EHouseParticles.Wall, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, , EHouseParticles.Wall],
+  [EHouseParticles.Wall, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, , EHouseParticles.Wall],
+  [EHouseParticles.Wall, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, , EHouseParticles.Wall],
+  [EHouseParticles.Window, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.Door],
+  [EHouseParticles.Window, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.Door],
+  [EHouseParticles.Window, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.Door],
+  [EHouseParticles.Wall, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, , EHouseParticles.Wall],
+  [EHouseParticles.Wall, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, , EHouseParticles.Wall],
+  [EHouseParticles.Wall, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, EHouseParticles.FreeSpace, , EHouseParticles.Wall],
+  [EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Door, EHouseParticles.Door, EHouseParticles.Door, EHouseParticles.Door, EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Wall, EHouseParticles.Wall]
 ];
 
 export class FlatMap {
@@ -33,8 +27,12 @@ export class FlatMap {
     const blockHeight = gameConfig.height / kitchenRoom.length;
 
     return kitchenRoom.map((row, x) => {
-      return row.map((blockPice, y) => {
-        return new FlatBlockEntity(scene, x * blockWidth, y * blockHeight, 'white');
+      return row.map((blockType, y) => {
+        return new FlatBlockEntity(scene, x * blockWidth, y * blockHeight, 'white', {
+          width: blockWidth,
+          height: blockHeight,
+          blockType
+        });
       })
     });
   }
