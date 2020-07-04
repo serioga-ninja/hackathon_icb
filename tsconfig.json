@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "strictNullChecks": false,
+    "target": "es2015",
+    "alwaysStrict": true,
+    "lib": [
+      "es2018",
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "esnext.asynciterable",
+      "scripthost"
+    ],
+    "outDir": "./dist",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "compileOnSave": false,
+  "include": [
+    "app.ts",
+    "infection/**/*"
+  ],
+  "exclude": [
+    "./node_modules/**/*"
+  ]
+}
