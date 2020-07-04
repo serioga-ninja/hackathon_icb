@@ -1,13 +1,22 @@
+import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
+import { FlatMap } from '../flat-map';
+import { RoomGroup } from '../groups/room.group';
 
 export class GameScene extends Phaser.Scene {
 
   private humanEntity: HumanEntity;
+  private flatRoomsGroups: RoomGroup[];
+  private allFlatBlocks: FlatBlockEntity[][];
 
   constructor() {
     super({
       key: 'GameScene'
     });
+  }
+
+  generateRoom() {
+    const flatMap = new FlatMap().generateFlatSpriteBlocks(this);
   }
 
   /**
@@ -23,6 +32,7 @@ export class GameScene extends Phaser.Scene {
    * the scene is restarted, they are not reloaded
    */
   preload(): void {
+    this.load.image('white', 'white.png');
   }
 
   /**
@@ -30,7 +40,8 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
-    this.humanEntity = new HumanEntity(this, 0, 0, 'human')
+    this.humanEntity = new HumanEntity(this, 0, 0, 'human');
+    this.generateRoom();
   }
 
   /**
