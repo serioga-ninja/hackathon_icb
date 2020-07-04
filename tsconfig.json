@@ -24,8 +24,7 @@
   },
   "compileOnSave": false,
   "include": [
-    "app.ts",
-    "infection/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "./node_modules/**/*"
