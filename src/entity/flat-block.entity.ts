@@ -16,8 +16,9 @@ export enum EHouseParticles {
 
 export class FlatBlockEntity extends SpriteEntity {
 
-  private readonly _blockType: EHouseParticles;
   private readonly _position: Point;
+
+  public readonly blockType: EHouseParticles;
 
   get position() {
     return this._position;
@@ -27,7 +28,7 @@ export class FlatBlockEntity extends SpriteEntity {
     super(scene, x, y, key);
 
     this._position = new Point(x, y);
-    this._blockType = options.blockType;
+    this.blockType = options.blockType;
     this.setDisplaySize(options.width, options.height);
   }
 
