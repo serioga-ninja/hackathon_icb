@@ -58,7 +58,7 @@ export class GameScene extends Phaser.Scene {
       navigationLogic: this.navigationLogic
     });
 
-    // console.log(this.navigationLogic.generatePath(startBlock, this.flatMap.generatedBlocks[5][5]));
+    console.log(this.navigationLogic.generatePath(startBlock, this.flatMap.generatedBlocks[13][13]));
   }
 
   /**

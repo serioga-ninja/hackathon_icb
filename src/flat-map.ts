@@ -4,11 +4,11 @@ import { Point } from "./core/point";
 import { RoomGroup } from "./groups/room.group";
 
 const sprayMap = [
-  'wallVert', 
+  'wallVert',
   'wallHor',
-  'floor', 
+  'floor',
   'windowHor',
-  'windowVert', 
+  'windowVert',
   'floor'
 ];
 
@@ -37,7 +37,7 @@ const houseStringMap: any =
   '1.........1......=.......1......1\n' +
   '1.........1......=.......1......1\n' +
   '1.........1......1.......1......1\n' +
-  '1222@@@222222==22222222222======1'; 
+  '1222@@@222222==22222222222======1';
 
 
 export enum EHouseGroup{
@@ -70,21 +70,22 @@ export class FlatMap{
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
     const tileSize = gameConfig.height / this.regenerateMapSymbolToEnum().length;
 
-    this.sectorChecker();
+    // this.sectorChecker();
 
     this.generatedBlocks = this.regenerateMapSymbolToEnum().map((row, y) => {
       return row.map((blockType, x) => {
-        return new FlatBlockEntity(scene, (x * tileSize) + (tileSize / 2), (y * tileSize) + (tileSize / 2), sprayMap[blockType], {
+        return new FlatBlockEntity(scene, (x * tileSize) + (tileSize / 2), (y * tileSize) + (tileSize / 2), sprayMap[parseInt(blockType)], {
           width: tileSize,
           height: tileSize,
-          blockType
+          blockType: parseInt(blockType),
+          matrix: { x, y }
         });
       })
     });
   }
 
-  regenerateMapSymbolToEnum(): EHouseParticles[][] {
-    let complitedMap: EHouseParticles[][] = [];
+  regenerateMapSymbolToEnum(): string[][] {
+    let complitedMap: string[][] = [];
 
     let enumTypeMap = houseStringMap
       .trim()
