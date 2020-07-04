@@ -1,4 +1,8 @@
+import { HumanEntity } from '../entity/human.entity';
+
 export class GameScene extends Phaser.Scene {
+
+  private humanEntity: HumanEntity;
 
   constructor() {
     super({
@@ -26,6 +30,7 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
+    this.humanEntity = new HumanEntity(this, 0, 0, 'human')
   }
 
   /**
