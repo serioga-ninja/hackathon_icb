@@ -18,7 +18,6 @@ export class NavigationLogic {
   private findPath(path: FlatBlockEntity[], humanPosition: FlatBlockEntity): FlatBlockEntity[] {
     const currentPathBlock = path[path.length - 1];
     const relatedFinalBlock = currentPathBlock.relatedMovableBlocks.find((b) => b.objID === humanPosition.objID);
-    console.log(currentPathBlock.matrix);
 
     // we find the last humanPosition
     if (relatedFinalBlock) {
@@ -27,8 +26,6 @@ export class NavigationLogic {
       return path;
     }
 
-    // look in to the all related blocks and find path with them recusevly
-    let result = new Array(100000);
     for (const relatedBlock of currentPathBlock.relatedMovableBlocks) {
       if (relatedBlock.waveValue >= currentPathBlock.waveValue && !currentPathBlock.isDoor) continue;
 
@@ -42,13 +39,8 @@ export class NavigationLogic {
         if (!anotherRoom || !!anotherRoom && !anotherRoom.contains(relatedBlock)) continue;
       }
 
-      const _path = this.findPath([...path, relatedBlock], humanPosition);
-
-      if (_path.length < result.length) result = _path;
+      return this.findPath([...path, relatedBlock], humanPosition);
     }
-
-    // if there was no return then it's dead end
-    return result;
   }
 
   private updateWaveValues(block: FlatBlockEntity, roomGroup: RoomsGroups, endPosition: FlatBlockEntity, doorGroup?: DoorGroup) {
@@ -101,7 +93,6 @@ export class NavigationLogic {
     this.clearWaveValues();
     this.updateWaveValues(humanPosition, humanPosition.getGroup(EGroupTypes.room) as RoomsGroups, endPosition);
 
-    return [];
-    // return this.findPath([endPosition], humanPosition)
+    return this.findPath([endPosition], humanPosition)
   }
 }
