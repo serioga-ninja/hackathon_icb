@@ -1,3 +1,4 @@
+import { ActionsLogic } from '../core/actions.logic';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -8,6 +9,7 @@ export class GameScene extends Phaser.Scene {
 
   private humanEntity: HumanEntity;
   private navigationLogic: NavigationLogic;
+  private actionLogic: ActionsLogic;
   private flatMap: FlatMap;
 
   constructor() {
@@ -56,13 +58,14 @@ export class GameScene extends Phaser.Scene {
       navigationLogic: this.navigationLogic
     });
 
-    this.humanEntity.setMoveToPoint(this.flatMap.generatedBlocks[13][13]);
+    this.actionLogic = new ActionsLogic(this.flatMap.flatGroup, this.humanEntity, this.navigationLogic); //, this.flatMap.generatedBlocks[20][24]);
   }
 
   /**
    * is called every tick and contains the dynamic part of the scene — everything that moves, flashes, etc.
    */
   update(time: number): void {
+    //this.actionLogic.update(time);
     this.humanEntity.update();
   }
 }

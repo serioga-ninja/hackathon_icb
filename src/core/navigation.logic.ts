@@ -1,6 +1,6 @@
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { DoorGroup } from '../groups/door.group';
-import { RoomsGroups } from '../groups/rooms-groups';
+import { RoomGroup } from '../groups/room.group';
 import { EGroupTypes } from './group.base';
 
 export class NavigationLogic {
@@ -29,10 +29,12 @@ export class NavigationLogic {
 
       if (currentPathBlock.isDoor) {
         const doorGroup = currentPathBlock.getGroup(EGroupTypes.doors) as DoorGroup;
-        const previousBlockRoom = path[path.length - 2].getGroup(EGroupTypes.room) as RoomsGroups;
+        console.log(path);
+        const previousBlockRoom = path[path.length - 2].getGroup(EGroupTypes.room) as RoomGroup;
+        console.log(previousBlockRoom);
         const anotherRoom = doorGroup
           .getRooms()
-          .find((room) => room.groupId !== previousBlockRoom.groupId) as RoomsGroups;
+          .find((room) => room.groupId !== previousBlockRoom.groupId) as RoomGroup;
 
         if (!anotherRoom || !!anotherRoom && !anotherRoom.contains(relatedBlock)) continue;
       }
@@ -41,7 +43,7 @@ export class NavigationLogic {
     }
   }
 
-  private updateWaveValues(block: FlatBlockEntity, roomGroup: RoomsGroups, endPosition: FlatBlockEntity, doorGroup?: DoorGroup) {
+  private updateWaveValues(block: FlatBlockEntity, roomGroup: RoomGroup, endPosition: FlatBlockEntity, doorGroup?: DoorGroup) {
     const relatedRoomsQueue = [];
 
     for (const roomBlock of roomGroup.getChildren() as FlatBlockEntity[]) {
@@ -59,7 +61,7 @@ export class NavigationLogic {
 
         const anotherRoom = roomBlockDoorGroup
           .getRooms()
-          .find((room) => room.groupId !== roomGroup.groupId) as RoomsGroups;
+          .find((room) => room.groupId !== roomGroup.groupId) as RoomGroup;
 
         // if there is still not marked elements
         if (anotherRoom && anotherRoom.markedBlocks().length !== anotherRoom.getChildren().length) {
@@ -89,8 +91,9 @@ export class NavigationLogic {
 
   generatePath(humanPosition: FlatBlockEntity, endPosition: FlatBlockEntity): FlatBlockEntity[] {
     this.clearWaveValues();
-    this.updateWaveValues(humanPosition, humanPosition.getGroup(EGroupTypes.room) as RoomsGroups, endPosition);
+    this.updateWaveValues(humanPosition, humanPosition.getGroup(EGroupTypes.room) as RoomGroup, endPosition);
 
-    return this.findPath([endPosition], humanPosition)
+    return [endPosition];
+    // return this.findPath([endPosition], humanPosition)
   }
 }

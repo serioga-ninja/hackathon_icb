@@ -1,6 +1,6 @@
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 
-export class MoveToWraper {
+export class MoveToWrapper {
   private currentPosition: FlatBlockEntity;
   moveToPosition: FlatBlockEntity;
 

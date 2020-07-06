@@ -20,7 +20,7 @@ const config: GameConfig = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    backgroundColor: '#ddd'
+    backgroundColor: '#000'
 };
 
 export class SmartHouseGame extends Phaser.Game {
@@ -35,7 +35,7 @@ window.onload = () => {
 
     gameObj.focus();
 
-    window.addEventListener('resize', () => {  
+    window.addEventListener('resize', () => {
         game.scene.game.scale.updateScale();
     });
 };
