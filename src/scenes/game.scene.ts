@@ -18,8 +18,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   generateRoom() {
-    this.flatMap = new FlatMap();
-    this.flatMap.generateFlatSpriteBlocks(this);
+    this.flatMap = new FlatMap(this);
+    this.flatMap.init();
   }
 
   /**
@@ -49,8 +49,7 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     this.generateRoom();
 
-    this.navigationLogic = new NavigationLogic(this.flatMap.generatedBlocks);
-    this.navigationLogic.generatePaths();
+    this.navigationLogic = new NavigationLogic(this.flatMap.generatedBlocks, this.flatMap.movableBlocks);
 
     const startBlock = this.flatMap.startBlock;
     this.humanEntity = new HumanEntity(this, startBlock.position.x, startBlock.position.y, 'human', {

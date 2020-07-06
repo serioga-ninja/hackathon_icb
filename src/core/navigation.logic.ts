@@ -6,21 +6,14 @@ export interface IPathRelatedBlock {
   waveValue: number;
 }
 
-// [x, y]
-const relatedCoordinatesHelper = [
-  [-1, -1], [0, -1], [1, -1],
-  [-1, 0], [1, 0],
-  [-1, 1], [0, 1], [1, 1],
-];
-
 export class NavigationLogic {
 
   private readonly blocks: FlatBlockEntity[][];
   private readonly pathRelatedBlocks: FlatBlockEntity[];
 
-  constructor(blocks: FlatBlockEntity[][]) {
+  constructor(blocks: FlatBlockEntity[][], pathRelatedBlocks: FlatBlockEntity[]) {
     this.blocks = blocks;
-    this.pathRelatedBlocks = [];
+    this.pathRelatedBlocks = pathRelatedBlocks;
   }
 
   private findPath(path: FlatBlockEntity[], humanPosition: FlatBlockEntity): FlatBlockEntity[] {
@@ -77,33 +70,5 @@ export class NavigationLogic {
 
     // return [];
     return this.findPath([endPosition], humanPosition)
-  }
-
-  generatePaths() {
-    if (this.blocks.length === 0) return;
-
-    for (let y = 0; y < this.blocks.length; y++) {
-      const row = this.blocks[y];
-
-      for (let x = 0; x < row.length; x++) {
-        if (!row[x].isMovable) {
-          continue;
-        }
-
-        row[x].relatedMovableBlocks = relatedCoordinatesHelper
-          .map((pos) => {
-            const searchRow = this.blocks[y + pos[0]];
-            if (!searchRow) return;
-
-            const block = searchRow[x + pos[1]];
-            if (!block || block && !block.isMovable) return;
-
-            return block;
-          })
-          .filter((block) => !!block);
-
-        this.pathRelatedBlocks.push(row[x]);
-      }
-    }
   }
 }
