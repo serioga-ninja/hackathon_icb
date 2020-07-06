@@ -24,4 +24,8 @@ export class DoorGroup extends GroupBase {
 
     this.connectedRooms.push(group);
   }
+
+  getRooms() {
+    return this.connectedRooms;
+  }
 }

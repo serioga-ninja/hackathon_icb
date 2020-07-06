@@ -1,4 +1,5 @@
 import { EGroupTypes, GroupBase } from '../core/group.base';
+import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { DoorGroup } from './door.group';
 
 export class RoomsGroups extends GroupBase {
@@ -23,5 +24,9 @@ export class RoomsGroups extends GroupBase {
     if (this.hasDoorId(group.groupId)) return;
 
     this.connectedDoors.push(group);
+  }
+
+  markedBlocks() {
+    return this.getChildren().filter((block: FlatBlockEntity) => typeof block.waveValue === 'number');
   }
 }

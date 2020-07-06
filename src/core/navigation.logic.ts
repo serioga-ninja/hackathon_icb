@@ -1,10 +1,15 @@
-import { EHouseParticles, FlatBlockEntity } from '../entity/flat-block.entity';
+import { FlatBlockEntity } from '../entity/flat-block.entity';
+import { DoorGroup } from '../groups/door.group';
+import { RoomsGroups } from '../groups/rooms-groups';
+import { EGroupTypes } from './group.base';
 
 export interface IPathRelatedBlock {
   block: FlatBlockEntity;
   relatedPathBlocks: FlatBlockEntity[];
   waveValue: number;
 }
+
+let counter = 0;
 
 export class NavigationLogic {
 
@@ -42,20 +47,36 @@ export class NavigationLogic {
     return result;
   }
 
-  private updateWaveValues(humanPosition: FlatBlockEntity) {
-    for (let y = 0; y < this.blocks.length; y++) {
-      const row = this.blocks[y];
+  private updateWaveValues(block: FlatBlockEntity, roomGroup: RoomsGroups, doorGroup?: DoorGroup) {
+    for (const roomBlock of roomGroup.getChildren() as FlatBlockEntity[]) {
+      if (roomBlock.isDoor) {
+        if (doorGroup && doorGroup.contains(roomBlock)) {
+          continue;
+        }
 
-      for (let x = 0; x < row.length; x++) {
-        const block = row[x];
-        if (!block.isMovable) continue;
+        const roomBlockDoorGroup = roomBlock.getGroup(EGroupTypes.doors) as DoorGroup;
+        for (const doorBlock of roomBlockDoorGroup.getChildren() as FlatBlockEntity[]) {
+          doorBlock.waveValue = 0;
+        }
 
-        block.waveValue = Math.max(
-          Math.abs(humanPosition.matrix.x - block.matrix.x),
-          Math.abs(humanPosition.matrix.y - block.matrix.y),
+        const anotherRoom = roomBlockDoorGroup
+          .getRooms()
+          .find((room) => room.groupId !== roomGroup.groupId) as RoomsGroups;
+
+        // if there is still not marked elements
+        if (anotherRoom && anotherRoom.markedBlocks().length !== anotherRoom.getChildren().length) {
+          console.log('anotherRoom', anotherRoom.groupId);
+          this.updateWaveValues(roomBlock, anotherRoom, roomBlockDoorGroup);
+        }
+      } else if (typeof roomBlock.waveValue !== 'number') {
+        roomBlock.waveValue = Math.max(
+          Math.abs(roomBlock.matrix.x - block.matrix.x),
+          Math.abs(roomBlock.matrix.y - block.matrix.y),
         );
+        console.log(counter++, 'counter');
       }
     }
+
   }
 
   private clearWaveValues() {
@@ -66,9 +87,9 @@ export class NavigationLogic {
 
   generatePath(humanPosition: FlatBlockEntity, endPosition: FlatBlockEntity): FlatBlockEntity[] {
     this.clearWaveValues();
-    this.updateWaveValues(humanPosition);
+    this.updateWaveValues(humanPosition, humanPosition.getGroup(EGroupTypes.room) as RoomsGroups);
 
-    // return [];
-    return this.findPath([endPosition], humanPosition)
+    return [];
+    // return this.findPath([endPosition], humanPosition)
   }
 }

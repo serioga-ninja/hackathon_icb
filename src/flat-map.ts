@@ -175,8 +175,6 @@ export class FlatMap {
         this.doors.push(generateGroupRecursive(block));
       }
     }
-
-    console.log('doors', this.doors);
   }
 
   generateRooms() {
@@ -188,6 +186,8 @@ export class FlatMap {
         if (relatedBlock.isDoor && relatedBlock.hasGroup(EGroupTypes.doors)) {
           const doorGroup = relatedBlock.getGroup(EGroupTypes.doors) as DoorGroup;
           group.addDoors(doorGroup);
+          group.add(relatedBlock);
+          doorGroup.addRoom(group);
         } else if (relatedBlock.isMovable && !relatedBlock.hasGroup(EGroupTypes.room)) {
           generateGroupRecursive(relatedBlock, group);
         }
@@ -201,8 +201,6 @@ export class FlatMap {
         this.rooms.push(generateGroupRecursive(block));
       }
     }
-
-    console.log('rooms', this.rooms);
   }
 
 
