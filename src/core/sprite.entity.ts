@@ -10,4 +10,8 @@ export abstract class SpriteEntity extends Phaser.GameObjects.Sprite {
     this.scene.add.existing(this);
     this.scene.physics.world.enableBody(this, 0);
   }
+
+  widthTo(sprite: SpriteEntity): number {
+    return Math.sqrt(Math.pow(sprite.x - this.x, 2) + Math.pow(sprite.y - this.y, 2));
+  }
 }

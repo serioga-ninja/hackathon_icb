@@ -21,8 +21,6 @@ export class NavigationLogic {
 
     // we find the last humanPosition
     if (relatedFinalBlock) {
-      path.push(relatedFinalBlock);
-
       return path;
     }
 

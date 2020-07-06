@@ -7,7 +7,6 @@ import { RoomGroup } from '../groups/room.group';
 export class GameScene extends Phaser.Scene {
 
   private humanEntity: HumanEntity;
-  private flatRoomsGroups: RoomGroup[];
   private navigationLogic: NavigationLogic;
   private flatMap: FlatMap;
 
@@ -57,12 +56,13 @@ export class GameScene extends Phaser.Scene {
       navigationLogic: this.navigationLogic
     });
 
-    console.log(this.navigationLogic.generatePath(startBlock, this.flatMap.generatedBlocks[13][13]));
+    this.humanEntity.setMoveToPoint(this.flatMap.generatedBlocks[13][13]);
   }
 
   /**
    * is called every tick and contains the dynamic part of the scene — everything that moves, flashes, etc.
    */
   update(time: number): void {
+    this.humanEntity.update();
   }
 }
