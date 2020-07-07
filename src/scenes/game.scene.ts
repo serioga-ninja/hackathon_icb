@@ -50,7 +50,7 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     this.generateRoom();
 
-    this.navigationLogic = new NavigationLogic(this.flatMap.generatedBlocks, this.flatMap.movableBlocks);
+    this.navigationLogic = new NavigationLogic(this.flatMap);
 
     const startBlock = this.flatMap.startBlock;
     this.humanEntity = new HumanEntity(this, startBlock.position.x, startBlock.position.y, 'human', {
@@ -58,14 +58,14 @@ export class GameScene extends Phaser.Scene {
       navigationLogic: this.navigationLogic
     });
 
-    this.actionLogic = new ActionsLogic(this.flatMap.flatGroup, this.humanEntity, this.navigationLogic); //, this.flatMap.generatedBlocks[20][24]);
+    this.actionLogic = new ActionsLogic(this.flatMap.flatGroup, this.humanEntity, this.navigationLogic);
   }
 
   /**
    * is called every tick and contains the dynamic part of the scene — everything that moves, flashes, etc.
    */
   update(time: number): void {
-    //this.actionLogic.update(time);
+    this.actionLogic.update(time);
     this.humanEntity.update();
   }
 }

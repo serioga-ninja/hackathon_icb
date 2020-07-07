@@ -5,6 +5,7 @@ import { DoorGroup } from './door.group';
 export class RoomGroup extends GroupBase {
 
   private connectedDoors: DoorGroup[];
+  public relatedRooms: RoomGroup[];
 
   get groupType() {
     return EGroupTypes.room;
@@ -14,6 +15,7 @@ export class RoomGroup extends GroupBase {
     super(scene, children, config);
 
     this.connectedDoors = [];
+    this.relatedRooms = [];
   }
 
   hasDoorId(roomGroupId: string): boolean {
@@ -28,5 +30,24 @@ export class RoomGroup extends GroupBase {
 
   markedBlocks() {
     return this.getChildren().filter((block: FlatBlockEntity) => typeof block.waveValue === 'number');
+  }
+
+  addRelatedRoom(rooms: RoomGroup[]) {
+
+    this.relatedRooms.push(
+      ...rooms
+        .filter((room) => {
+          // room already not exists
+          return !this.relatedRooms.find((r) => r.groupId === room.groupId);
+        })
+        .filter((room) => room.groupId !== this.groupId)
+    );
+  }
+
+  relatedToRoomDoor(room: RoomGroup): DoorGroup {
+    return this.connectedDoors
+      .find((door) => {
+        return !!door.getRooms().find((r) => r.groupId === room.groupId)
+      });
   }
 }

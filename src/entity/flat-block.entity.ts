@@ -28,6 +28,7 @@ export class FlatBlockEntity extends SpriteEntity {
   private readonly _position: Point;
   private _waveValue: number;
   private relatedGroups: GroupBase[];
+  private _debugText: Phaser.GameObjects.Text;
 
   public readonly blockType: EHouseParticles;
   public relatedMovableBlocks: FlatBlockEntity[];
@@ -44,8 +45,12 @@ export class FlatBlockEntity extends SpriteEntity {
   set waveValue(value) {
     this._waveValue = value;
 
+    if (this._debugText) {
+      this._debugText.destroy();
+    }
+
     if (typeof value === 'number' && gameConfig.debug) {
-      this.scene.add.text(this.position.x, this.position.y, value.toString(), {
+      this._debugText = this.scene.add.text(this.position.x, this.position.y, value.toString(), {
         font: '10px Arial Bold',
         fill: '#de0025'
       });
@@ -66,6 +71,13 @@ export class FlatBlockEntity extends SpriteEntity {
     this.isDoor = options.blockType === EHouseParticles.Door;
     this.matrix = options.matrix;
     this.relatedGroups = [];
+
+    if (gameConfig.debug) {
+      this.scene.add.text(this.position.x - 10, this.position.y - 10, `${this.matrix.x}-${this.matrix.y}`, {
+        font: '10px Arial Bold',
+        fill: '#000000'
+      });
+    }
   }
 
   hasGroup(groupType: EGroupTypes): boolean {

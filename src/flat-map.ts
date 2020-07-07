@@ -1,10 +1,8 @@
 import gameConfig from './core/game.config';
 import { EGroupTypes } from './core/group.base';
-import { Point } from './core/point';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 import { DoorGroup } from './groups/door.group';
 import { FlatGroup } from './groups/flat.group';
-import { RoomGroup } from './groups/room.group';
 import { RoomGroup } from './groups/room.group';
 
 const sprayMap = [
@@ -77,7 +75,7 @@ export class FlatMap {
   scene: Phaser.Scene;
 
   get startBlock() {
-    return this.generatedBlocks[9][13];
+    return this.generatedBlocks[24][13];
   }
 
   constructor(scene: Phaser.Scene) {
@@ -188,11 +186,16 @@ export class FlatMap {
       block.addGroup(group);
 
       for (const relatedBlock of block.relatedMovableBlocks) {
+        // if (relatedBlock.matrix.x === 13 && relatedBlock.matrix.y === 24) {
+        //   debugger;
+        // }
+
         if (relatedBlock.isDoor && relatedBlock.hasGroup(EGroupTypes.doors)) {
           const doorGroup = relatedBlock.getGroup(EGroupTypes.doors) as DoorGroup;
           group.addDoors(doorGroup);
           group.add(relatedBlock);
           doorGroup.addRoom(group);
+          relatedBlock.addGroup(group);
         } else if (relatedBlock.isMovable && !relatedBlock.hasGroup(EGroupTypes.room)) {
           generateGroupRecursive(relatedBlock, group);
         }

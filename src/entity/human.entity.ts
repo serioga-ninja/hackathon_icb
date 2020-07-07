@@ -38,10 +38,24 @@ export class HumanEntity extends SpriteEntity {
     this._navigationLogic = options.navigationLogic;
     this.setDisplaySize(15, 15);
     this.currentFlatEntity = options.startBlock;
-    this.setData('speed', 2);
+    this.setData('speed', 3);
   }
 
   update() {
+  }
+
+  /**
+   * Set new coordinates for the line endpoints.
+   * @param x1 The x coordinate of the lines starting point. Default 0.
+   * @param y1 The y coordinate of the lines starting point. Default 0.
+   * @param x2 The x coordinate of the lines ending point. Default 0.
+   * @param y2 The y coordinate of the lines ending point. Default 0.
+   */
+  setTo(x1?: number, y1?: number, x2?: number, y2?: number): this {
+    this.x = x1;
+    this.y = y1;
+
+    return this;
   }
 
 }
