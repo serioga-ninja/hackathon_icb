@@ -68,11 +68,17 @@ export class NavigationLogic {
       return path;
     }
 
+    let res: FlatBlockEntity[] = new Array(10000);
     for (const relatedBlock of currentPathBlock.relatedMovableBlocks) {
       if (typeof relatedBlock.waveValue !== 'number' || relatedBlock.waveValue >= currentPathBlock.waveValue) continue;
 
-      return this.findPath([...path, relatedBlock], humanPosition);
+      const foundPath = this.findPath([...path, relatedBlock], humanPosition);
+      if (foundPath.length < res.length) {
+        res = foundPath;
+      }
     }
+
+    return res;
   }
 
   private updateWaveValues(block: FlatBlockEntity, roomGroup: RoomGroup, endPosition: FlatBlockEntity, doorGroup?: DoorGroup) {

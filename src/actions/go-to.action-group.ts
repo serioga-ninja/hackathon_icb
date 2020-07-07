@@ -1,7 +1,7 @@
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
-import { MoveHumanAction } from '../human-actions/move.human-action';
+import { MoveHumanAction } from './move.human-action';
 import { ActionGroupBase, EActionTypes } from './action-group.base';
 
 export class GoToActionGroup extends ActionGroupBase {

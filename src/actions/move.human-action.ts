@@ -45,7 +45,8 @@ export class MoveHumanAction extends HumanActionBase {
 
       return this._activePathBlock;
     } catch (error) {
-      console.log(this._activePathBlock)
+      console.log('FullPath', this._fullPath);
+      console.log('ActivePathBlock', this._activePathBlock);
       throw error;
     }
   }
