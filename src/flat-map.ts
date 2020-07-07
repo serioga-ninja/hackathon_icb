@@ -18,28 +18,28 @@ const houseStringMap: any =
   '1223@@@222222@@@2222@@@22222@@222\n' +
   '1.........1..............1......1\n' +
   '1.........1..............1......1\n' +
-  '1.........1..............=......1\n' +
-  '$.........=..............=......1\n' +
+  '1.........1..............1......1\n' +
+  '$.........2..............=......1\n' +
   '$.........=..............1......1\n' +
-  '$.........=..............1......1\n' +
-  '1.........1..............222==222\n' +
+  '$.........2..............1......1\n' +
+  '1.........1..............2222=222\n' +
   '1.........1..............1......1\n' +
   '1.........1..............1......1\n' +
-  '1222===222222==22222222222......1\n' +
+  '12222=22222222=22222222222......1\n' +
   '1.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '$.........=......=.......1......1\n' +
-  '$.........=......=.......1......1\n' +
+  '$.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '$.........1......122222221......1\n' +
   '$.........1......1.......1......1\n' +
   '1.........1......=.......1......1\n' +
-  '1.........1......=.......1......1\n' +
   '1.........1......1.......1......1\n' +
-  '1222@@@222222==22222222222======1';
+  '1.........1......1.......1......1\n' +
+  '1222@@@222222=222222222222======1';
 
 
 export enum EHouseGroup {
@@ -94,6 +94,7 @@ export class FlatMap {
     this.generateMovableBlocks();
     this.generateDoors();
     this.generateRooms();
+    this.generateDoorsEntranceBlocks();
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
@@ -186,10 +187,6 @@ export class FlatMap {
       block.addGroup(group);
 
       for (const relatedBlock of block.relatedMovableBlocks) {
-        // if (relatedBlock.matrix.x === 13 && relatedBlock.matrix.y === 24) {
-        //   debugger;
-        // }
-
         if (relatedBlock.isDoor && relatedBlock.hasGroup(EGroupTypes.doors)) {
           const doorGroup = relatedBlock.getGroup(EGroupTypes.doors) as DoorGroup;
           group.addDoors(doorGroup);
@@ -207,6 +204,24 @@ export class FlatMap {
     for (const block of this.movableBlocks) {
       if (block.isMovable && !block.isDoor && !block.hasGroup(EGroupTypes.room)) {
         this.rooms.push(generateGroupRecursive(block));
+      }
+    }
+  }
+
+  generateDoorsEntranceBlocks() {
+    for (const doorGroup of this.doors) {
+      for (const door of doorGroup.getChildren() as FlatBlockEntity[]) {
+        door.relatedEntranceBlocks = [[0, -1], [-1, 0], [1, 0], [0, 1]]
+          .map((pos) => {
+            const searchRow = this.generatedBlocks[door.matrix.y + pos[0]];
+            if (!searchRow) return;
+
+            const block = searchRow[door.matrix.x + pos[1]];
+            if (!block || block && !block.isMovable) return;
+
+            return block;
+          })
+          .filter((block) => !!block);
       }
     }
   }

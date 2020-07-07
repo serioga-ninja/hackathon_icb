@@ -2,6 +2,7 @@ import gameConfig from '../core/game.config';
 import { EGroupTypes, GroupBase } from '../core/group.base';
 import { Point } from '../core/point';
 import { SpriteEntity } from '../core/sprite.entity';
+import { RoomGroup } from '../groups/room.group';
 
 export interface IFlatBlockOptions {
   width: number;
@@ -37,6 +38,7 @@ export class FlatBlockEntity extends SpriteEntity {
   public readonly isDoor: boolean;
   public readonly isMovable: boolean;
   public matrix: { x: number; y: number; };
+  public relatedEntranceBlocks: FlatBlockEntity[];
 
   get waveValue() {
     return this._waveValue;
@@ -71,6 +73,7 @@ export class FlatBlockEntity extends SpriteEntity {
     this.isDoor = options.blockType === EHouseParticles.Door;
     this.matrix = options.matrix;
     this.relatedGroups = [];
+    this.relatedEntranceBlocks = [];
 
     if (gameConfig.debug) {
       this.scene.add.text(this.position.x - 10, this.position.y - 10, `${this.matrix.x}-${this.matrix.y}`, {
@@ -96,6 +99,11 @@ export class FlatBlockEntity extends SpriteEntity {
 
   getGroup(groupType: EGroupTypes): GroupBase {
     return this.relatedGroups.find((group) => group.groupType === groupType);
+  }
+
+  getEntranceFromRoom(room: RoomGroup): FlatBlockEntity {
+    return this.relatedEntranceBlocks
+      .find((block) => block.getGroup(EGroupTypes.room).groupId === room.groupId);
   }
 
 }

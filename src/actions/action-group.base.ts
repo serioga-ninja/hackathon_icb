@@ -12,7 +12,7 @@ export abstract class ActionGroupBase {
   abstract readonly actionType: EActionTypes;
 
   protected human: HumanEntity;
-  protected readonly _finished: boolean;
+  protected _finished: boolean;
 
   constructor(human: HumanEntity) {
     this.human = human;

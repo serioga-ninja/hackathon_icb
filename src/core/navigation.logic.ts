@@ -167,7 +167,7 @@ export class NavigationLogic {
     // return this.findPath([endPoint], startPoint);
   }
 
-  generatePath(humanPosition: FlatBlockEntity, endPosition: FlatBlockEntity): IPathRow[] {
+  generatePath(humanPosition: FlatBlockEntity, endPosition: FlatBlockEntity): Phaser.Curves.Path {
     const availableRoomPaths = this.generateAvailableRoomPath([humanPosition.getGroup(EGroupTypes.room) as RoomGroup], endPosition.getGroup(EGroupTypes.room) as RoomGroup);
 
     let minPath: RoomGroup[] = new Array(10000);
@@ -182,47 +182,29 @@ export class NavigationLogic {
         }
       }
     } else if (availableRoomPaths.length === 1) {
-      return [
-        {
-          room: availableRoomPaths[0][0],
-          path: [],
-          startBlock: humanPosition,
-          endBlock: endPosition
-        }
-      ]
-    } else {
+      minPath = availableRoomPaths[0];
+    } else if (availableRoomPaths.length === 0) {
       console.error(`Can't find path!`, humanPosition, endPosition);
     }
 
-    return minPath.map((room, i) => {
-      const firstRoom = i === 0;
-      const lastRoom = i === minPath.length - 1;
-      let startBlock: FlatBlockEntity;
-      let endBlock: FlatBlockEntity;
+    const path = new Phaser.Curves.Path(humanPosition.x, humanPosition.y);
 
-      if (firstRoom) {
-        startBlock = humanPosition;
-        endBlock = room.relatedToRoomDoor(minPath[i + 1]).getChildren()[0] as FlatBlockEntity;
-      } else if (lastRoom) {
-        startBlock = room.relatedToRoomDoor(minPath[i - 1]).getChildren()[0] as FlatBlockEntity;
-        endBlock = endPosition;
-      } else {
-        startBlock = room.relatedToRoomDoor(minPath[i - 1]).getChildren()[0] as FlatBlockEntity;
-        endBlock = room.relatedToRoomDoor(minPath[i + 1]).getChildren()[0] as FlatBlockEntity;
-      }
+    return minPath
+      .reduce((path, room, i) => {
+        const lastRoom = i === minPath.length - 1;
 
+        if (lastRoom) {
+          path.lineTo(endPosition.x, endPosition.y);
+        } else {
+          const doors = room.relatedToRoomDoor(minPath[i + 1]).getChildren()[0] as FlatBlockEntity;
+          const entranceBlock = doors.getEntranceFromRoom(room);
+          const exitBlock = doors.relatedEntranceBlocks
+            .find((block) => block.getGroup(EGroupTypes.room).groupId !== room.groupId);
+          path.lineTo(entranceBlock.x, entranceBlock.y);
+          path.lineTo(exitBlock.x, exitBlock.y);
+        }
 
-      if (gameConfig.debug) {
-        startBlock.setTint(0xff0000);
-        endBlock.setTint(0xff0000);
-      }
-
-      return {
-        room,
-        path: [],
-        startBlock,
-        endBlock
-      }
-    });
+        return path;
+      }, path);
   }
 }

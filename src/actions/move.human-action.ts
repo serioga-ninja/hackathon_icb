@@ -9,7 +9,7 @@ export class MoveHumanAction extends HumanActionBase {
 
   private block: FlatBlockEntity;
   private navigationLogic: NavigationLogic;
-  private _fullPath: IPathRow[];
+  private _path: Phaser.Curves.Path;
   private _activePathBlock: IPathRow;
   private _moveToFlatEntity: MoveToWrapper;
 
@@ -21,35 +21,14 @@ export class MoveHumanAction extends HumanActionBase {
 
     if (gameConfig.debug) {
       block.setTint(0xff0000);
+      human.currentFlatEntity.setTint(0xff0000);
     }
 
     console.group('MoveHumanAction');
     console.log(human.currentFlatEntity, block);
-    this._fullPath = navigationLogic.generatePath(human.currentFlatEntity, block);
-    this.generatePath();
+    this._path = navigationLogic.generatePath(human.currentFlatEntity, block);
+    this._moveToFlatEntity = new MoveToWrapper(human.currentFlatEntity, block, this._path);
     console.groupEnd();
-  }
-
-  generatePath() {
-    try {
-      this._activePathBlock = this._fullPath.shift();
-
-      if (!this._activePathBlock) return;
-
-      this.navigationLogic.generateRoomPath(this._activePathBlock);
-
-      this._moveToFlatEntity = new MoveToWrapper(
-        this.human.currentFlatEntity,
-        this._activePathBlock.path.pop() || this._activePathBlock.endBlock,
-        this._activePathBlock.line
-      );
-
-      return this._activePathBlock;
-    } catch (error) {
-      console.log('FullPath', this._fullPath);
-      console.log('ActivePathBlock', this._activePathBlock);
-      throw error;
-    }
   }
 
   update(time: number) {
@@ -60,17 +39,13 @@ export class MoveHumanAction extends HumanActionBase {
       human.x = point.x;
       human.y = point.y;
 
+      console.log(human.widthTo(this._moveToFlatEntity.moveToPosition));
+
       if (human.widthTo(this._moveToFlatEntity.moveToPosition) < 1) {
         human.currentFlatEntity = this._moveToFlatEntity.moveToPosition;
-        const nextBlock = this._activePathBlock.path.pop()
 
-        // set nex waypoint move to
-        if (nextBlock) {
-          this._moveToFlatEntity = new MoveToWrapper(human.currentFlatEntity, nextBlock);
-        } else if (!this.generatePath()) {
-          this._moveToFlatEntity = null;
-          this._finished = true;
-        }
+        this._moveToFlatEntity = null;
+        this._finished = true;
       }
     }
 
