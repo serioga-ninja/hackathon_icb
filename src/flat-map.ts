@@ -93,6 +93,7 @@ export class FlatMap {
     this.generateMovableBlocks();
     this.generateDoors();
     this.generateRooms();
+    this.setRoomsAlpha();
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
@@ -203,19 +204,13 @@ export class FlatMap {
     }
   }
 
-
-  // aweqwe() {
-  //   {
-  //     cordX: ;
-  //     cordY: ;
-  //     criticalUpXY: ;
-  //     criticalUpYX: ;
-  //     criticalDownXY: ;
-  //     criticalDownYX: ;
-  //     section: ;
-  //     type: ;
-  //   }
-  // }
+  setRoomsAlpha() {
+    this.rooms.forEach(roomsGroup => {
+      roomsGroup.children.entries.forEach((sprite: FlatBlockEntity) => {
+        sprite.alpha = 0.6;
+      })
+    })
+  }
 
 
   sectorChecker(): RoomGroup[] {

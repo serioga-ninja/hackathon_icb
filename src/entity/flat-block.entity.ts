@@ -66,6 +66,7 @@ export class FlatBlockEntity extends SpriteEntity {
     this.isDoor = options.blockType === EHouseParticles.Door;
     this.matrix = options.matrix;
     this.relatedGroups = [];
+    this.on('pointerdown', this.turnOnOffLightLogic)
   }
 
   hasGroup(groupType: EGroupTypes): boolean {
@@ -84,6 +85,18 @@ export class FlatBlockEntity extends SpriteEntity {
 
   getGroup(groupType: EGroupTypes): GroupBase {
     return this.relatedGroups.find((group) => group.groupType === groupType);
+  }
+
+  turnOnOffLightLogic() {
+    const rooms = this.getGroup(EGroupTypes.room);
+
+    rooms.children.entries.forEach((sprite: FlatBlockEntity) => {
+        if (sprite.alpha === 1) {
+          sprite.alpha = 0.6;
+        } else {
+          sprite.alpha = 1
+        }
+    })
   }
 
 }
