@@ -1,9 +1,9 @@
 import { EGroupTypes, GroupBase } from '../core/group.base';
-import { RoomsGroups } from './rooms-groups';
+import { RoomGroup } from './room.group';
 
 export class DoorGroup extends GroupBase {
 
-  private connectedRooms: RoomsGroups[];
+  private connectedRooms: RoomGroup[];
 
   get groupType() {
     return EGroupTypes.doors;
@@ -19,7 +19,7 @@ export class DoorGroup extends GroupBase {
     return !!this.connectedRooms.find((roomGroup) => roomGroup.groupId === roomGroupId);
   }
 
-  addRoom(group: RoomsGroups) {
+  addRoom(group: RoomGroup) {
     if (this.hasRoomId(group.groupId)) return;
 
     this.connectedRooms.push(group);

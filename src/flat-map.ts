@@ -1,10 +1,9 @@
 import gameConfig from './core/game.config';
 import { EGroupTypes } from './core/group.base';
-import { Point } from './core/point';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 import { DoorGroup } from './groups/door.group';
+import { FlatGroup } from './groups/flat.group';
 import { RoomGroup } from './groups/room.group';
-import { RoomsGroups } from './groups/rooms-groups';
 
 const sprayMap = [
   'wallVert',
@@ -19,28 +18,28 @@ const houseStringMap: any =
   '1223@@@222222@@@2222@@@22222@@222\n' +
   '1.........1..............1......1\n' +
   '1.........1..............1......1\n' +
-  '1.........1..............=......1\n' +
-  '$.........=..............=......1\n' +
+  '1.........1..............1......1\n' +
+  '$.........2..............=......1\n' +
   '$.........=..............1......1\n' +
-  '$.........=..............1......1\n' +
-  '1.........1..............222==222\n' +
+  '$.........2..............1......1\n' +
+  '1.........1..............2222=222\n' +
   '1.........1..............1......1\n' +
   '1.........1..............1......1\n' +
-  '1222===222222==22222222222......1\n' +
+  '12222=22222222=22222222222......1\n' +
   '1.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '$.........=......=.......1......1\n' +
-  '$.........=......=.......1......1\n' +
+  '$.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '1.........1......1.......1......1\n' +
   '$.........1......122222221......1\n' +
   '$.........1......1.......1......1\n' +
   '1.........1......=.......1......1\n' +
-  '1.........1......=.......1......1\n' +
   '1.........1......1.......1......1\n' +
-  '1222@@@222222==22222222222======1';
+  '1.........1......1.......1......1\n' +
+  '1222@@@222222=222222222222======1';
 
 
 export enum EHouseGroup {
@@ -70,12 +69,13 @@ export class FlatMap {
   generatedBlocks: FlatBlockEntity[][];
   movableBlocks: FlatBlockEntity[];
   parsedMap: string[][];
-  rooms: RoomsGroups[];
+  flatGroup: FlatGroup;
+  rooms: RoomGroup[];
   doors: DoorGroup[];
   scene: Phaser.Scene;
 
   get startBlock() {
-    return this.generatedBlocks[1][1];
+    return this.generatedBlocks[24][13];
   }
 
   constructor(scene: Phaser.Scene) {
@@ -85,6 +85,7 @@ export class FlatMap {
     this.parsedMap = [];
     this.doors = [];
     this.movableBlocks = [];
+    this.flatGroup = new FlatGroup(scene);
   }
 
   init() {
@@ -93,22 +94,25 @@ export class FlatMap {
     this.generateMovableBlocks();
     this.generateDoors();
     this.generateRooms();
+    this.generateDoorsEntranceBlocks();
     this.setRoomsAlpha();
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
     const tileSize = gameConfig.height / this.parsedMap.length;
 
-    // this.sectorChecker();
-
     this.generatedBlocks = this.parsedMap.map((row, y) => {
       return row.map((blockType, x) => {
-        return new FlatBlockEntity(scene, (x * tileSize) + (tileSize / 2), (y * tileSize) + (tileSize / 2), sprayMap[parseInt(blockType)], {
+        const block = new FlatBlockEntity(scene, (x * tileSize) + (tileSize / 2), (y * tileSize) + (tileSize / 2), sprayMap[parseInt(blockType)], {
           width: tileSize,
           height: tileSize,
           blockType: parseInt(blockType),
           matrix: { x, y }
         });
+
+        this.flatGroup.add(block);
+
+        return block;
       })
     });
   }
@@ -179,7 +183,7 @@ export class FlatMap {
   }
 
   generateRooms() {
-    const generateGroupRecursive = (block: FlatBlockEntity, group: RoomsGroups = new RoomsGroups(this.scene)): RoomsGroups => {
+    const generateGroupRecursive = (block: FlatBlockEntity, group: RoomGroup = new RoomGroup(this.scene)): RoomGroup => {
       group.add(block);
       block.addGroup(group);
 
@@ -189,6 +193,7 @@ export class FlatMap {
           group.addDoors(doorGroup);
           group.add(relatedBlock);
           doorGroup.addRoom(group);
+          relatedBlock.addGroup(group);
         } else if (relatedBlock.isMovable && !relatedBlock.hasGroup(EGroupTypes.room)) {
           generateGroupRecursive(relatedBlock, group);
         }
@@ -212,100 +217,21 @@ export class FlatMap {
     })
   }
 
+  generateDoorsEntranceBlocks() {
+    for (const doorGroup of this.doors) {
+      for (const door of doorGroup.getChildren() as FlatBlockEntity[]) {
+        door.relatedEntranceBlocks = [[0, -1], [-1, 0], [1, 0], [0, 1]]
+          .map((pos) => {
+            const searchRow = this.generatedBlocks[door.matrix.y + pos[0]];
+            if (!searchRow) return;
 
-  sectorChecker(): RoomGroup[] {
-    const map = this.parsedMap;
+            const block = searchRow[door.matrix.x + pos[1]];
+            if (!block || block && !block.isMovable) return;
 
-    let fullGroupMap: RoomGroup[] = [];
-
-    for (let cordY = 1; cordY < map.length - 2; cordY++) {
-      for (let cordX = 1; cordX < map[cordY].length - 2; cordX++) {
-        let standingTile = map[cordY][cordX];
-
-        if (standingTile == EHouseParticles.FreeSpace) {
-          //get neibor tiles
-          let tilesOnSides: Point[] = [];
-          //todo
-          if (map[cordY - 1][cordX] == EHouseParticles.FreeSpace)
-            tilesOnSides.push(new Point(cordX, cordY - 1));//top
-
-          if (map[cordY + 1][cordX] == EHouseParticles.FreeSpace)
-            tilesOnSides.push(new Point(cordX, cordY + 1));//bottom
-
-          if (map[cordY][cordX - 1] == EHouseParticles.FreeSpace)
-            tilesOnSides.push(new Point(cordX - 1, cordY));//left
-
-          if (map[cordY][cordX + 1] == EHouseParticles.FreeSpace)
-            tilesOnSides.push(new Point(cordX + 1, cordY));//right
-
-          let isGroupWasFound = false;
-
-          for (let j = 0; j < fullGroupMap.length; j++) {
-            let tl: Point = tilesOnSides.find(element => fullGroupMap[j].groupMap.find(x => x.x == element.x && x.y == element.y));
-
-            if (tl !== undefined) {
-              fullGroupMap[j].groupMap.push(new Point(cordX, cordY));
-              isGroupWasFound = true;
-              //group has found
-              break;
-            }
-          }
-
-          if (isGroupWasFound == false) {
-            let newGroup = new RoomGroup();
-            newGroup.groupMap.push(new Point(cordX, cordY));
-
-            fullGroupMap.push(newGroup);
-
-          }
-        }
-
-//--------------------------------------------------------------------------------------------------
-        if (standingTile == EHouseParticles.Door) {
-          //get neibor tiles
-          let doorsOnSides: Point[] = [];
-          //todo
-          if (map[cordY - 1][cordX] == EHouseParticles.Door)
-            doorsOnSides.push(new Point(cordX, cordY - 1));//top
-
-          if (map[cordY + 1][cordX] == EHouseParticles.Door)
-            doorsOnSides.push(new Point(cordX, cordY + 1));//bottom
-
-          if (map[cordY][cordX - 1] == EHouseParticles.Door)
-            doorsOnSides.push(new Point(cordX - 1, cordY));//left
-
-          if (map[cordY][cordX + 1] == EHouseParticles.Door)
-            doorsOnSides.push(new Point(cordX + 1, cordY));//right
-
-          let isGroupWasFound = false;
-
-          for (let j = 0; j < fullGroupMap.length; j++) {
-            let tl: Point = doorsOnSides.find(element => fullGroupMap[j].groupMap.find(x => x.x == element.x && x.y == element.y));
-
-            if (tl !== undefined) {
-              fullGroupMap[j].groupMap.push(new Point(cordX, cordY));
-              isGroupWasFound = true;
-              //group has found
-              break;
-            }
-          }
-
-          if (isGroupWasFound == false) {
-            let newGroup = new RoomGroup();
-            newGroup.groupMap.push(new Point(cordX, cordY));
-
-            fullGroupMap.push(newGroup);
-
-          }
-        }
-//-----------------------------------------------------------------------------
-
+            return block;
+          })
+          .filter((block) => !!block);
       }
-
     }
-
-
-    console.log('fullGroupMap', fullGroupMap);
-    return fullGroupMap;
   }
 }

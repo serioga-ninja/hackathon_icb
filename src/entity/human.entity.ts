@@ -1,3 +1,4 @@
+import gameConfig from '../core/game.config';
 import { NavigationLogic } from '../core/navigation.logic';
 import { SpriteEntity } from '../core/sprite.entity';
 import { FlatBlockEntity } from './flat-block.entity';
@@ -12,13 +13,25 @@ export interface IHumanEntityOptions {
 }
 
 export class HumanEntity extends SpriteEntity {
+  get currentFlatEntity(): FlatBlockEntity {
+    return this._currentFlatEntity;
+  }
+
+  set currentFlatEntity(value: FlatBlockEntity) {
+    if (this._currentFlatEntity) this._currentFlatEntity.clearTint();
+
+    this._currentFlatEntity = value;
+
+    if (gameConfig.debug) {
+      value.setTint(0xff0000);
+    }
+  }
 
   private _state: EHumanState;
-  private _moveToPoint: FlatBlockEntity;
-  private _path: FlatBlockEntity[];
-  private _actions: any[];
   private _navigationLogic: NavigationLogic;
-  private _currentBlock: FlatBlockEntity;
+  private _currentFlatEntity: FlatBlockEntity;
+
+  public follower: Phaser.GameObjects.PathFollower;
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string, options: IHumanEntityOptions) {
     super(scene, x, y, key);
@@ -26,17 +39,12 @@ export class HumanEntity extends SpriteEntity {
     this._state = EHumanState.waiting;
     this._navigationLogic = options.navigationLogic;
     this.setDisplaySize(15, 15);
-    this._currentBlock = options.startBlock;
+    this.currentFlatEntity = options.startBlock;
+    this.setData('speed', 3);
+    this.follower = new Phaser.GameObjects.PathFollower(scene, null, x, y, key);
+    this.follower.setVisible(false);
   }
 
-  private calculatePath() {
-    this._path = [];
-
+  update() {
   }
-
-  public setMoveToPoint(block: FlatBlockEntity) {
-    this._moveToPoint = block;
-    this._path = this._navigationLogic.generatePath(this._currentBlock, block);
-  }
-
 }

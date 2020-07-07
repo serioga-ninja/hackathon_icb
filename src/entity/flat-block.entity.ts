@@ -2,6 +2,7 @@ import gameConfig from '../core/game.config';
 import { EGroupTypes, GroupBase } from '../core/group.base';
 import { Point } from '../core/point';
 import { SpriteEntity } from '../core/sprite.entity';
+import { RoomGroup } from '../groups/room.group';
 
 export interface IFlatBlockOptions {
   width: number;
@@ -28,6 +29,7 @@ export class FlatBlockEntity extends SpriteEntity {
   private readonly _position: Point;
   private _waveValue: number;
   private relatedGroups: GroupBase[];
+  private _debugText: Phaser.GameObjects.Text;
 
   public readonly blockType: EHouseParticles;
   public relatedMovableBlocks: FlatBlockEntity[];
@@ -36,6 +38,7 @@ export class FlatBlockEntity extends SpriteEntity {
   public readonly isDoor: boolean;
   public readonly isMovable: boolean;
   public matrix: { x: number; y: number; };
+  public relatedEntranceBlocks: FlatBlockEntity[];
 
   get waveValue() {
     return this._waveValue;
@@ -44,8 +47,12 @@ export class FlatBlockEntity extends SpriteEntity {
   set waveValue(value) {
     this._waveValue = value;
 
+    if (this._debugText) {
+      this._debugText.destroy();
+    }
+
     if (typeof value === 'number' && gameConfig.debug) {
-      this.scene.add.text(this.position.x, this.position.y, value.toString(), {
+      this._debugText = this.scene.add.text(this.position.x, this.position.y, value.toString(), {
         font: '10px Arial Bold',
         fill: '#de0025'
       });
@@ -66,7 +73,14 @@ export class FlatBlockEntity extends SpriteEntity {
     this.isDoor = options.blockType === EHouseParticles.Door;
     this.matrix = options.matrix;
     this.relatedGroups = [];
-    this.on('pointerdown', this.turnOnOffLightLogic)
+    this.relatedEntranceBlocks = [];
+    this.on('pointerdown', this.turnOnOffLightLogic);
+    if (gameConfig.debug) {
+      this.scene.add.text(this.position.x - 10, this.position.y - 10, `${this.matrix.x}-${this.matrix.y}`, {
+        font: '10px Arial Bold',
+        fill: '#000000'
+      });
+    }
   }
 
   hasGroup(groupType: EGroupTypes): boolean {
@@ -87,16 +101,20 @@ export class FlatBlockEntity extends SpriteEntity {
     return this.relatedGroups.find((group) => group.groupType === groupType);
   }
 
+  getEntranceFromRoom(room: RoomGroup): FlatBlockEntity {
+    return this.relatedEntranceBlocks
+      .find((block) => block.getGroup(EGroupTypes.room).groupId === room.groupId);
+  }
+
   turnOnOffLightLogic() {
     const rooms = this.getGroup(EGroupTypes.room);
 
     rooms.children.entries.forEach((sprite: FlatBlockEntity) => {
-        if (sprite.alpha === 1) {
-          sprite.alpha = 0.6;
-        } else {
-          sprite.alpha = 1
-        }
+      if (sprite.alpha === 1) {
+        sprite.alpha = 0.6;
+      } else {
+        sprite.alpha = 1
+      }
     })
   }
-
 }

@@ -1,3 +1,4 @@
+import { ActionsLogic } from '../core/actions.logic';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -7,8 +8,8 @@ import { RoomGroup } from '../groups/room.group';
 export class GameScene extends Phaser.Scene {
 
   private humanEntity: HumanEntity;
-  private flatRoomsGroups: RoomGroup[];
   private navigationLogic: NavigationLogic;
+  private actionLogic: ActionsLogic;
   private flatMap: FlatMap;
 
   constructor() {
@@ -49,7 +50,7 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     this.generateRoom();
 
-    this.navigationLogic = new NavigationLogic(this.flatMap.generatedBlocks, this.flatMap.movableBlocks);
+    this.navigationLogic = new NavigationLogic(this.flatMap);
 
     const startBlock = this.flatMap.startBlock;
     this.humanEntity = new HumanEntity(this, startBlock.position.x, startBlock.position.y, 'human', {
@@ -57,12 +58,14 @@ export class GameScene extends Phaser.Scene {
       navigationLogic: this.navigationLogic
     });
 
-    console.log(this.navigationLogic.generatePath(startBlock, this.flatMap.generatedBlocks[13][13]));
+    this.actionLogic = new ActionsLogic(this.flatMap.flatGroup, this.humanEntity, this.navigationLogic);
   }
 
   /**
    * is called every tick and contains the dynamic part of the scene — everything that moves, flashes, etc.
    */
   update(time: number): void {
+    this.actionLogic.update(time);
+    this.humanEntity.update();
   }
 }
