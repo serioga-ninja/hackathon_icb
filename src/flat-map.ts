@@ -1,6 +1,8 @@
 import gameConfig from './core/game.config';
 import { EGroupTypes } from './core/group.base';
+import { DeviceEntity } from './entity/device.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
+import { Light } from './furniture/light';
 import { DoorGroup } from './groups/door.group';
 import { FlatGroup } from './groups/flat.group';
 import { RoomGroup } from './groups/room.group';
@@ -61,9 +63,10 @@ export class FlatMap {
   rooms: RoomGroup[];
   doors: DoorGroup[];
   scene: Phaser.Scene;
+  devices: DeviceEntity[];
 
   get startBlock() {
-    return this.generatedBlocks[14][12]; 
+    return this.generatedBlocks[14][12];
   }
 
   constructor(scene: Phaser.Scene) {
@@ -72,6 +75,7 @@ export class FlatMap {
     this.rooms = [];
     this.parsedMap = [];
     this.doors = [];
+    this.devices = [];
     this.movableBlocks = [];
     this.flatGroup = new FlatGroup(scene);
   }
@@ -83,7 +87,23 @@ export class FlatMap {
     this.generateDoors();
     this.generateRooms();
     this.generateDoorsEntranceBlocks();
-    this.setRoomsAlpha();
+    this.generateDoorsEntranceBlocks();
+    this.generateDevices();
+  }
+
+  generateDevices() {
+    const lights = [
+      [7, 7], [9, 7]
+    ].map((c) => {
+      const block = this.generatedBlocks[c[0]][c[1]];
+      const group = block.getGroup(EGroupTypes.room);
+      const light = new Light(this.scene, block.x, block.y);
+      light.addGroup(group);
+
+      return light;
+    });
+
+    this.devices.push(...lights);
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
@@ -195,14 +215,6 @@ export class FlatMap {
         this.rooms.push(generateGroupRecursive(block));
       }
     }
-  }
-
-  setRoomsAlpha() {
-    this.rooms.forEach(roomsGroup => {
-      roomsGroup.children.entries.forEach((sprite: FlatBlockEntity) => {
-        sprite.alpha = 0.6;
-      })
-    })
   }
 
   generateDoorsEntranceBlocks() {

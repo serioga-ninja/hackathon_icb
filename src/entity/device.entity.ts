@@ -1,14 +1,11 @@
-import { IElectricityObject } from '../core/interfaces';
 import { SpriteEntity } from '../core/sprite.entity';
 
-export class DeviceEntity extends SpriteEntity implements IElectricityObject {
-
-  consumePerTick: number;
+export class DeviceEntity extends SpriteEntity {
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
     super(scene, x, y, key);
 
-    this.consumePerTick = 0;
+    this.setInteractive();
   }
 
 }
