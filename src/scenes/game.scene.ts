@@ -36,11 +36,13 @@ export class GameScene extends Phaser.Scene {
    * the scene is restarted, they are not reloaded
    */
   preload(): void {
-    this.load.image('floor', 'floor.png');
-    this.load.image('wallVert', 'wallVert.png');
-    this.load.image('wallHor', 'wallHor.png');
-    this.load.image('windowVert', 'windowVert.png');
-    this.load.image('windowHor', 'windowHor.png');
+    this.load.image('floor', 'house/floor.png');
+    this.load.image('wallVert', 'house/wallVert.png');
+    this.load.image('wallHor', 'house/wallHor.png');
+    this.load.image('windowVert', 'house/windowVert.png');
+    this.load.image('windowHor', 'house/windowHor.png'); 
+    this.load.image('door', 'house/door.png');
+    this.load.image('human', 'person/stand.png');
   }
 
   /**

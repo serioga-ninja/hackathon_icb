@@ -36,9 +36,11 @@ export class HumanEntity extends SpriteEntity {
   constructor(scene: Phaser.Scene, x: number, y: number, key: string, options: IHumanEntityOptions) {
     super(scene, x, y, key);
 
+    let size = gameConfig.height / 15;
+
     this._state = EHumanState.waiting;
     this._navigationLogic = options.navigationLogic;
-    this.setDisplaySize(15, 15);
+    this.setDisplaySize(size, size);
     this.currentFlatEntity = options.startBlock;
     this.setData('speed', 3);
     this.follower = new Phaser.GameObjects.PathFollower(scene, null, x, y, key);
