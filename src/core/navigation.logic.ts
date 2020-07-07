@@ -9,7 +9,8 @@ export interface IPathRow {
   room: RoomGroup;
   startBlock: FlatBlockEntity;
   endBlock: FlatBlockEntity;
-  path: FlatBlockEntity[];
+  path?: FlatBlockEntity[];
+  line?: Phaser.Geom.Line;
 }
 
 export class NavigationLogic {
@@ -150,15 +151,20 @@ export class NavigationLogic {
     }, 0);
   }
 
-  public generateRoomPath(room: RoomGroup, startPoint: FlatBlockEntity, endPoint: FlatBlockEntity): FlatBlockEntity[] {
-    for (const roomBlock of room.getChildren() as FlatBlockEntity[]) {
-      roomBlock.waveValue = Math.max(
-        Math.abs(roomBlock.matrix.x - startPoint.matrix.x),
-        Math.abs(roomBlock.matrix.y - startPoint.matrix.y),
-      );
-    }
+  public generateRoomPath(row: IPathRow) {
+    const { startBlock, endBlock } = row;
 
-    return this.findPath([endPoint], startPoint);
+    row.line = new Phaser.Geom.Line(startBlock.x, startBlock.y, endBlock.x, endBlock.y);
+    // TODO: check if line blocked and if so - generate path
+
+    // for (const roomBlock of room.getChildren() as FlatBlockEntity[]) {
+    //   roomBlock.waveValue = Math.max(
+    //     Math.abs(roomBlock.matrix.x - startPoint.matrix.x),
+    //     Math.abs(roomBlock.matrix.y - startPoint.matrix.y),
+    //   );
+    // }
+    //
+    // return this.findPath([endPoint], startPoint);
   }
 
   generatePath(humanPosition: FlatBlockEntity, endPosition: FlatBlockEntity): IPathRow[] {

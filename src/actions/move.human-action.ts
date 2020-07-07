@@ -36,12 +36,13 @@ export class MoveHumanAction extends HumanActionBase {
 
       if (!this._activePathBlock) return;
 
-      this._activePathBlock.path = this.navigationLogic.generateRoomPath(
-        this._activePathBlock.room,
-        this._activePathBlock.startBlock,
-        this._activePathBlock.endBlock
+      this.navigationLogic.generateRoomPath(this._activePathBlock);
+
+      this._moveToFlatEntity = new MoveToWrapper(
+        this.human.currentFlatEntity,
+        this._activePathBlock.path.pop() || this._activePathBlock.endBlock,
+        this._activePathBlock.line
       );
-      this._moveToFlatEntity = new MoveToWrapper(this.human.currentFlatEntity, this._activePathBlock.path.pop());
 
       return this._activePathBlock;
     } catch (error) {
