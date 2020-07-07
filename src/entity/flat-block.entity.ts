@@ -15,8 +15,7 @@ export enum EHouseParticles {
   WallVertical,
   WallHorizontal,
   FreeSpace,
-  WindowHorizontal,
-  WindowVertical,
+  Window,
   Door,
 }
 

@@ -36,13 +36,27 @@ export class GameScene extends Phaser.Scene {
    * the scene is restarted, they are not reloaded
    */
   preload(): void {
-    this.load.image('floor', 'house/floor.png');
-    this.load.image('wallVert', 'house/wallVert.png');
-    this.load.image('wallHor', 'house/wallHor.png');
-    this.load.image('windowVert', 'house/windowVert.png');
-    this.load.image('windowHor', 'house/windowHor.png'); 
-    this.load.image('door', 'house/door.png');
-    this.load.image('human', 'person/stand.png');
+    this.load.image('floor', 'textures/house/floor.jpg');
+    this.load.image('wallVert', 'textures/house/wallVert.jpg');
+    this.load.image('wallHor', 'textures/house/wallHor.jpg');
+    this.load.image('window', 'textures/house/window.jpg');
+    this.load.image('door', 'textures/house/door.jpg');
+    this.load.image('human', 'textures/person/stand.png');
+    this.load.image('light', 'textures/furniture/lamp.png');
+    this.load.image('table1', 'textures/furniture/table1.png');
+    this.load.image('table2', 'textures/furniture/table2.png');
+    this.load.image('bed', 'textures/furniture/bed.png');
+    this.load.image('couch', 'textures/furniture/couch.png');
+    this.load.image('bath', 'textures/furniture/bath.png');
+    this.load.image('fridge', 'textures/furniture/fridge.png');
+    this.load.image('teapot', 'textures/furniture/teapot.png');
+    this.load.image('tv', 'textures/furniture/tv.png');
+    this.load.image('fan', 'textures/furniture/fan.png');
+    this.load.image('vacuum', 'textures/furniture/vacuum.png');
+    this.load.image('flower', 'textures/furniture/flower.png');
+    this.load.image('toilet', 'textures/furniture/toilet.png');
+    this.load.image('music', 'textures/furniture/music.png');
+    this.load.image('sink', 'textures/furniture/sink.png');
   }
 
   /**

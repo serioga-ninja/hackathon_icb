@@ -4,8 +4,8 @@ import { FlatBlockEntity } from '../entity/flat-block.entity';
 
 export class Light extends DeviceEntity {
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'light');
+  constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
+    super(scene, x, y, key);
 
     this.on('pointerdown', this.turnOnOffLightLogic);
   }
@@ -14,11 +14,7 @@ export class Light extends DeviceEntity {
     const rooms = this.getGroup(EGroupTypes.room);
 
     rooms.getChildren().forEach((sprite: FlatBlockEntity) => {
-      if (sprite.alpha === 1) {
-        sprite.alpha = 0.6;
-      } else {
-        sprite.alpha = 1
-      }
+      sprite.alpha = sprite.alpha === 1 ? 0.6 : 1;
     })
   }
 }

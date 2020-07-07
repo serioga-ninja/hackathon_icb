@@ -1,37 +1,44 @@
-import gameConfig from './core/game.config';
+import { GameSceneProperties } from './properties/game-scene.properties';
 import { EGroupTypes } from './core/group.base';
 import { DeviceEntity } from './entity/device.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
-import { Light } from './furniture/light';
+
 import { DoorGroup } from './groups/door.group';
 import { FlatGroup } from './groups/flat.group';
 import { RoomGroup } from './groups/room.group';
+
+import { Light } from './furniture/light';
+import { TV } from './furniture/tv';
+import { Fan } from './furniture/fan';
+import { Vacuum } from './furniture/vacuum';
+import { Bath } from './furniture/bath';
+import { Teapot } from './furniture/teapot';
+import { Fridge } from './furniture/fridge';
+import { Music } from './furniture/music';
+
 
 const sprayMap = [
   'wallVert',
   'wallHor',
   'floor',
-  'windowHor',
-  'windowVert',
+  'window',
   'door'
 ];
 
 const houseStringMap: any =
-  '12222@2222222222@222221\n' +
-  '1.........1...........1\n' +
-  '1.........1...........1\n' +
-  '1.........1...........1\n' +
-  '$.........=...........$\n' +
-  '1.........1...........1\n' +
-  '1.........1...........1\n' +
-  '1.........1...........1\n' +
-  '12222=222222=2222222221\n' +
-  '1.........1...1.......1\n' +
-  '1.........1...1.......1\n' +
-  '$.........=...=.......1\n' +
-  '1.........1...1.......1\n' +
-  '1.........1...1.......1\n' +
-  '12222@222222=2222222221';
+  '12222@22222222@222221\n' +
+  '1.........1.........1\n' +
+  '1.........1.........1\n' +
+  '@.........=.........@\n' +
+  '1.........1.........1\n' +
+  '1.........1.........1\n' +
+  '12222=222222=22222221\n' +
+  '1.........1...1.....1\n' +
+  '1.........1...1.....1\n' +
+  '@.........=...=.....1\n' +
+  '1.........1...1.....1\n' +
+  '1.........1...1.....1\n' +
+  '12222@222222=22222221';
 
 
 export enum EHouseGroup {
@@ -66,7 +73,7 @@ export class FlatMap {
   devices: DeviceEntity[];
 
   get startBlock() {
-    return this.generatedBlocks[14][12];
+    return this.generatedBlocks[12][12];
   }
 
   constructor(scene: Phaser.Scene) {
@@ -87,36 +94,96 @@ export class FlatMap {
     this.generateDoors();
     this.generateRooms();
     this.generateDoorsEntranceBlocks();
-    this.generateDoorsEntranceBlocks();
     this.generateDevices();
   }
 
   generateDevices() {
-    const lights = [
-      [7, 7], [9, 7]
-    ].map((c) => {
-      const block = this.generatedBlocks[c[0]][c[1]];
-      const group = block.getGroup(EGroupTypes.room);
-      const light = new Light(this.scene, block.x, block.y);
-      light.addGroup(group);
+    const devices = [
+      [5, 9, 'light'], [5, 11, 'light'], [11, 9, 'light'], [11, 11, 'light'], [11, 15, 'light'],
+      [1, 16, 'tv'],
+      [7, 1, 'fan'], [1, 11, 'fan'],
+      [7, 13, 'vacuum'],
+      [7, 18, 'bath'], // 7,18 - 8,18
+      [1, 1, 'sink'], [7, 15, 'sink'],
+      [1, 2, 'teapot'],
+      [5, 1, 'fridge'],
+      [1, 15, 'music'],
+    ].map((c: any) => this.compileFurniture(c, c[2]));
 
-      return light;
-    });
+    const furnitures = [
+      [7, 8, 'table1'], //[7, 8] - [7, 9], table1
+      [3, 6, 'table2'], //[3, 6] - [4, 7], table2
+      [8, 1, 'bed'], //[8, 1] - [8, 2], bed
+      [10, 1, 'bed'], //[10, 1] - [10, 2], bed
+      [5, 18, 'couch'], //[5, 18] - [5, 19], couch
+      [5, 15, 'couch'], //[5, 15] - [5, 16], couch
+      [5, 14, 'flower'], 
+      [1, 9, 'flower'], 
+      [11, 13, 'flower'], 
+      [1, 19, 'flower'],
+      [9, 1, 'flower'],
+      [11, 19, 'toilet']
+    ].map((c: any) => this.compileFurniture(c));
 
-    this.devices.push(...lights);
+    this.devices.push(...devices);
+    this.devices.push(...furnitures);
+  }
+
+  compileFurniture(device: any, role?: string): DeviceEntity {
+    const block = this.generatedBlocks[device[0]][device[1]];
+    const group = block.getGroup(EGroupTypes.room);
+    let furniture;
+
+    if (role) {
+      switch (role) {
+        case 'light':
+          furniture = new Light(this.scene, block.x, block.y, device[2]);
+          break;
+        case 'tv':
+          furniture = new TV(this.scene, block.x, block.y, device[2]);
+          break; 
+        case 'fan':
+          furniture = new Fan(this.scene, block.x, block.y, device[2]);
+          break;
+        case 'vacuum':
+          furniture = new Vacuum(this.scene, block.x, block.y, device[2]);
+          break;
+        case 'bath':
+        case 'sink':
+          furniture = new Bath(this.scene, block.x, block.y, device[2]);
+          break;
+        case 'teapot':
+          furniture = new Teapot(this.scene, block.x, block.y, device[2]);
+          break;
+        case 'fridge':
+          furniture = new Fridge(this.scene, block.x, block.y, device[2]);
+          break;
+        case 'music':
+          furniture = new Music(this.scene, block.x, block.y, device[2]);
+          break;
+      }
+    } else {
+      furniture = new DeviceEntity(this.scene, block.x, block.y, device[2]);
+    }
+    
+    furniture.addGroup(group);
+
+    return furniture;
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
-    const tileSize = gameConfig.height / this.parsedMap.length;
-
     this.generatedBlocks = this.parsedMap.map((row, y) => {
       return row.map((blockType, x) => {
-        const block = new FlatBlockEntity(scene, (x * tileSize) + (tileSize / 2), (y * tileSize) + (tileSize / 2), sprayMap[parseInt(blockType)], {
-          width: tileSize,
-          height: tileSize,
-          blockType: parseInt(blockType),
-          matrix: { x, y }
-        });
+        const block = new FlatBlockEntity(scene, 
+                                          (x * GameSceneProperties.tileSize) + (GameSceneProperties.tileSize / 2), 
+                                          (y * GameSceneProperties.tileSize) + (GameSceneProperties.tileSize / 2), 
+                                          sprayMap[parseInt(blockType)], 
+                                          {
+                                            width: GameSceneProperties.tileSize,
+                                            height: GameSceneProperties.tileSize,
+                                            blockType: parseInt(blockType),
+                                            matrix: { x, y }
+                                          });
 
         this.flatGroup.add(block);
 
@@ -131,10 +198,9 @@ export class FlatMap {
       .replace(/1/g, EHouseParticles.WallVertical)
       .replace(/2/g, EHouseParticles.WallHorizontal)
       .replace(/=/g, EHouseParticles.Door)
-      .replace(/@/g, EHouseParticles.WindowHorizontal)
-      .replace(/\$/g, EHouseParticles.WindowVertical)
+      .replace(/@/g, EHouseParticles.Window)
       .replace(/\./g, EHouseParticles.FreeSpace)
-      .match(/.{1,23}/g);
+      .match(/.{1,21}/g);
 
     enumTypeMap.forEach((houseLine: string) => {
       this.parsedMap.push([...<any>houseLine]);
