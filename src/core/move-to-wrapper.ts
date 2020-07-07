@@ -26,11 +26,11 @@ export class MoveToWrapper {
     this.path = path;
     this.position = 0;
     this.vec = new Phaser.Math.Vector2();
-    this.speed = (this.path.getBounds() as any).width;
+    this.speed = 1 / (this.path.getLength() / 4);
   }
 
-  getPoint(speed: number = 0.005) {
-    this.position += speed;
+  getPoint() {
+    this.position += this.speed;
 
     if (this.position > 1) {
       this.position = 1;
