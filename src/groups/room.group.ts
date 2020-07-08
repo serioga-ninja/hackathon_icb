@@ -11,6 +11,14 @@ export class RoomGroup extends GroupBase {
     return EGroupTypes.room;
   }
 
+  get notMovableBlocks(): FlatBlockEntity[] {
+    return this.getChildren().filter((block: FlatBlockEntity) => !block.isMovable) as FlatBlockEntity[];
+  }
+
+  get movableBlocks(): FlatBlockEntity[] {
+    return this.getChildren().filter((block: FlatBlockEntity) => block.isMovable) as FlatBlockEntity[];
+  }
+
   constructor(scene: Phaser.Scene, children?: Phaser.GameObjects.GameObject[] | Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig, config?: Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig) {
     super(scene, children, config);
 

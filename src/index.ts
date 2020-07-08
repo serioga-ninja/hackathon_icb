@@ -10,12 +10,6 @@ const config: GameConfig = {
     height: gameConfig.height,
     parent: 'game',
     scene: [new WelcomeScene(), new GameScene()],
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: false
-        }
-    },
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH

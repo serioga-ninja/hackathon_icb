@@ -1,14 +1,7 @@
-import { DeviceEntity } from '../entity/device.entity';
+import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
 
-export class Vacuum extends DeviceEntity {
-
-  constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
-    super(scene, x, y, key);
-
-    this.on('pointerdown', this.turnOnOffVacuumLogic);
-  }
-
-  turnOnOffVacuumLogic() {
+export class Vacuum extends DeviceInteractiveEntity {
+  onPointerdown() {
     alert('Vacuum is on!');
   }
 }

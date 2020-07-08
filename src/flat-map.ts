@@ -5,6 +5,7 @@ import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 
 import { DoorGroup } from './groups/door.group';
 import { FlatGroup } from './groups/flat.group';
+import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
 
 import { Light } from './furniture/light';
@@ -57,19 +58,23 @@ export interface ITileEntity {
 
 // [x, y]
 const relatedCoordinatesHelper = [
-  [-1, -1], [0, -1], [1, -1],
+   [0, -1],
   [-1, 0], [1, 0],
-  [-1, 1], [0, 1], [1, 1],
+  [0, 1],
 ];
 
 export class FlatMap {
 
+  //#region Properties
+
   generatedBlocks: FlatBlockEntity[][];
   movableBlocks: FlatBlockEntity[];
+  notMovableBlocks: FlatBlockEntity[];
   parsedMap: string[][];
   flatGroup: FlatGroup;
   rooms: RoomGroup[];
   doors: DoorGroup[];
+  notMovableGroups: NotMovableBlocksGroup[];
   scene: Phaser.Scene;
   devices: DeviceEntity[];
 
@@ -77,6 +82,9 @@ export class FlatMap {
     return this.generatedBlocks[12][12];
   }
 
+  //#endregion
+
+  //#region Constructor
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.generatedBlocks = [];
@@ -84,9 +92,13 @@ export class FlatMap {
     this.parsedMap = [];
     this.doors = [];
     this.devices = [];
+    this.notMovableBlocks = [];
     this.movableBlocks = [];
+    this.notMovableGroups = [];
     this.flatGroup = new FlatGroup(scene);
   }
+
+  //#endregion
 
   init() {
     this.regenerateMapSymbolToEnum();
@@ -118,9 +130,9 @@ export class FlatMap {
       [10, 1, 'bed'], //[10, 1] - [10, 2], bed
       [5, 18, 'couch'], //[5, 18] - [5, 19], couch
       [5, 15, 'couch'], //[5, 15] - [5, 16], couch
-      [5, 14, 'flower'], 
-      [1, 9, 'flower'], 
-      [11, 13, 'flower'], 
+      [5, 14, 'flower'],
+      [1, 9, 'flower'],
+      [11, 13, 'flower'],
       [1, 19, 'flower'],
       [9, 1, 'flower'],
       [11, 19, 'toilet']
@@ -135,56 +147,57 @@ export class FlatMap {
     const group = block.getGroup(EGroupTypes.room);
     let furniture;
 
-    if (role) {
-      switch (role) {
-        case 'light':
-          furniture = new Light(this.scene, block.x, block.y, device[2]);
-          break;
-        case 'tv':
-          furniture = new TV(this.scene, block.x, block.y, device[2]);
-          break; 
-        case 'fan':
-          furniture = new Fan(this.scene, block.x, block.y, device[2]);
-          break;
-        case 'vacuum':
-          furniture = new Vacuum(this.scene, block.x, block.y, device[2]);
-          break;
-        case 'bath':
-        case 'sink':
-          furniture = new Bath(this.scene, block.x, block.y, device[2]);
-          break;
-        case 'teapot':
-          furniture = new Teapot(this.scene, block.x, block.y, device[2]);
-          break;
-        case 'fridge':
-          furniture = new Fridge(this.scene, block.x, block.y, device[2]);
-          break;
-        case 'music':
-          furniture = new Music(this.scene, block.x, block.y, device[2]);
-          break;
-      }
-    } else {
-      furniture = new DeviceEntity(this.scene, block.x, block.y, device[2]);
+    switch (role) {
+      case 'light':
+        furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        break;
+      case 'tv':
+        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        break;
+      case 'fan':
+        furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        break;
+      case 'vacuum':
+        furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        break;
+      case 'bath':
+      case 'sink':
+        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        break;
+      case 'teapot':
+        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        break;
+      case 'fridge':
+        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        break;
+      case 'music':
+        furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        break;
+      default:
+        furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
     }
-    
+
     furniture.addGroup(group);
+    this.notMovableGroups.push(furniture.blocksGroup);
+    this.notMovableBlocks.push(...(furniture.blocksGroup.getChildren() as FlatBlockEntity[]));
 
     return furniture;
+
   }
 
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
     this.generatedBlocks = this.parsedMap.map((row, y) => {
       return row.map((blockType, x) => {
-        const block = new FlatBlockEntity(scene, 
-                                          (x * GameSceneProperties.tileSize) + (GameSceneProperties.tileSize / 2), 
-                                          (y * GameSceneProperties.tileSize) + (GameSceneProperties.tileSize / 2), 
-                                          sprayMap[parseInt(blockType)], 
-                                          {
-                                            width: GameSceneProperties.tileSize,
-                                            height: GameSceneProperties.tileSize,
-                                            blockType: parseInt(blockType),
-                                            matrix: { x, y }
-                                          });
+        const block = new FlatBlockEntity(scene,
+          (x * GameSceneProperties.tileSize) + (GameSceneProperties.tileSize / 2),
+          (y * GameSceneProperties.tileSize) + (GameSceneProperties.tileSize / 2),
+          sprayMap[parseInt(blockType)],
+          {
+            width: GameSceneProperties.tileSize,
+            height: GameSceneProperties.tileSize,
+            blockType: parseInt(blockType),
+            matrix: { x, y }
+          });
 
         this.flatGroup.add(block);
 
@@ -267,7 +280,6 @@ export class FlatMap {
         if (relatedBlock.isDoor && relatedBlock.hasGroup(EGroupTypes.doors)) {
           const doorGroup = relatedBlock.getGroup(EGroupTypes.doors) as DoorGroup;
           group.addDoors(doorGroup);
-          group.add(relatedBlock);
           doorGroup.addRoom(group);
           relatedBlock.addGroup(group);
         } else if (relatedBlock.isMovable && !relatedBlock.hasGroup(EGroupTypes.room)) {

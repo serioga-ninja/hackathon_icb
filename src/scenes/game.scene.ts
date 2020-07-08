@@ -1,9 +1,7 @@
 import { ActionsLogic } from '../core/actions.logic';
 import { NavigationLogic } from '../core/navigation.logic';
-import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
-import { RoomGroup } from '../groups/room.group';
 
 export class GameScene extends Phaser.Scene {
 
@@ -67,7 +65,7 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     this.generateRoom();
 
-    this.navigationLogic = new NavigationLogic(this.flatMap);
+    this.navigationLogic = new NavigationLogic(this.flatMap, this);
 
     const startBlock = this.flatMap.startBlock;
     this.humanEntity = new HumanEntity(this, startBlock.position.x, startBlock.position.y, 'human', {
@@ -75,7 +73,7 @@ export class GameScene extends Phaser.Scene {
       navigationLogic: this.navigationLogic
     });
 
-    this.actionLogic = new ActionsLogic(this.flatMap.flatGroup, this.humanEntity, this.navigationLogic);
+    this.actionLogic = new ActionsLogic(this.flatMap.flatGroup, this.humanEntity, this.navigationLogic);//, this.flatMap.generatedBlocks[5][16]);
   }
 
   /**

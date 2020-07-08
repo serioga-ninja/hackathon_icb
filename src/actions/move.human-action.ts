@@ -1,6 +1,6 @@
 import gameConfig from '../core/game.config';
 import { MoveToWrapper } from '../core/move-to-wrapper';
-import { IPathRow, NavigationLogic } from '../core/navigation.logic';
+import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { HumanActionBase } from './human-action.base';
@@ -10,7 +10,6 @@ export class MoveHumanAction extends HumanActionBase {
   private block: FlatBlockEntity;
   private navigationLogic: NavigationLogic;
   private _path: Phaser.Curves.Path;
-  private _activePathBlock: IPathRow;
   private _moveToFlatEntity: MoveToWrapper;
 
   constructor(human: HumanEntity, block: FlatBlockEntity, navigationLogic: NavigationLogic) {
@@ -38,8 +37,6 @@ export class MoveHumanAction extends HumanActionBase {
       const point = this._moveToFlatEntity.getPoint();
       human.x = point.x;
       human.y = point.y;
-
-      console.log(human.widthTo(this._moveToFlatEntity.moveToPosition));
 
       if (human.widthTo(this._moveToFlatEntity.moveToPosition) < 1) {
         human.currentFlatEntity = this._moveToFlatEntity.moveToPosition;

@@ -16,8 +16,16 @@ export abstract class SpriteEntity extends Phaser.GameObjects.Sprite {
     this.relatedGroups = [];
   }
 
-  widthTo(sprite: SpriteEntity): number {
+  widthTo(sprite: { x: number; y: number; }): number {
     return Math.sqrt(Math.pow(sprite.x - this.x, 2) + Math.pow(sprite.y - this.y, 2));
+  }
+
+  /**
+   * A rectangle is represented as a list [x1, y1, x2, y2], where (x1, y1) are the coordinates of its bottom-left corner, and (x2, y2) are the coordinates of its top-right corner.
+   * @return [x1, y1, x2, y2]
+   */
+  getRectCoords(): number[] {
+    return [this.x, this.y + this.height, this.x + this.width, this.y];
   }
 
   hasGroup(groupType: EGroupTypes): boolean {

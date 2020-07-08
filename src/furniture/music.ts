@@ -1,14 +1,7 @@
-import { DeviceEntity } from '../entity/device.entity';
+import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
 
-export class Music extends DeviceEntity {
-
-  constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
-    super(scene, x, y, key);
-
-    this.on('pointerdown', this.turnOnOffMusicLogic);
-  }
-
-  turnOnOffMusicLogic() {
+export class Music extends DeviceInteractiveEntity {
+  onPointerdown() {
     alert('Music is on!');
   }
 }
