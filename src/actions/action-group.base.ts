@@ -1,10 +1,15 @@
 import { HumanEntity } from '../entity/human.entity';
 import { HumanActionBase } from './human-action.base';
 
+import { gameConfig } from '../core/game.config';
+
 export enum EActionTypes {
   GoTo,
   WatchTV,
-  ListenMusic
+  ListenMusic,
+  PlayComputer,
+  TakeBath,
+  OpenFridge
 }
 
 export enum DeviceType {
@@ -17,7 +22,10 @@ export enum DeviceType {
   Bath,
   Sink,
   Teapot,
-  Fridge
+  Fridge,
+  Microwave,
+  Oven,
+  Computer
 }
 
 export abstract class ActionGroupBase {
@@ -31,6 +39,8 @@ export abstract class ActionGroupBase {
   protected _finished: boolean;
   protected actions: HumanActionBase[];
   protected activeAction: HumanActionBase;
+
+  public speed = gameConfig.speedOfWaiting;
 
   constructor(human: HumanEntity) {
     this.human = human;

@@ -7,6 +7,10 @@ import { FlatGroup } from '../groups/flat.group';
 import { NavigationLogic } from '../core/navigation.logic';
 import { WatchTVGroup } from './watch-TV.group';
 import { ListenMusicGroup } from './listen-music.group';
+import { PlayComputerGroup } from './play-computer.group';
+import { TakeBathGroup } from './take-bath.group';
+import { OpenFridgeGroup } from './open-fridge.group';
+
 
 export class ActionsLogic {
   private flatGroup: FlatGroup;
@@ -28,8 +32,9 @@ export class ActionsLogic {
   generateAction(): ActionGroupBase {
     const oldActionType = !!this.activeActionGroup ? this.activeActionGroup.actionType : -1;
     const min = 0;
-    const max = 3;
-    const rnd = Math.floor(Math.random() * (max - min)) + min;
+    const max = 5;
+    const rnd = Math.floor(min + Math.random() * (max + 1 - min));
+    
     let actionGroup: ActionGroupBase;
     switch (rnd) {
       case EActionTypes.GoTo:
@@ -40,6 +45,15 @@ export class ActionsLogic {
         break;
       case EActionTypes.ListenMusic:
         actionGroup = new ListenMusicGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case EActionTypes.PlayComputer:
+        actionGroup = new PlayComputerGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case EActionTypes.TakeBath:
+        actionGroup = new TakeBathGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case EActionTypes.OpenFridge:
+        actionGroup = new OpenFridgeGroup(this.human, this.flatMap, this.navigationLogic);
         break;
     }
 

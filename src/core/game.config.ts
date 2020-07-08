@@ -5,25 +5,26 @@ export const gameConfig: any = {
   height: window.innerHeight - 20,
   debug: false,
   playerWidth: 20,
-  allowToKill: false
+  allowToKill: false,
+  speedOfWaiting: 500
 };
 
 export const tileSize: number = gameConfig.height / 13;
 
 export const houseMap: string =
-  '12222@22222222@222221\n' +
+  '01111@11112111@111110\n' +
   '1.........1.........1\n' +
   '1.........1.........1\n' +
   '@.........=.........@\n' +
   '1.........1.........1\n' +
   '1.........1.........1\n' +
-  '12222=2222+2=22222221\n' +
+  '21111=1111+1=12111112\n' +
   '1.........1...1.....1\n' +
   '1.........1...1.....1\n' +
   '@.........=...=.....1\n' +
   '1.........1...1.....1\n' +
   '1.........1...1.....1\n' +
-  '12222@222222=22222221';
+  '01111@111121=12111110';
 
 export const textures: any = [
   {
@@ -31,12 +32,16 @@ export const textures: any = [
     path: 'textures/house/floor.jpg'
   },
   {
-    key: 'wallVert',
-    path: 'textures/house/wallVert.jpg'
+    key: 'wall',
+    path: 'textures/house/wall.jpg'
   },
   {
-    key: 'wallHor',
-    path: 'textures/house/wallHor.jpg'
+    key: 'wallG',
+    path: 'textures/house/wallG.jpg'
+  },
+  {
+    key: 'wallT',
+    path: 'textures/house/wallT.jpg'
   },
   {
     key: 'wallX',
@@ -67,12 +72,12 @@ export const textures: any = [
     path: 'textures/furniture/lamp.png'
   },
   {
-    key: 'table1',
-    path: 'textures/furniture/table1.png'
+    key: 'computer',
+    path: 'textures/furniture/computer.png'
   },
   {
-    key: 'table2',
-    path: 'textures/furniture/table2.png'
+    key: 'table',
+    path: 'textures/furniture/table.png'
   },
   {
     key: 'bed',
@@ -87,8 +92,16 @@ export const textures: any = [
     path: 'textures/furniture/bath.png'
   },
   {
+    key: 'bathOn',
+    path: 'textures/furniture/bath-on.png'
+  },
+  {
     key: 'fridge',
     path: 'textures/furniture/fridge.png'
+  },
+  {
+    key: 'fridgeOn',
+    path: 'textures/furniture/fridge-on.png'
   },
   {
     key: 'teapot',
@@ -111,6 +124,14 @@ export const textures: any = [
     path: 'textures/furniture/flower.png'
   },
   {
+    key: 'flowerTable',
+    path: 'textures/furniture/flower2.png'
+  },
+  {
+    key: 'flowerBig',
+    path: 'textures/furniture/flower3.png'
+  },
+  {
     key: 'toilet',
     path: 'textures/furniture/toilet.png'
   },
@@ -125,6 +146,26 @@ export const textures: any = [
   {
     key: 'sink',
     path: 'textures/furniture/sink.png'
+  },
+  {
+    key: 'sinkBath',
+    path: 'textures/furniture/sinkBath.png'
+  },
+  {
+    key: 'kitchen',
+    path: 'textures/furniture/kitchen.png'
+  },
+  {
+    key: 'microwave',
+    path: 'textures/furniture/microwave.png'
+  },
+  {
+    key: 'oven',
+    path: 'textures/furniture/oven.png'
+  },
+  {
+    key: 'chair',
+    path: 'textures/furniture/chair.png'
   },
 ];
 
@@ -170,12 +211,12 @@ export const devices: any = [
     type: DeviceType.Vacuum
   },
   {
-    blocks: [[5, 1]],
+    blocks: [[5, 3]],
     key: 'fridge',
     type: DeviceType.Fridge
   },
   {
-    blocks: [[1, 2]],
+    blocks: [[5, 2]],
     key: 'teapot',
     type: DeviceType.Teapot
   },
@@ -195,26 +236,36 @@ export const devices: any = [
     type: DeviceType.Fan
   },
   {
-    blocks: [[1, 1]],
+    blocks: [[1, 3]],
     key: 'sink',
     type: DeviceType.Sink
   },
   {
     blocks: [[7, 15]],
-    key: 'sink',
+    key: 'sinkBath',
     type: DeviceType.Sink
+  },
+  {
+    blocks: [[1, 2]],
+    key: 'microwave',
+    type: DeviceType.Microwave
+  },
+  {
+    blocks: [[1, 4]],
+    key: 'oven',
+    type: DeviceType.Oven
+  },
+  {
+    blocks: [[11, 4], [11, 5], [11, 6]],
+    key: 'computer',
+    type: DeviceType.Computer
   }
 ]
 
 export const furnitures: any = [
   {
-    blocks: [[7, 8], [7, 9]],
-    key: 'table1',
-    type: DeviceType.Simple
-  },
-  {
-    blocks: [[3, 6], [3, 7], [4, 6], [4, 7]],
-    key: 'table2',
+    blocks: [[2, 6], [2, 7], [3, 6], [3, 7], [4, 6], [4, 7]],
+    key: 'table',
     type: DeviceType.Simple
   },
   {
@@ -244,7 +295,7 @@ export const furnitures: any = [
   },
   {
     blocks: [[1, 9]],
-    key: 'flower',
+    key: 'flowerTable',
     type: DeviceType.Simple
   },
   {
@@ -263,8 +314,23 @@ export const furnitures: any = [
     type: DeviceType.Simple
   },
   {
+    blocks: [[7, 8], [7, 9], [8, 8], [8, 9]],
+    key: 'flowerBig',
+    type: DeviceType.Simple
+  },
+  {
     blocks: [[11, 19]],
     key: 'toilet',
+    type: DeviceType.Simple
+  },
+  {
+    blocks: [[1, 1], [2, 1], [3, 1], [4, 1], [5, 1]],
+    key: 'kitchen',
+    type: DeviceType.Simple
+  },
+  {
+    blocks: [[10, 6]],
+    key: 'chair',
     type: DeviceType.Simple
   }
 ]

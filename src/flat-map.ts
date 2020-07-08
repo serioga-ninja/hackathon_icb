@@ -19,11 +19,15 @@ import { Bath } from './furniture/bath';
 import { Teapot } from './furniture/teapot';
 import { Fridge } from './furniture/fridge';
 import { Music } from './furniture/music';
-
+import { Microwave } from './furniture/microwave';
+import { Oven } from './furniture/oven';
+import { Computer } from './furniture/computer';
+import { Sink } from './furniture/sink';
 
 const sprayMap = [
-  'wallVert',
-  'wallHor',
+  'wallG',
+  'wall',
+  'wallT',
   'wallX',
   'floor',
   'window',
@@ -39,7 +43,8 @@ export interface ITileEntity {
 // [x, y]
 const relatedCoordinatesHelper = [
   [0, -1],
-  [-1, 0], [1, 0],
+  [-1, 0], 
+  [1, 0],
   [0, 1],
 ];
 
@@ -116,22 +121,33 @@ export class FlatMap {
         furniture = this.vacuum = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.movableBlocks);
         break;
       case DeviceType.Bath:
+        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1] + 1]);
+        break;
       case DeviceType.Sink:
-        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Sink(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
       case DeviceType.Teapot:
         furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
       case DeviceType.Fridge:
-        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1]]);
         break;
       case DeviceType.Music:
         furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1]]);
         break;
+      case DeviceType.Microwave:
+        furniture = new Microwave(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        break;
+      case DeviceType.Oven:
+        furniture = new Oven(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        break;
+      case DeviceType.Computer:
+        furniture = new Computer(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1] + 1]);
+        break;
       default:
         furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
     }
-
+ 
     furniture.addGroup(group);
 
     return furniture;
@@ -162,8 +178,9 @@ export class FlatMap {
   regenerateMapSymbolToEnum() {
     const enumTypeMap = houseMap
       .trim()
-      .replace(/1/g, EHouseParticles.WallVertical)
-      .replace(/2/g, EHouseParticles.WallHorizontal)
+      .replace(/1/g, EHouseParticles.Wall)
+      .replace(/0/g, EHouseParticles.WallG)
+      .replace(/2/g, EHouseParticles.WallT)
       .replace(/\+/g, EHouseParticles.WallX)
       .replace(/=/g, EHouseParticles.Door)
       .replace(/@/g, EHouseParticles.Window)

@@ -17,13 +17,16 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
     this.electricityConsumePerTime = 0.05;
     this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
-    this.turnOnOverlay = new Phaser.Geom.Polygon([
-      1269, 97,
-      1389, 97,
-      1517, 251,
-      1142, 251,
-    ]);
 
+    let x = blocksGroup.children.entries[0].x,
+        y = blocksGroup.children.entries[0].y;
+
+    this.turnOnOverlay = new Phaser.Geom.Polygon([
+      x + 10, y - 13,
+      x + 95, y - 13,
+      x + 135, y + 70,
+      x - 30, y + 70
+    ]);
 
     this.setInteractive();
   }
@@ -32,7 +35,7 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
     if (this.deviceState === EDeviceState.Working) return;
 
     this.deviceState = EDeviceState.Working;
-    this.graphics.fillGradientStyle(0xffffffAA, 0xffffffAA, 0xffffffFF, 0xffffffFF, .4);
+    this.graphics.fillGradientStyle(0xffffffAA, 0xffffffAA, 0xffffffFF, 0xffffffFF, .3);
     this.graphics.fillPoints(this.turnOnOverlay.points, true);
   }
 

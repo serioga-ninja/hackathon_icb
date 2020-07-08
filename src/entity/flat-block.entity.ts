@@ -13,12 +13,13 @@ export interface IFlatBlockOptions {
 }
 
 export enum EHouseParticles {
-  WallVertical,
-  WallHorizontal,
+  Wall,
+  WallG,
+  WallT,
   WallX,
   FreeSpace,
   Window,
-  Door,
+  Door
 }
 
 const pathAvailableBlockTypes: EHouseParticles[] = [
