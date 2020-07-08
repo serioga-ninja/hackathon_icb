@@ -3,7 +3,8 @@ import { HumanActionBase } from './human-action.base';
 
 export enum EActionTypes {
   GoTo,
-  WatchTV
+  WatchTV,
+  ListenMusic
 }
 
 export abstract class ActionGroupBase {

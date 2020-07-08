@@ -1,4 +1,4 @@
-import { ActionGroupBase } from './action-group.base';
+import { ActionGroupBase, EActionTypes } from './action-group.base';
 import { GoToActionGroup } from './go-to.action-group';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -6,6 +6,7 @@ import { FlatMap } from '../flat-map';
 import { FlatGroup } from '../groups/flat.group';
 import { NavigationLogic } from '../core/navigation.logic';
 import { WatchTVGroup } from './watch-TV.group';
+import { ListenMusicGroup } from './listen-music.group';
 
 export class ActionsLogic {
   private flatGroup: FlatGroup;
@@ -27,15 +28,18 @@ export class ActionsLogic {
   generateAction(): ActionGroupBase {
     const oldActionType = !!this.activeActionGroup ? this.activeActionGroup.actionType : -1;
     const min = 0;
-    const max = 2;
+    const max = 3;
     const rnd = Math.floor(Math.random() * (max - min)) + min;
     let actionGroup: ActionGroupBase;
     switch (rnd) {
-      case 0:
+      case EActionTypes.GoTo:
         actionGroup = new GoToActionGroup(this.human, this.flatMap, this.navigationLogic);
         break;
-      case 1:
+      case EActionTypes.WatchTV:
         actionGroup = new WatchTVGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case EActionTypes.ListenMusic:
+        actionGroup = new ListenMusicGroup(this.human, this.flatMap, this.navigationLogic);
         break;
     }
 

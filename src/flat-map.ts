@@ -105,7 +105,7 @@ export class FlatMap {
         furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'tv':
-        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1]]);
+        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1] + 1]);
         break;
       case 'fan':
         furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
@@ -124,7 +124,7 @@ export class FlatMap {
         furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'music':
-        furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+        furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1]]);
         break;
       default:
         furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
