@@ -80,7 +80,9 @@ export class HumanEntity extends SpriteEntity {
   }
 
   makeDead() {
-    this.dead = true;
+    if (gameConfig.allowToKill) {
+      this.dead = true;
+    }
   }
 
 }
