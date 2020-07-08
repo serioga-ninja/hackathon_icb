@@ -27,6 +27,10 @@ const pathAvailableBlockTypes: EHouseParticles[] = [
 
 export class FlatBlockEntity extends SpriteEntity {
 
+  static get ElectricityPerTick() {
+    return 0.005;
+  }
+
   private readonly _position: Point;
   private _waveValue: number;
   private _debugText: Phaser.GameObjects.Text;

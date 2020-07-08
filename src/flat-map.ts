@@ -44,12 +44,10 @@ const relatedCoordinatesHelper = [
 export class FlatMap {
   generatedBlocks: FlatBlockEntity[][];
   movableBlocks: FlatBlockEntity[];
-  notMovableBlocks: FlatBlockEntity[];
   parsedMap: string[][];
   flatGroup: FlatGroup;
   rooms: RoomGroup[];
   doors: DoorGroup[];
-  notMovableGroups: NotMovableBlocksGroup[];
   scene: Phaser.Scene;
   devices: DeviceEntity[];
 
@@ -64,9 +62,7 @@ export class FlatMap {
     this.parsedMap = [];
     this.doors = [];
     this.devices = [];
-    this.notMovableBlocks = [];
     this.movableBlocks = [];
-    this.notMovableGroups = [];
     this.flatGroup = new FlatGroup(scene);
   }
 
@@ -88,7 +84,7 @@ export class FlatMap {
 
   generateDevices() {
     let flatDevices = devices.map((c: any) => this.compileFurniture(c, c.key)),
-        flatFurnitures = furnitures.map((c: any) => this.compileFurniture(c));
+      flatFurnitures = furnitures.map((c: any) => this.compileFurniture(c));
 
     this.devices.push(...flatDevices);
     this.devices.push(...flatFurnitures);
@@ -135,8 +131,6 @@ export class FlatMap {
     }
 
     furniture.addGroup(group);
-    this.notMovableGroups.push(furniture.blocksGroup);
-    this.notMovableBlocks.push(...(furniture.blocksGroup.getChildren() as FlatBlockEntity[]));
 
     return furniture;
 

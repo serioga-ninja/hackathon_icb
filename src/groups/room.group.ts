@@ -1,4 +1,6 @@
 import { EGroupTypes, GroupBase } from '../core/group.base';
+import { IElectricityObject } from '../core/interfaces';
+import { EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { DoorGroup } from './door.group';
@@ -6,9 +8,11 @@ import Timeout = NodeJS.Timeout;
 
 export class RoomGroup extends GroupBase {
 
+  private electricityDevicesPerTick: number;
   private connectedDoors: DoorGroup[];
   private lightsOn: boolean;
   private timeToDieTimer: Timeout;
+  private electricityDevices: IElectricityObject[];
 
   public relatedRooms: RoomGroup[];
 
@@ -20,12 +24,37 @@ export class RoomGroup extends GroupBase {
     return this.getChildren().filter((block: FlatBlockEntity) => block.isMovable) as FlatBlockEntity[];
   }
 
+  get electricityPerTick(): number {
+    let res = this.electricityDevices
+      .filter((device) => device.deviceState === EDeviceState.Working)
+      .reduce((consume, device) => {
+        consume += device.electricityConsumePerTime;
+
+        return consume;
+      }, 0);
+
+    if (this.lightsOn) {
+      res += this.getChildren().length * FlatBlockEntity.ElectricityPerTick;
+    }
+
+    return res;
+  }
+
   constructor(scene: Phaser.Scene, children?: Phaser.GameObjects.GameObject[] | Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig, config?: Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig) {
     super(scene, children, config);
 
+    this.electricityDevicesPerTick = 0;
+    this.electricityDevices = [];
     this.connectedDoors = [];
     this.relatedRooms = [];
     this.lightsOn = false;
+  }
+
+  addDevice(device: IElectricityObject) {
+    if (typeof device.electricityConsumePerTime === 'number') {
+      this.electricityDevices.push(device);
+      this.electricityDevicesPerTick += device.electricityConsumePerTime;
+    }
   }
 
   overlapHuman(human: HumanEntity) {

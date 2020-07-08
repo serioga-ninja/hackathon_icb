@@ -36,6 +36,10 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
     }
   }
 
+  turnOn() {
+
+  }
+
   //#region Event Listeners callbacks
   onPointerdown() {
 

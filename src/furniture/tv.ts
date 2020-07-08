@@ -1,15 +1,19 @@
+import { IElectricityObject } from '../core/interfaces';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
+import { RoomGroup } from '../groups/room.group';
 
-export class TV extends DeviceInteractiveEntity {
+export class TV extends DeviceInteractiveEntity implements IElectricityObject {
   placeToInteract: FlatBlockEntity;
   turnOnOverlay: Phaser.Geom.Polygon;
-  graphics: Phaser.GameObjects.Graphics
+  graphics: Phaser.GameObjects.Graphics;
+  electricityConsumePerTime: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
     super(scene, blocksGroup, 'tv');
 
+    this.electricityConsumePerTime = 0.05;
     this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
     this.turnOnOverlay = new Phaser.Geom.Polygon([
@@ -23,14 +27,31 @@ export class TV extends DeviceInteractiveEntity {
     this.setInteractive();
   }
 
+  private makeOnGraphics() {
+    this.graphics.fillGradientStyle(0xffffffAA, 0xffffffAA, 0xffffffFF, 0xffffffFF, .4);
+    this.graphics.fillPoints(this.turnOnOverlay.points, true);
+  }
+
   onPointerdown() {
     this.toggleWorkingState();
 
     if (this.deviceState === EDeviceState.Working) {
-      this.graphics.fillGradientStyle(0xffffffAA, 0xffffffAA, 0xffffffFF, 0xffffffFF, .4);
-      this.graphics.fillPoints(this.turnOnOverlay.points, true);
+      this.makeOnGraphics();
     } else {
       this.graphics.clear();
     }
+  }
+
+  turnOn() {
+    if (this.deviceState === EDeviceState.Working) return;
+    this.deviceState = EDeviceState.Working;
+    this.makeOnGraphics();
+  }
+
+
+  addGroup(group: RoomGroup) {
+    super.addGroup(group);
+
+    group.addDevice(this);
   }
 }
