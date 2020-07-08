@@ -1,4 +1,3 @@
-import { GroupBase } from '../core/group.base';
 import { IElectricityObject } from '../core/interfaces';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
@@ -28,26 +27,19 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
     this.setInteractive();
   }
 
-  private makeOnGraphics() {
+  turnOn() {
+    if (this.deviceState === EDeviceState.Working) return;
+
+    this.deviceState = EDeviceState.Working;
     this.graphics.fillStyle(0xffffff);
     this.graphics.fillPoints(this.turnOnOverlay.points, true);
     this.graphics.alpha = 0.5;
   }
 
-  onPointerdown() {
-    this.toggleWorkingState();
+  turnOff() {
+    super.turnOff();
 
-    if (this.deviceState === EDeviceState.Working) {
-      this.makeOnGraphics();
-    } else {
-      this.graphics.clear();
-    }
-  }
-
-  turnOn() {
-    if (this.deviceState === EDeviceState.Working) return;
-    this.deviceState = EDeviceState.Working;
-    this.makeOnGraphics();
+    this.graphics.clear();
   }
 
 

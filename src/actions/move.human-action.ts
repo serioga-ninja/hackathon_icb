@@ -26,14 +26,14 @@ export class MoveHumanAction extends HumanActionBase {
     if (gameConfig.debug) {
       this.block.setTint(0xff0000);
       this.human.currentFlatEntity.setTint(0xff0000);
-    }
 
-    console.group('MoveHumanAction');
-    console.log(this.human.currentFlatEntity, this.block);
+      console.group('MoveHumanAction');
+      console.log(this.human.currentFlatEntity, this.block);
+      console.groupEnd();
+    }
     this._path = this.navigationLogic.generatePath(this.human.currentFlatEntity, this.block);
     this._moveToFlatEntity = new MoveToWrapper(this.human.currentFlatEntity, this.block, this._path);
     this.human.state = EHumanState.moving;
-    console.groupEnd();
 
   }
 

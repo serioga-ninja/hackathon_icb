@@ -30,19 +30,23 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
 
   toggleWorkingState() {
     if (this.deviceState === EDeviceState.NotWorking) {
-      this.deviceState = EDeviceState.Working;
+      this.turnOn();
     } else {
-      this.deviceState = EDeviceState.NotWorking;
+      this.turnOff();
     }
   }
 
   turnOn() {
+    this.deviceState = EDeviceState.Working;
+  }
 
+  turnOff() {
+    this.deviceState = EDeviceState.NotWorking;
   }
 
   //#region Event Listeners callbacks
   onPointerdown() {
-
+    this.toggleWorkingState();
   }
 
   //#endregion
