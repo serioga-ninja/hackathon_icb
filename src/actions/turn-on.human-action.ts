@@ -14,6 +14,7 @@ export class TurnOnHumanAction extends HumanActionBase {
 
   start() {
     this.device.turnOn();
+    setTimeout(() => this._finished = true, 1000);
   }
 
   update(time: number) {
