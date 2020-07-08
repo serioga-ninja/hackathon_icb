@@ -17,21 +17,29 @@ export class MoveHumanAction extends HumanActionBase {
 
     this.navigationLogic = navigationLogic;
     this.block = block;
+  }
 
+  start() {
+    if (this.inProgress) return;
+
+    this.inProgress = true;
     if (gameConfig.debug) {
-      block.setTint(0xff0000);
-      human.currentFlatEntity.setTint(0xff0000);
+      this.block.setTint(0xff0000);
+      this.human.currentFlatEntity.setTint(0xff0000);
     }
 
     console.group('MoveHumanAction');
-    console.log(human.currentFlatEntity, block);
-    this._path = navigationLogic.generatePath(human.currentFlatEntity, block);
-    this._moveToFlatEntity = new MoveToWrapper(human.currentFlatEntity, block, this._path);
-    human.state = EHumanState.moving;
+    console.log(this.human.currentFlatEntity, this.block);
+    this._path = this.navigationLogic.generatePath(this.human.currentFlatEntity, this.block);
+    this._moveToFlatEntity = new MoveToWrapper(this.human.currentFlatEntity, this.block, this._path);
+    this.human.state = EHumanState.moving;
     console.groupEnd();
+
   }
 
   update(time: number) {
+    if (!this.inProgress) return;
+
     if (this._moveToFlatEntity) {
       const human = this.human;
 
@@ -46,6 +54,7 @@ export class MoveHumanAction extends HumanActionBase {
 
         this._moveToFlatEntity = null;
         this._finished = true;
+        this.inProgress = false;
       }
     }
 
