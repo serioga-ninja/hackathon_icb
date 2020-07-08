@@ -117,6 +117,10 @@ export const textures: any = [
     path: 'textures/furniture/music.png'
   },
   {
+    key: 'musicOn',
+    path: 'textures/furniture/music-on.png'
+  },
+  {
     key: 'sink',
     path: 'textures/furniture/sink.png'
   },

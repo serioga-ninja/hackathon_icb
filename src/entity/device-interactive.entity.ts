@@ -44,10 +44,7 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
     this.deviceState = EDeviceState.NotWorking;
   }
 
-  //#region Event Listeners callbacks
   onPointerdown() {
     this.toggleWorkingState();
   }
-
-  //#endregion
 }
