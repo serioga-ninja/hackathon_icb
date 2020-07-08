@@ -1,8 +1,8 @@
-import gameConfig from '../core/game.config';
-import { GameSceneProperties } from '../properties/game-scene.properties';
+import { gameConfig } from '../core/game.config';
 import { NavigationLogic } from '../core/navigation.logic';
 import { SpriteEntity } from '../core/sprite.entity';
 import { FlatBlockEntity } from './flat-block.entity';
+import { tileSize } from '../core/game.config';
 
 export enum EHumanState {
   waiting,
@@ -49,12 +49,13 @@ export class HumanEntity extends SpriteEntity {
 
     this._state = EHumanState.waiting;
     this._navigationLogic = options.navigationLogic;
-    this.setDisplaySize(GameSceneProperties.tileSize, GameSceneProperties.tileSize);
+    this.setDisplaySize(tileSize, tileSize);
     this.currentFlatEntity = options.startBlock;
     this.setData('speed', 3);
     this.follower = new Phaser.GameObjects.PathFollower(scene, null, x, y, key);
     this.follower.setVisible(false);
     this.angle = 180;
+    this.alpha = 1;
     this._movingAnimationTime = 0;
   }
 

@@ -1,4 +1,4 @@
-import gameConfig from '../core/game.config';
+import { gameConfig } from '../core/game.config';
 import { MoveToWrapper } from '../core/move-to-wrapper';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';

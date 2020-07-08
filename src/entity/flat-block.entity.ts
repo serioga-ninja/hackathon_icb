@@ -1,4 +1,4 @@
-import gameConfig from '../core/game.config';
+import { gameConfig } from '../core/game.config';
 import { EGroupTypes } from '../core/group.base';
 import { Point } from '../core/point';
 import { SpriteEntity } from '../core/sprite.entity';

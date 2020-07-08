@@ -1,5 +1,5 @@
 import 'phaser';
-import gameConfig from './core/game.config';
+import { gameConfig } from './core/game.config';
 import { GameScene } from './scenes/game.scene';
 import { WelcomeScene } from './scenes/welcome.scene';
 import GameConfig = Phaser.Types.Core.GameConfig;

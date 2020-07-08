@@ -1,7 +1,7 @@
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
-import { GameSceneProperties } from '../properties/game-scene.properties';
 import { SpriteEntity } from '../core/sprite.entity';
 import { FlatBlockEntity } from './flat-block.entity';
+import { tileSize } from '../core/game.config';
 
 export class DeviceEntity extends SpriteEntity {
 
@@ -41,6 +41,6 @@ export class DeviceEntity extends SpriteEntity {
         break;
     }
 
-    this.setDisplaySize(GameSceneProperties.tileSize * size.width, GameSceneProperties.tileSize * size.height);
+    this.setDisplaySize(tileSize * size.width, tileSize * size.height);
   }
 }

@@ -2,7 +2,7 @@ import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { FlatMap } from '../flat-map';
 import { DoorGroup } from '../groups/door.group';
 import { RoomGroup } from '../groups/room.group';
-import gameConfig from './game.config';
+import { gameConfig } from '../core/game.config';
 import { EGroupTypes } from './group.base';
 
 export interface IPathRow {

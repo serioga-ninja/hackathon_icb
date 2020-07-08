@@ -1,4 +1,3 @@
-import { GameSceneProperties } from './properties/game-scene.properties';
 import { EGroupTypes } from './core/group.base';
 import { DeviceEntity } from './entity/device.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
@@ -7,6 +6,8 @@ import { DoorGroup } from './groups/door.group';
 import { FlatGroup } from './groups/flat.group';
 import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
+
+import { houseMap, tileSize, devices, furnitures } from './core/game.config';
 
 import { Light } from './furniture/light';
 import { TV } from './furniture/tv';
@@ -27,46 +28,21 @@ const sprayMap = [
   'door'
 ];
 
-const houseStringMap: any =
-  '12222@22222222@222221\n' +
-  '1.........1.........1\n' +
-  '1.........1.........1\n' +
-  '@.........=.........@\n' +
-  '1.........1.........1\n' +
-  '1.........1.........1\n' +
-  '12222=2222+2=22222221\n' +
-  '1.........1...1.....1\n' +
-  '1.........1...1.....1\n' +
-  '@.........=...=.....1\n' +
-  '1.........1...1.....1\n' +
-  '1.........1...1.....1\n' +
-  '12222@222222=22222221';
-
-
-export enum EHouseGroup {
-  Kitchen,
-  Bedroom,
-  Bathroom
-}
-
 export interface ITileEntity {
   cordX: number;
   cordY: number;
   houseParticleType: EHouseParticles;
-  particleGroup: EHouseGroup;
 }
 
 // [x, y]
 const relatedCoordinatesHelper = [
-   [0, -1],
-  [-1, 0], [1, 0],
+  [0, -1],
+  [-1, 0], 
+  [1, 0],
   [0, 1],
 ];
 
 export class FlatMap {
-
-  //#region Properties
-
   generatedBlocks: FlatBlockEntity[][];
   movableBlocks: FlatBlockEntity[];
   notMovableBlocks: FlatBlockEntity[];
@@ -82,9 +58,6 @@ export class FlatMap {
     return this.generatedBlocks[12][12];
   }
 
-  //#endregion
-
-  //#region Constructor
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.generatedBlocks = [];
@@ -98,8 +71,6 @@ export class FlatMap {
     this.flatGroup = new FlatGroup(scene);
   }
 
-  //#endregion
-
   init() {
     this.regenerateMapSymbolToEnum();
     this.generateFlatSpriteBlocks(this.scene);
@@ -111,122 +82,11 @@ export class FlatMap {
   }
 
   generateDevices() {
-    const devices = [
-      {
-        blocks: [[5, 9]],
-        key: 'light'
-      },
-      {
-        blocks: [[5, 11]],
-        key: 'light'
-      },
-      {
-        blocks: [[11, 9]],
-        key: 'light'
-      },
-      {
-        blocks: [[11, 11]],
-        key: 'light'
-      },
-      {
-        blocks: [[11, 15]],
-        key: 'light'
-      },
-      {
-        blocks: [[1, 16], [1, 17], [1, 18]],
-        key: 'tv'
-      },
-      {
-        blocks: [[1, 15]],
-        key: 'music'
-      },
-      {
-        blocks: [[7, 13]],
-        key: 'vacuum'
-      },
-      {
-        blocks: [[5, 1]],
-        key: 'fridge'
-      },
-      {
-        blocks: [[1, 2]],
-        key: 'teapot'
-      },
-      {
-        blocks: [[7, 18], [7, 19]],
-        key: 'bath'
-      },
-      {
-        blocks: [[7, 1]],
-        key: 'fan'
-      },
-      {
-        blocks: [[1, 11]],
-        key: 'fan'
-      },
-      {
-        blocks: [[1, 1]],
-        key: 'sink'
-      },
-      {
-        blocks: [[7, 15]],
-        key: 'sink'
-      }
-    ].map((c: any) => this.compileFurniture(c, c.key));
+    let flatDevices = devices.map((c: any) => this.compileFurniture(c, c.key)),
+        flatFurnitures = furnitures.map((c: any) => this.compileFurniture(c));
 
-    const furnitures = [
-      {
-        blocks: [[7, 8], [7, 9]],
-        key: 'table1'
-      },
-      {
-        blocks: [[3, 6], [3, 7], [4, 6], [4, 7]],
-        key: 'table2'
-      },
-      {
-        blocks: [[8, 1], [8, 2]],
-        key: 'bed'
-      },
-      {
-        blocks: [[10, 1], [10, 2]],
-        key: 'bed'
-      },
-      {
-        blocks: [[5, 18], [5, 19]],
-        key: 'couch'
-      },
-      {
-        blocks: [[5, 15], [5, 16]],
-        key: 'couch'
-      },
-      {
-        blocks: [[5, 17]],
-        key: 'flower'
-      },
-      {
-        blocks: [[1, 9]],
-        key: 'flower'
-      },
-      {
-        blocks: [[11, 13]],
-        key: 'flower'
-      },
-      {
-        blocks: [[1, 19]],
-        key: 'flower'
-      },
-      {
-        blocks: [[9, 1]],
-        key: 'flower'
-      },
-      {
-        blocks: [[11, 19]],
-        key: 'toilet'
-      }
-    ].map((c: any) => this.compileFurniture(c));
-
-    this.devices.push(...devices);
-    this.devices.push(...furnitures);
+    this.devices.push(...flatDevices);
+    this.devices.push(...flatFurnitures);
   }
 
   compileFurniture(device: any, role?: string): DeviceEntity {
@@ -281,12 +141,12 @@ export class FlatMap {
     this.generatedBlocks = this.parsedMap.map((row, y) => {
       return row.map((blockType, x) => {
         const block = new FlatBlockEntity(scene,
-          (x * GameSceneProperties.tileSize) + (GameSceneProperties.tileSize / 2),
-          (y * GameSceneProperties.tileSize) + (GameSceneProperties.tileSize / 2),
+          (x * tileSize) + (tileSize / 2),
+          (y * tileSize) + (tileSize / 2),
           sprayMap[parseInt(blockType)],
           {
-            width: GameSceneProperties.tileSize,
-            height: GameSceneProperties.tileSize,
+            width: tileSize,
+            height: tileSize,
             blockType: parseInt(blockType),
             matrix: { x, y }
           });
@@ -299,7 +159,7 @@ export class FlatMap {
   }
 
   regenerateMapSymbolToEnum() {
-    const enumTypeMap = houseStringMap
+    const enumTypeMap = houseMap
       .trim()
       .replace(/1/g, EHouseParticles.WallVertical)
       .replace(/2/g, EHouseParticles.WallHorizontal)
