@@ -23,15 +23,27 @@ export class TV extends DeviceInteractiveEntity {
     this.setInteractive();
   }
 
+  private makeOnGraphics() {
+    this.graphics.fillStyle(0xffffff);
+    this.graphics.fillPoints(this.turnOnOverlay.points, true);
+    this.graphics.alpha = 0.5;
+  }
+
   onPointerdown() {
     this.toggleWorkingState();
 
     if (this.deviceState === EDeviceState.Working) {
-      this.graphics.fillStyle(0xffffff);
-      this.graphics.fillPoints(this.turnOnOverlay.points, true);
-      this.graphics.alpha = 0.5;
+      this.makeOnGraphics();
     } else {
       this.graphics.clear();
     }
   }
+
+  turnOn() {
+    if (this.deviceState === EDeviceState.Working) return;
+    this.deviceState = EDeviceState.Working;
+    this.makeOnGraphics();
+  }
+
+
 }
