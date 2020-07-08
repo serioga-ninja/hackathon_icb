@@ -57,9 +57,9 @@ export interface ITileEntity {
 
 // [x, y]
 const relatedCoordinatesHelper = [
-  [-1, -1], [0, -1], [1, -1],
+   [0, -1],
   [-1, 0], [1, 0],
-  [-1, 1], [0, 1], [1, 1],
+  [0, 1],
 ];
 
 export class FlatMap {
@@ -278,7 +278,6 @@ export class FlatMap {
         if (relatedBlock.isDoor && relatedBlock.hasGroup(EGroupTypes.doors)) {
           const doorGroup = relatedBlock.getGroup(EGroupTypes.doors) as DoorGroup;
           group.addDoors(doorGroup);
-          group.add(relatedBlock);
           doorGroup.addRoom(group);
           relatedBlock.addGroup(group);
         } else if (relatedBlock.isMovable && !relatedBlock.hasGroup(EGroupTypes.room)) {

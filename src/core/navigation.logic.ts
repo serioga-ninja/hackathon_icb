@@ -18,11 +18,21 @@ export class NavigationLogic {
   private readonly pathRelatedBlocks: FlatBlockEntity[];
   private endPositionFound: boolean;
   private flatMap: FlatMap;
+  private scene: Phaser.Scene;
+  private graphics: Phaser.GameObjects.Graphics;
 
-  constructor(flatMap: FlatMap) {
+  constructor(flatMap: FlatMap, scene: Phaser.Scene) {
     this.flatMap = flatMap;
     this.pathRelatedBlocks = this.flatMap.movableBlocks;
     this.endPositionFound = false;
+    this.scene = scene;
+
+    if (gameConfig.debug) {
+      this.graphics = this.scene.add.graphics({
+        lineStyle: { width: 2, color: 0xaa0000 },
+        fillStyle: { color: 0x0000aa }
+      });
+    }
 
     this.generateRoomsRelations();
   }
@@ -70,6 +80,24 @@ export class NavigationLogic {
     }
 
     let res: FlatBlockEntity[] = new Array(10000);
+
+    // if end block is in the dead end we mark that block with the highest value
+    const allRelatedWaVeIsHigher: boolean = currentPathBlock
+      .relatedMovableBlocks
+      .filter((block) => block.waveValue < currentPathBlock.waveValue).length === 0;
+
+    if (allRelatedWaVeIsHigher) {
+      const maxWaveValue: number = currentPathBlock
+        .relatedMovableBlocks
+        .filter((block) => block.waveValue >= currentPathBlock.waveValue)
+        .filter((block) => !path.find((pBlock) => pBlock.objID === block.objID))
+        .reduce((value, block) => {
+          return Math.max(value, block.waveValue);
+        }, 0) || 1000;
+
+      currentPathBlock.waveValue = maxWaveValue + 1;
+    }
+
     for (const relatedBlock of currentPathBlock.relatedMovableBlocks) {
       if (typeof relatedBlock.waveValue !== 'number' || relatedBlock.waveValue >= currentPathBlock.waveValue) continue;
 
@@ -77,6 +105,13 @@ export class NavigationLogic {
       if (foundPath.length < res.length) {
         res = foundPath;
       }
+    }
+
+    if (!res[0]) {
+      console.error(`Can't find path!`, path[0], humanPosition);
+      debugger;
+
+      return [];
     }
 
     return res;
@@ -167,6 +202,12 @@ export class NavigationLogic {
     // return this.findPath([endPoint], startPoint);
   }
 
+  generateRoomWaveNumbers(room: RoomGroup, startBlock: FlatBlockEntity) {
+    for (const block of room.movableBlocks) {
+      block.waveValue = Math.abs(startBlock.matrix.x - block.matrix.x) + Math.abs(startBlock.matrix.y - block.matrix.y);
+    }
+  }
+
   generatePath(humanPosition: FlatBlockEntity, endPosition: FlatBlockEntity): Phaser.Curves.Path {
     const availableRoomPaths = this.generateAvailableRoomPath([humanPosition.getGroup(EGroupTypes.room) as RoomGroup], endPosition.getGroup(EGroupTypes.room) as RoomGroup);
 
@@ -188,23 +229,38 @@ export class NavigationLogic {
     }
 
     const path = new Phaser.Curves.Path(humanPosition.x, humanPosition.y);
+    const blockPath: FlatBlockEntity[] = [humanPosition];
 
     return minPath
       .reduce((path, room, i) => {
         const lastRoom = i === minPath.length - 1;
 
         if (lastRoom) {
+          this.generateRoomWaveNumbers(room, blockPath[blockPath.length - 1]);
+          const blockFoundPath = this.findPath([endPosition], blockPath[blockPath.length - 1]);
+          this.blockPathToPath(path, blockFoundPath);
           path.lineTo(endPosition.x, endPosition.y);
         } else {
           const doors = room.relatedToRoomDoor(minPath[i + 1]).getChildren()[0] as FlatBlockEntity;
           const entranceBlock = doors.getEntranceFromRoom(room);
           const exitBlock = doors.relatedEntranceBlocks
             .find((block) => block.getGroup(EGroupTypes.room).groupId !== room.groupId);
-          path.lineTo(entranceBlock.x, entranceBlock.y);
+
+          this.generateRoomWaveNumbers(room, blockPath[blockPath.length - 1]);
+          const blockFoundPath = this.findPath([entranceBlock], blockPath[blockPath.length - 1]);
+          this.blockPathToPath(path, blockFoundPath);
           path.lineTo(exitBlock.x, exitBlock.y);
+          blockPath.push(exitBlock);
         }
 
         return path;
       }, path);
+  }
+
+  blockPathToPath(path: Phaser.Curves.Path, blockPath: FlatBlockEntity[]): void {
+    for (let i = blockPath.length - 1; i >= 0; i--) {
+      const block = blockPath[i];
+      path.lineTo(block.x, block.y);
+    }
   }
 }

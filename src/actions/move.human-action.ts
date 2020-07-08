@@ -23,8 +23,11 @@ export class MoveHumanAction extends HumanActionBase {
       human.currentFlatEntity.setTint(0xff0000);
     }
 
+    console.group('MoveHumanAction');
+    console.log(human.currentFlatEntity, block);
     this._path = navigationLogic.generatePath(human.currentFlatEntity, block);
     this._moveToFlatEntity = new MoveToWrapper(human.currentFlatEntity, block, this._path);
+    console.groupEnd();
   }
 
   update(time: number) {
