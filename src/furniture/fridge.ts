@@ -1,14 +1,8 @@
-import { DeviceEntity } from '../entity/device.entity';
+import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
 
-export class Fridge extends DeviceEntity {
+export class Fridge extends DeviceInteractiveEntity {
 
-  constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
-    super(scene, x, y, key);
-
-    this.on('pointerdown', this.turnOnOffFridgeLogic);
-  }
-
-  turnOnOffFridgeLogic() {
+  onPointerdown() {
     alert('Fridge is on!');
   }
 }

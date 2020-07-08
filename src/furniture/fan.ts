@@ -1,14 +1,7 @@
-import { DeviceEntity } from '../entity/device.entity';
+import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
 
-export class Fan extends DeviceEntity {
-
-  constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
-    super(scene, x, y, key);
-
-    this.on('pointerdown', this.turnOnOffFanLogic);
-  }
-
-  turnOnOffFanLogic() {
+export class Fan extends DeviceInteractiveEntity {
+  onPointerdown() {
     alert('Fan is on!');
   }
 }

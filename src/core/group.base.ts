@@ -1,7 +1,8 @@
 export enum EGroupTypes {
   doors,
   room,
-  flat
+  flat,
+  notMovableBlocks
 }
 
 export abstract class GroupBase extends Phaser.GameObjects.Group {

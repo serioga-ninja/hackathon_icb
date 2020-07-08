@@ -1,16 +1,10 @@
 import { EGroupTypes } from '../core/group.base';
-import { DeviceEntity } from '../entity/device.entity';
+import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 
-export class Light extends DeviceEntity {
+export class Light extends DeviceInteractiveEntity {
 
-  constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
-    super(scene, x, y, key);
-
-    this.on('pointerdown', this.turnOnOffLightLogic);
-  }
-
-  turnOnOffLightLogic() {
+  onPointerdown() {
     const rooms = this.getGroup(EGroupTypes.room);
 
     rooms.getChildren().forEach((sprite: FlatBlockEntity) => {

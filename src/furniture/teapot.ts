@@ -1,14 +1,8 @@
+import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
 import { DeviceEntity } from '../entity/device.entity';
 
-export class Teapot extends DeviceEntity {
-
-  constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
-    super(scene, x, y, key);
-
-    this.on('pointerdown', this.turnOnOffTeapotLogic);
-  }
-
-  turnOnOffTeapotLogic() {
+export class Teapot extends DeviceInteractiveEntity {
+  onPointerdown() {
     alert('Teapot is on!');
   }
 }
