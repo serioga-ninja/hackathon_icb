@@ -21,6 +21,7 @@ import { Music } from './furniture/music';
 const sprayMap = [
   'wallVert',
   'wallHor',
+  'wallX',
   'floor',
   'window',
   'door'
@@ -33,7 +34,7 @@ const houseStringMap: any =
   '@.........=.........@\n' +
   '1.........1.........1\n' +
   '1.........1.........1\n' +
-  '12222=222222=22222221\n' +
+  '12222=2222+2=22222221\n' +
   '1.........1...1.....1\n' +
   '1.........1...1.....1\n' +
   '@.........=...=.....1\n' +
@@ -111,30 +112,117 @@ export class FlatMap {
 
   generateDevices() {
     const devices = [
-      [5, 9, 'light'], [5, 11, 'light'], [11, 9, 'light'], [11, 11, 'light'], [11, 15, 'light'],
-      [1, 16, 'tv'],
-      [7, 1, 'fan'], [1, 11, 'fan'],
-      [7, 13, 'vacuum'],
-      [7, 18, 'bath'], // 7,18 - 8,18
-      [1, 1, 'sink'], [7, 15, 'sink'],
-      [1, 2, 'teapot'],
-      [5, 1, 'fridge'],
-      [1, 15, 'music'],
-    ].map((c: any) => this.compileFurniture(c, c[2]));
+      {
+        blocks: [[5, 9]],
+        key: 'light'
+      },
+      {
+        blocks: [[5, 11]],
+        key: 'light'
+      },
+      {
+        blocks: [[11, 9]],
+        key: 'light'
+      },
+      {
+        blocks: [[11, 11]],
+        key: 'light'
+      },
+      {
+        blocks: [[11, 15]],
+        key: 'light'
+      },
+      {
+        blocks: [[1, 16], [1, 17], [1, 18]],
+        key: 'tv'
+      },
+      {
+        blocks: [[1, 15]],
+        key: 'music'
+      },
+      {
+        blocks: [[7, 13]],
+        key: 'vacuum'
+      },
+      {
+        blocks: [[5, 1]],
+        key: 'fridge'
+      },
+      {
+        blocks: [[1, 2]],
+        key: 'teapot'
+      },
+      {
+        blocks: [[7, 18], [7, 19]],
+        key: 'bath'
+      },
+      {
+        blocks: [[7, 1]],
+        key: 'fan'
+      },
+      {
+        blocks: [[1, 11]],
+        key: 'fan'
+      },
+      {
+        blocks: [[1, 1]],
+        key: 'sink'
+      },
+      {
+        blocks: [[7, 15]],
+        key: 'sink'
+      }
+    ].map((c: any) => this.compileFurniture(c, c.key));
 
     const furnitures = [
-      [7, 8, 'table1'], //[7, 8] - [7, 9], table1
-      [3, 6, 'table2'], //[3, 6] - [4, 7], table2
-      [8, 1, 'bed'], //[8, 1] - [8, 2], bed
-      [10, 1, 'bed'], //[10, 1] - [10, 2], bed
-      [5, 18, 'couch'], //[5, 18] - [5, 19], couch
-      [5, 15, 'couch'], //[5, 15] - [5, 16], couch
-      [5, 14, 'flower'],
-      [1, 9, 'flower'],
-      [11, 13, 'flower'],
-      [1, 19, 'flower'],
-      [9, 1, 'flower'],
-      [11, 19, 'toilet']
+      {
+        blocks: [[7, 8], [7, 9]],
+        key: 'table1'
+      },
+      {
+        blocks: [[3, 6], [3, 7], [4, 6], [4, 7]],
+        key: 'table2'
+      },
+      {
+        blocks: [[8, 1], [8, 2]],
+        key: 'bed'
+      },
+      {
+        blocks: [[10, 1], [10, 2]],
+        key: 'bed'
+      },
+      {
+        blocks: [[5, 18], [5, 19]],
+        key: 'couch'
+      },
+      {
+        blocks: [[5, 15], [5, 16]],
+        key: 'couch'
+      },
+      {
+        blocks: [[5, 17]],
+        key: 'flower'
+      },
+      {
+        blocks: [[1, 9]],
+        key: 'flower'
+      },
+      {
+        blocks: [[11, 13]],
+        key: 'flower'
+      },
+      {
+        blocks: [[1, 19]],
+        key: 'flower'
+      },
+      {
+        blocks: [[9, 1]],
+        key: 'flower'
+      },
+      {
+        blocks: [[11, 19]],
+        key: 'toilet'
+      }
     ].map((c: any) => this.compileFurniture(c));
 
     this.devices.push(...devices);
@@ -142,38 +230,43 @@ export class FlatMap {
   }
 
   compileFurniture(device: any, role?: string): DeviceEntity {
-    const block = this.generatedBlocks[device[0]][device[1]];
-    const group = block.getGroup(EGroupTypes.room);
-    let furniture;
+    let blockGroup: FlatBlockEntity[] = [],
+        furniture;
+
+    device.blocks.forEach((elem: any) => {
+      let block = this.generatedBlocks[elem[0]][elem[1]];
+      blockGroup.push(block);
+    });
+    const group = blockGroup[0].getGroup(EGroupTypes.room);
 
     switch (role) {
       case 'light':
-        furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'tv':
-        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'fan':
-        furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'vacuum':
-        furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'bath':
       case 'sink':
-        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'teapot':
-        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'fridge':
-        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'music':
-        furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       default:
-        furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
     }
 
     furniture.addGroup(group);
@@ -210,6 +303,7 @@ export class FlatMap {
       .trim()
       .replace(/1/g, EHouseParticles.WallVertical)
       .replace(/2/g, EHouseParticles.WallHorizontal)
+      .replace(/\+/g, EHouseParticles.WallX)
       .replace(/=/g, EHouseParticles.Door)
       .replace(/@/g, EHouseParticles.Window)
       .replace(/\./g, EHouseParticles.FreeSpace)
