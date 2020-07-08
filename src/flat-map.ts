@@ -20,6 +20,7 @@ import { Music } from './furniture/music';
 const sprayMap = [
   'wallVert',
   'wallHor',
+  'wallX',
   'floor',
   'window',
   'door'
@@ -32,7 +33,7 @@ const houseStringMap: any =
   '@.........=.........@\n' +
   '1.........1.........1\n' +
   '1.........1.........1\n' +
-  '12222=222222=22222221\n' +
+  '12222=2222+2=22222221\n' +
   '1.........1...1.....1\n' +
   '1.........1...1.....1\n' +
   '@.........=...=.....1\n' +
@@ -197,6 +198,7 @@ export class FlatMap {
       .trim()
       .replace(/1/g, EHouseParticles.WallVertical)
       .replace(/2/g, EHouseParticles.WallHorizontal)
+      .replace(/\+/g, EHouseParticles.WallX)
       .replace(/=/g, EHouseParticles.Door)
       .replace(/@/g, EHouseParticles.Window)
       .replace(/\./g, EHouseParticles.FreeSpace)

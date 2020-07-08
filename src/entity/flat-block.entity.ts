@@ -14,6 +14,7 @@ export interface IFlatBlockOptions {
 export enum EHouseParticles {
   WallVertical,
   WallHorizontal,
+  WallX,
   FreeSpace,
   Window,
   Door,

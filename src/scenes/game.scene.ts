@@ -39,6 +39,7 @@ export class GameScene extends Phaser.Scene {
     this.load.image('floor', 'textures/house/floor.jpg');
     this.load.image('wallVert', 'textures/house/wallVert.jpg');
     this.load.image('wallHor', 'textures/house/wallHor.jpg');
+    this.load.image('wallX', 'textures/house/wallX.jpg');
     this.load.image('window', 'textures/house/window.jpg');
     this.load.image('door', 'textures/house/door.jpg');
     this.load.image('human', 'textures/person/stand.png');
