@@ -3,6 +3,7 @@ import { EGroupTypes } from '../core/group.base';
 import { Point } from '../core/point';
 import { SpriteEntity } from '../core/sprite.entity';
 import { RoomGroup } from '../groups/room.group';
+import STATIC_BODY = Phaser.Physics.Arcade.STATIC_BODY;
 
 export interface IFlatBlockOptions {
   width: number;
@@ -70,6 +71,7 @@ export class FlatBlockEntity extends SpriteEntity {
     this._position = new Point(x, y);
     this.blockType = options.blockType;
     this.setDisplaySize(options.width, options.height);
+    this.scene.physics.world.enableBody(this, STATIC_BODY);
     this.isMovable = pathAvailableBlockTypes.indexOf(options.blockType) !== -1;
     this.humanCanPath = this.isMovable;
     this.isDoor = options.blockType === EHouseParticles.Door;

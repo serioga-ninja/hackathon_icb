@@ -76,6 +76,9 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);//, this.flatMap.generatedBlocks[5][16]);
+    for (const room of this.flatMap.rooms) {
+      room.overlapHuman(this.humanEntity);
+    }
   }
 
   /**
@@ -84,5 +87,11 @@ export class GameScene extends Phaser.Scene {
   update(time: number): void {
     this.actionLogic.update(time);
     this.humanEntity.update(time);
+
+    if (this.humanEntity.dead) {
+      alert(`Time: ${this.time.now}`);
+      this.scene.stop();
+      // TODO: open end game scene and show stats etc
+    }
   }
 }
