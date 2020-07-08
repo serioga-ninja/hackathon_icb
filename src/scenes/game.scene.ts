@@ -1,4 +1,5 @@
 import { ActionsLogic } from '../actions/actions.logic';
+import { GameStats } from '../core/game.stats';
 import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
@@ -10,6 +11,8 @@ export class GameScene extends Phaser.Scene {
   private navigationLogic: NavigationLogic;
   private actionLogic: ActionsLogic;
   private flatMap: FlatMap;
+  private gameStats: GameStats;
+  private perSecondTime: number;
 
   constructor() {
     super({
@@ -27,7 +30,8 @@ export class GameScene extends Phaser.Scene {
    * by calling scene.start(key, [params])
    */
   init(params: any): void {
-    console.log('init');
+    this.gameStats = new GameStats();
+    this.perSecondTime = 0;
   }
 
   /**
@@ -60,7 +64,7 @@ export class GameScene extends Phaser.Scene {
       room.overlapHuman(this.humanEntity);
     }
 
-    this.input.on('pointerdown', (pointer) => {
+    this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
       console.log(pointer.x, pointer.y);
     }, this);
   }
@@ -71,6 +75,19 @@ export class GameScene extends Phaser.Scene {
   update(time: number): void {
     this.actionLogic.update(time);
     this.humanEntity.update(time);
+
+    //#region Per Second update area
+    if (time - this.perSecondTime > 1000) {
+      this.perSecondTime = time;
+
+      for (const room of this.flatMap.rooms) {
+        this.gameStats.addToStat('electricity', room.electricityPerTick);
+      }
+
+      console.log('electricity', this.gameStats.getStat('electricity'));
+    }
+
+    //#endregion
 
     if (this.humanEntity.dead) {
       alert(`Time: ${this.time.now}`);
