@@ -1,10 +1,11 @@
-import { ActionGroupBase } from '../actions/action-group.base';
-import { GoToActionGroup } from '../actions/go-to.action-group';
+import { ActionGroupBase } from './action-group.base';
+import { GoToActionGroup } from './go-to.action-group';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
 import { FlatGroup } from '../groups/flat.group';
-import { NavigationLogic } from './navigation.logic';
+import { NavigationLogic } from '../core/navigation.logic';
+import { WatchTVGroup } from './watch-TV.group';
 
 export class ActionsLogic {
   private flatGroup: FlatGroup;
@@ -24,16 +25,30 @@ export class ActionsLogic {
   }
 
   generateAction(): ActionGroupBase {
-    const movableBlocks = this.flatGroup.getChildren().filter((block: FlatBlockEntity) => block.isMovable && !block.isDoor);
+    const oldActionType = !!this.activeActionGroup ? this.activeActionGroup.actionType : -1;
     const min = 0;
-    const max = movableBlocks.length;
+    const max = 2;
     const rnd = Math.floor(Math.random() * (max - min)) + min;
+    let actionGroup: ActionGroupBase;
+    switch (rnd) {
+      case 0:
+        actionGroup = new GoToActionGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case 1:
+        actionGroup = new WatchTVGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+    }
 
-    return new GoToActionGroup(this.human, this.debugBlock || movableBlocks[rnd] as FlatBlockEntity, this.navigationLogic)
+    // prevent repeat action
+    if (oldActionType === actionGroup.actionType) {
+      return this.generateAction();
+    } else {
+      return actionGroup;
+    }
   }
 
   update(time: number) {
-    if (!this.activeActionGroup) {
+    if (!this.activeActionGroup || this.activeActionGroup && this.activeActionGroup.finished) {
       this.activeActionGroup = this.generateAction();
       if (this.activeActionGroup) {
         this.activeActionGroup.start();
@@ -42,7 +57,6 @@ export class ActionsLogic {
       this.activeActionGroup.update(time);
       if (this.activeActionGroup.finished) {
         this.activeActionGroup.done();
-        this.activeActionGroup = null;
       }
     }
   }

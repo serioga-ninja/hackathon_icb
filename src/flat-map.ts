@@ -37,8 +37,7 @@ export interface ITileEntity {
 // [x, y]
 const relatedCoordinatesHelper = [
   [0, -1],
-  [-1, 0], 
-  [1, 0],
+  [-1, 0], [1, 0],
   [0, 1],
 ];
 
@@ -81,6 +80,12 @@ export class FlatMap {
     this.generateDevices();
   }
 
+  getDevices(key: string) {
+    return this.devices.filter((device) => {
+      return device.texture.key === key;
+    });
+  }
+
   generateDevices() {
     let flatDevices = devices.map((c: any) => this.compileFurniture(c, c.key)),
         flatFurnitures = furnitures.map((c: any) => this.compileFurniture(c));
@@ -91,7 +96,7 @@ export class FlatMap {
 
   compileFurniture(device: any, role?: string): DeviceEntity {
     let blockGroup: FlatBlockEntity[] = [],
-        furniture;
+      furniture;
 
     device.blocks.forEach((elem: any) => {
       let block = this.generatedBlocks[elem[0]][elem[1]];
@@ -104,7 +109,7 @@ export class FlatMap {
         furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'tv':
-        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1]]);
         break;
       case 'fan':
         furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);

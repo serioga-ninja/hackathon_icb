@@ -1,4 +1,4 @@
-import { ActionsLogic } from '../core/actions.logic';
+import { ActionsLogic } from '../actions/actions.logic';
 import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
