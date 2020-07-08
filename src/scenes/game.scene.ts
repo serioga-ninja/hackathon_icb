@@ -64,6 +64,10 @@ export class GameScene extends Phaser.Scene {
     this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
       console.log(pointer.x, pointer.y);
     }, this);
+
+    this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
+      this.humanEntity.makeDead();
+    });
   }
 
   /**
@@ -72,6 +76,7 @@ export class GameScene extends Phaser.Scene {
   update(time: number): void {
     this.actionLogic.update(time);
     this.humanEntity.update(time);
+    this.flatMap.update(time);
 
     //#region Per Second update area
     if (time - this.perSecondTime > 1000) {

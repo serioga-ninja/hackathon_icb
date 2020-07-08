@@ -52,6 +52,7 @@ export class FlatMap {
   doors: DoorGroup[];
   scene: Phaser.Scene;
   devices: DeviceEntity[];
+  vacuum: Vacuum;
 
   get startBlock() {
     return this.generatedBlocks[12][12];
@@ -112,7 +113,7 @@ export class FlatMap {
         furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
       case DeviceType.Vacuum:
-        furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic);
+        furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.movableBlocks);
         break;
       case DeviceType.Bath:
       case DeviceType.Sink:
@@ -265,5 +266,9 @@ export class FlatMap {
           .filter((block) => !!block);
       }
     }
+  }
+
+  update(time: number) {
+    this.vacuum.update(time);
   }
 }
