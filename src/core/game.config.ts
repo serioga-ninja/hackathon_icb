@@ -23,6 +23,105 @@ export const houseMap: string =
   '1.........1...1.....1\n' +
   '12222@222222=22222221';
 
+export const textures: any = [
+  {
+    key: 'floor',
+    path: 'textures/house/floor.jpg'
+  },
+  {
+    key: 'wallVert',
+    path: 'textures/house/wallVert.jpg'
+  },
+  {
+    key: 'wallHor',
+    path: 'textures/house/wallHor.jpg'
+  },
+  {
+    key: 'wallX',
+    path: 'textures/house/wallX.jpg'
+  },
+  {
+    key: 'window',
+    path: 'textures/house/window.jpg'
+  },
+  {
+    key: 'door',
+    path: 'textures/house/door.jpg'
+  },
+  {
+    key: 'human',
+    path: 'textures/person/stand.png'
+  },
+  {
+    key: 'human-go-1',
+    path: 'textures/person/go-1.png'
+  },
+  {
+    key: 'human-go-2',
+    path: 'textures/person/go-2.png'
+  },
+  {
+    key: 'light',
+    path: 'textures/furniture/lamp.png'
+  },
+  {
+    key: 'table1',
+    path: 'textures/furniture/table1.png'
+  },
+  {
+    key: 'table2',
+    path: 'textures/furniture/table2.png'
+  },
+  {
+    key: 'bed',
+    path: 'textures/furniture/bed.png'
+  },
+  {
+    key: 'couch',
+    path: 'textures/furniture/couch.png'
+  },
+  {
+    key: 'bath',
+    path: 'textures/furniture/bath.png'
+  },
+  {
+    key: 'fridge',
+    path: 'textures/furniture/fridge.png'
+  },
+  {
+    key: 'teapot',
+    path: 'textures/furniture/teapot.png'
+  },
+  {
+    key: 'tv',
+    path: 'textures/furniture/tv.png'
+  },
+  {
+    key: 'fan',
+    path: 'textures/furniture/fan.png'
+  },
+  {
+    key: 'vacuum',
+    path: 'textures/furniture/vacuum.png'
+  },
+  {
+    key: 'flower',
+    path: 'textures/furniture/flower.png'
+  },
+  {
+    key: 'toilet',
+    path: 'textures/furniture/toilet.png'
+  },
+  {
+    key: 'music',
+    path: 'textures/furniture/music.png'
+  },
+  {
+    key: 'sink',
+    path: 'textures/furniture/sink.png'
+  },
+];
+
 export const devices: any = [
   {
     blocks: [[5, 9]],
@@ -69,11 +168,11 @@ export const devices: any = [
     key: 'bath'
   },
   {
-    blocks: [[7, 1]],
+    blocks: [[7, 1], [7, 2]],
     key: 'fan'
   },
   {
-    blocks: [[1, 11]],
+    blocks: [[1, 11], [1, 12]],
     key: 'fan'
   },
   {

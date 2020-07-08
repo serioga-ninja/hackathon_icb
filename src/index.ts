@@ -5,7 +5,7 @@ import { WelcomeScene } from './scenes/welcome.scene';
 import GameConfig = Phaser.Types.Core.GameConfig;
 
 const config: GameConfig = {
-  title: 'SmartHome',
+  title: 'SmartHouseSurvival',
   width: gameConfig.width,
   height: gameConfig.height,
   parent: 'game',
