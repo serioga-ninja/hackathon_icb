@@ -111,7 +111,7 @@ export class FlatMap {
   }
 
   generateDevices() {
-    const devices = [
+    /*const devices = [
       [5, 9, 'light'], [5, 11, 'light'], [11, 9, 'light'], [11, 11, 'light'], [11, 15, 'light'],
       [1, 16, 'tv'],
       [7, 1, 'fan'], [1, 11, 'fan'],
@@ -121,11 +121,15 @@ export class FlatMap {
       [1, 2, 'teapot'],
       [5, 1, 'fridge'],
       [1, 15, 'music'],
-    ].map((c: any) => this.compileFurniture(c, c[2]));
+    ].map((c: any) => this.compileFurniture(c, c[2]));*/
 
     const furnitures = [
-      [7, 8, 'table1'], //[7, 8] - [7, 9], table1
-      [3, 6, 'table2'], //[3, 6] - [4, 7], table2
+      {
+        blocks: [[7, 8],[7, 9]],
+        key: 'table1'
+      }
+      
+      /*[3, 6, 'table2'], //[3, 6] - [4, 7], table2
       [8, 1, 'bed'], //[8, 1] - [8, 2], bed
       [10, 1, 'bed'], //[10, 1] - [10, 2], bed
       [5, 18, 'couch'], //[5, 18] - [5, 19], couch
@@ -135,20 +139,28 @@ export class FlatMap {
       [11, 13, 'flower'],
       [1, 19, 'flower'],
       [9, 1, 'flower'],
-      [11, 19, 'toilet']
+      [11, 19, 'toilet']*/
     ].map((c: any) => this.compileFurniture(c));
 
-    this.devices.push(...devices);
+    //this.devices.push(...devices);
     this.devices.push(...furnitures);
   }
 
   compileFurniture(device: any, role?: string): DeviceEntity {
-    const block = this.generatedBlocks[device[0]][device[1]];
-    const group = block.getGroup(EGroupTypes.room);
-    let furniture;
+    console.log(device);
+    let blockGroup: FlatBlockEntity[] = [],
+        furniture;
+
+    device.blocks.forEach((elem: any) => {
+      let block = this.generatedBlocks[elem[0]][elem[1]];
+      blockGroup.push(block);
+    });
+    console.log(blockGroup);
+    //const block = this.generatedBlocks[1][1];
+    const group = blockGroup[0].getGroup(EGroupTypes.room);
 
     switch (role) {
-      case 'light':
+      /*case 'light':
         furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
         break;
       case 'tv':
@@ -172,12 +184,12 @@ export class FlatMap {
         break;
       case 'music':
         furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
-        break;
+        break;*/
       default:
-        furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, [block]), device[2]);
+        furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
     }
 
-    furniture.addGroup(group);
+    //furniture.addGroup(group);
     this.notMovableGroups.push(furniture.blocksGroup);
     this.notMovableBlocks.push(...(furniture.blocksGroup.getChildren() as FlatBlockEntity[]));
 

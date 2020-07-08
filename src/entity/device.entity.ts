@@ -5,12 +5,16 @@ import { SpriteEntity } from '../core/sprite.entity';
 export class DeviceEntity extends SpriteEntity {
 
   public blocksGroup: NotMovableBlocksGroup;
+  private blocksGroupLength: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, key: string) {
     super(scene, blocksGroup.coords.x, blocksGroup.coords.y, key);
 
     this.blocksGroup = blocksGroup;
-    this.setDisplaySize(GameSceneProperties.tileSize, GameSceneProperties.tileSize);
+    this.blocksGroupLength = this.blocksGroup.getLength();
+    console.log(this.blocksGroup, this.blocksGroupLength);
+
+    this.setDisplaySize(GameSceneProperties.tileSize * this.blocksGroupLength, GameSceneProperties.tileSize);
     this.alpha = 1;
     blocksGroup.removeBlocksMovableRelations();
   }
