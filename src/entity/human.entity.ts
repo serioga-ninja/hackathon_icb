@@ -2,6 +2,7 @@ import { gameConfig } from '../core/game.config';
 import { NavigationLogic } from '../core/navigation.logic';
 import { SpriteEntity } from '../core/sprite.entity';
 import { FlatBlockEntity } from './flat-block.entity';
+import DYNAMIC_BODY = Phaser.Physics.Arcade.DYNAMIC_BODY;
 import { tileSize } from '../core/game.config';
 
 export enum EHumanState {
@@ -43,6 +44,7 @@ export class HumanEntity extends SpriteEntity {
   private _movingAnimationTime: number;
 
   public follower: Phaser.GameObjects.PathFollower;
+  public dead: boolean;
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string, options: IHumanEntityOptions) {
     super(scene, x, y, key);
@@ -54,9 +56,11 @@ export class HumanEntity extends SpriteEntity {
     this.setData('speed', 3);
     this.follower = new Phaser.GameObjects.PathFollower(scene, null, x, y, key);
     this.follower.setVisible(false);
+    this.scene.physics.world.enableBody(this, DYNAMIC_BODY);
     this.angle = 180;
     this.alpha = 1;
     this._movingAnimationTime = 0;
+    this.dead = false;
   }
 
   update(time: number) {
@@ -74,4 +78,9 @@ export class HumanEntity extends SpriteEntity {
         break;
     }
   }
+
+  makeDead() {
+    this.dead = true;
+  }
+
 }
