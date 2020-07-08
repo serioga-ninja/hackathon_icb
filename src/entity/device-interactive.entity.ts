@@ -1,6 +1,7 @@
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { DeviceEntity } from './device.entity';
 import { FlatBlockEntity } from './flat-block.entity';
+import { DeviceType } from '../actions/action-group.base';
 
 export enum EDeviceState {
   Working,
@@ -13,8 +14,8 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
 
   deviceState: EDeviceState;
 
-  constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, key: string) {
-    super(scene, blocksGroup, key);
+  constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, key: string, type: DeviceType) {
+    super(scene, blocksGroup, key, type);
 
     this.deviceState = EDeviceState.NotWorking;
 

@@ -3,6 +3,7 @@ import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interact
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { RoomGroup } from '../groups/room.group';
+import { DeviceType } from '../actions/action-group.base';
 
 export class TV extends DeviceInteractiveEntity implements IElectricityObject {
   placeToInteract: FlatBlockEntity;
@@ -11,7 +12,7 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
   electricityConsumePerTime: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
-    super(scene, blocksGroup, 'tv');
+    super(scene, blocksGroup, 'tv', DeviceType.TV);
 
     this.electricityConsumePerTime = 0.05;
     this.graphics = scene.add.graphics();

@@ -1,4 +1,5 @@
 import { EGroupTypes } from './core/group.base';
+import { DeviceType } from './actions/action-group.base';
 import { NavigationLogic } from './core/navigation.logic';
 import { DeviceEntity } from './entity/device.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
@@ -76,21 +77,21 @@ export class FlatMap {
     this.generateDoorsEntranceBlocks();
   }
 
-  getDevices(key: string) {
+  getDevices(type: DeviceType) {
     return this.devices.filter((device) => {
-      return device.texture.key === key;
+      return device.blockType === type;
     });
   }
 
   generateDevices(navigationLogic: NavigationLogic) {
-    let flatDevices = devices.map((c: any) => this.compileFurniture(navigationLogic, c, c.key)),
-      flatFurnitures = furnitures.map((c: any) => this.compileFurniture(navigationLogic, c));
+    let flatDevices = devices.map((c: any) => this.compileFurniture(navigationLogic, c, c.type)),
+        flatFurnitures = furnitures.map((c: any) => this.compileFurniture(navigationLogic, c));
 
     this.devices.push(...flatDevices);
     this.devices.push(...flatFurnitures);
   }
 
-  compileFurniture(navigationLogic: NavigationLogic, device: any, role?: string): DeviceEntity {
+  compileFurniture(navigationLogic: NavigationLogic, device: any, role?: DeviceType): DeviceEntity {
     let blockGroup: FlatBlockEntity[] = [],
       furniture;
 
@@ -101,33 +102,33 @@ export class FlatMap {
     const group = blockGroup[0].getGroup(EGroupTypes.room);
 
     switch (role) {
-      case 'light':
-        furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+      case DeviceType.Light:
+        furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
-      case 'tv':
+      case DeviceType.TV:
         furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1] + 1]);
         break;
-      case 'fan':
-        furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+      case DeviceType.Fan:
+        furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
-      case 'vacuum':
+      case DeviceType.Vacuum:
         furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic);
         break;
-      case 'bath':
-      case 'sink':
-        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+      case DeviceType.Bath:
+      case DeviceType.Sink:
+        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
-      case 'teapot':
-        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+      case DeviceType.Teapot:
+        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
-      case 'fridge':
-        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+      case DeviceType.Fridge:
+        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
-      case 'music':
+      case DeviceType.Music:
         furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1]]);
         break;
       default:
-        furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+        furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
     }
 
     furniture.addGroup(group);

@@ -7,6 +7,19 @@ export enum EActionTypes {
   ListenMusic
 }
 
+export enum DeviceType {
+  Simple,
+  TV,
+  Music,
+  Light,
+  Fan,
+  Vacuum,
+  Bath,
+  Sink,
+  Teapot,
+  Fridge
+}
+
 export abstract class ActionGroupBase {
   get finished(): boolean {
     return this._finished;

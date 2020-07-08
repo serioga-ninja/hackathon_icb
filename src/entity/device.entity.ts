@@ -2,15 +2,19 @@ import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { SpriteEntity } from '../core/sprite.entity';
 import { FlatBlockEntity } from './flat-block.entity';
 import { tileSize } from '../core/game.config';
+import { DeviceType } from '../actions/action-group.base';
 
 export class DeviceEntity extends SpriteEntity {
 
   public blocksGroup: NotMovableBlocksGroup;
+  public blockType: DeviceType;
 
-  constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, key: string) {
+  constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, key: string, type: DeviceType) {
     super(scene, blocksGroup.coords.x, blocksGroup.coords.y, key);
 
     this.blocksGroup = blocksGroup;
+    this.blockType = type;
+    console.log(this.blockType);
 
     this.setSizeOfBlock(this.blocksGroup);
     this.alpha = 1;
