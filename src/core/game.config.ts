@@ -1,7 +1,7 @@
 const gameConfig = {
   width: window.innerWidth - 20,
   height: window.innerHeight - 20,
-  debug: true,
+  debug: false,
   playerWidth: 20
 };
 
