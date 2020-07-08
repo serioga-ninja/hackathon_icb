@@ -13,10 +13,10 @@ export class TV extends DeviceInteractiveEntity {
     this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
     this.turnOnOverlay = new Phaser.Geom.Polygon([
-      1279, 97,
-      1409, 97,
-      1537, 251,
-      1152, 251,
+      1269, 97,
+      1389, 97,
+      1517, 251,
+      1142, 251,
     ]);
 
 
@@ -27,9 +27,8 @@ export class TV extends DeviceInteractiveEntity {
     this.toggleWorkingState();
 
     if (this.deviceState === EDeviceState.Working) {
-      this.graphics.fillStyle(0xffffff);
+      this.graphics.fillGradientStyle(0xffffffAA, 0xffffffAA, 0xffffffFF, 0xffffffFF, .4);
       this.graphics.fillPoints(this.turnOnOverlay.points, true);
-      this.graphics.alpha = 0.5;
     } else {
       this.graphics.clear();
     }
