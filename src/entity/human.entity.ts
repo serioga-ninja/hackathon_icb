@@ -5,7 +5,8 @@ import { SpriteEntity } from '../core/sprite.entity';
 import { FlatBlockEntity } from './flat-block.entity';
 
 export enum EHumanState {
-  waiting
+  waiting,
+  moving
 }
 
 export interface IHumanEntityOptions {
@@ -28,9 +29,18 @@ export class HumanEntity extends SpriteEntity {
     }
   }
 
+  set state(state: EHumanState) {
+    this._state = state;
+
+    if (state === EHumanState.waiting) {
+      this.setTexture('human');
+    }
+  }
+
   private _state: EHumanState;
   private _navigationLogic: NavigationLogic;
   private _currentFlatEntity: FlatBlockEntity;
+  private _movingAnimationTime: number;
 
   public follower: Phaser.GameObjects.PathFollower;
 
@@ -44,8 +54,23 @@ export class HumanEntity extends SpriteEntity {
     this.setData('speed', 3);
     this.follower = new Phaser.GameObjects.PathFollower(scene, null, x, y, key);
     this.follower.setVisible(false);
+    this.angle = 180;
+    this._movingAnimationTime = 0;
   }
 
-  update() {
+  update(time: number) {
+    switch (this._state) {
+      case EHumanState.moving:
+        if (time - this._movingAnimationTime > 200) {
+          if (this.texture.key === 'human-go-2') {
+            this.setTexture('human-go-1');
+          } else {
+            this.setTexture('human-go-2');
+          }
+
+          this._movingAnimationTime = time;
+        }
+        break;
+    }
   }
 }

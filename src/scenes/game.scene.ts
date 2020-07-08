@@ -40,6 +40,8 @@ export class GameScene extends Phaser.Scene {
     this.load.image('window', 'textures/house/window.jpg');
     this.load.image('door', 'textures/house/door.jpg');
     this.load.image('human', 'textures/person/stand.png');
+    this.load.image('human-go-1', 'textures/person/go-1.png');
+    this.load.image('human-go-2', 'textures/person/go-2.png');
     this.load.image('light', 'textures/furniture/lamp.png');
     this.load.image('table1', 'textures/furniture/table1.png');
     this.load.image('table2', 'textures/furniture/table2.png');
@@ -80,6 +82,6 @@ export class GameScene extends Phaser.Scene {
    */
   update(time: number): void {
     this.actionLogic.update(time);
-    this.humanEntity.update();
+    this.humanEntity.update(time);
   }
 }

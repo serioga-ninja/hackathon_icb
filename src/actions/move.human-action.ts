@@ -2,7 +2,7 @@ import gameConfig from '../core/game.config';
 import { MoveToWrapper } from '../core/move-to-wrapper';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
-import { HumanEntity } from '../entity/human.entity';
+import { EHumanState, HumanEntity } from '../entity/human.entity';
 import { HumanActionBase } from './human-action.base';
 
 export class MoveHumanAction extends HumanActionBase {
@@ -27,6 +27,7 @@ export class MoveHumanAction extends HumanActionBase {
     console.log(human.currentFlatEntity, block);
     this._path = navigationLogic.generatePath(human.currentFlatEntity, block);
     this._moveToFlatEntity = new MoveToWrapper(human.currentFlatEntity, block, this._path);
+    human.state = EHumanState.moving;
     console.groupEnd();
   }
 
@@ -37,9 +38,11 @@ export class MoveHumanAction extends HumanActionBase {
       const point = this._moveToFlatEntity.getPoint();
       human.x = point.x;
       human.y = point.y;
+      human.angle = this._moveToFlatEntity.angle;
 
       if (human.widthTo(this._moveToFlatEntity.moveToPosition) < 1) {
         human.currentFlatEntity = this._moveToFlatEntity.moveToPosition;
+        human.state = EHumanState.waiting;
 
         this._moveToFlatEntity = null;
         this._finished = true;
