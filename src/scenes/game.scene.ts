@@ -20,11 +20,6 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  generateRoom() {
-    this.flatMap = new FlatMap(this);
-    this.flatMap.init();
-  }
-
   /**
    * is called when the scene starts; this function may accept parameters, which are passed from other scenes or game
    * by calling scene.start(key, [params])
@@ -49,9 +44,11 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
-    this.generateRoom();
+    this.flatMap = new FlatMap(this);
+    this.flatMap.init();
 
     this.navigationLogic = new NavigationLogic(this.flatMap, this);
+    this.flatMap.generateDevices(this.navigationLogic);
 
     const startBlock = this.flatMap.startBlock;
     this.humanEntity = new HumanEntity(this, startBlock.position.x, startBlock.position.y, 'human', {

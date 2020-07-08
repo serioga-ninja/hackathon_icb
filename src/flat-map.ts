@@ -1,4 +1,5 @@
 import { EGroupTypes } from './core/group.base';
+import { NavigationLogic } from './core/navigation.logic';
 import { DeviceEntity } from './entity/device.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 
@@ -73,7 +74,6 @@ export class FlatMap {
     this.generateDoors();
     this.generateRooms();
     this.generateDoorsEntranceBlocks();
-    this.generateDevices();
   }
 
   getDevices(key: string) {
@@ -82,15 +82,15 @@ export class FlatMap {
     });
   }
 
-  generateDevices() {
-    let flatDevices = devices.map((c: any) => this.compileFurniture(c, c.key)),
-      flatFurnitures = furnitures.map((c: any) => this.compileFurniture(c));
+  generateDevices(navigationLogic: NavigationLogic) {
+    let flatDevices = devices.map((c: any) => this.compileFurniture(navigationLogic, c, c.key)),
+      flatFurnitures = furnitures.map((c: any) => this.compileFurniture(navigationLogic, c));
 
     this.devices.push(...flatDevices);
     this.devices.push(...flatFurnitures);
   }
 
-  compileFurniture(device: any, role?: string): DeviceEntity {
+  compileFurniture(navigationLogic: NavigationLogic, device: any, role?: string): DeviceEntity {
     let blockGroup: FlatBlockEntity[] = [],
       furniture;
 
@@ -111,7 +111,7 @@ export class FlatMap {
         furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
         break;
       case 'vacuum':
-        furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key);
+        furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic);
         break;
       case 'bath':
       case 'sink':
