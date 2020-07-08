@@ -64,6 +64,10 @@ export class GameScene extends Phaser.Scene {
     this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
       console.log(pointer.x, pointer.y);
     }, this);
+
+    this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
+      this.humanEntity.makeDead();
+    });
   }
 
   /**
