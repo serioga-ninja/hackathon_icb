@@ -113,7 +113,7 @@ export class FlatMap {
         furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
       case DeviceType.Vacuum:
-        furniture = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.movableBlocks);
+        furniture = this.vacuum = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.movableBlocks);
         break;
       case DeviceType.Bath:
       case DeviceType.Sink:
