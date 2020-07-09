@@ -3,7 +3,7 @@ import { GameStats } from '../core/game.stats';
 import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
-import { textures } from '../core/game.config';
+import { gameConfig, textures } from '../core/game.config';
 
 export class GameScene extends Phaser.Scene {
 
@@ -58,7 +58,7 @@ export class GameScene extends Phaser.Scene {
 
     this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);//, this.flatMap.generatedBlocks[5][16]);
     for (const room of this.flatMap.rooms) {
-      room.overlapHuman(this.humanEntity);
+      room.overlapHuman(this.humanEntity, this.gameStats);
     }
 
     this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
@@ -66,7 +66,7 @@ export class GameScene extends Phaser.Scene {
     }, this);
 
     this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
-      this.humanEntity.makeDead();
+      this.gameStats.decreaseToStat('humanMood', gameConfig.vacuumProblem);
     });
   }
 
@@ -82,11 +82,11 @@ export class GameScene extends Phaser.Scene {
     if (time - this.perSecondTime > 1000) {
       this.perSecondTime = time;
 
-      for (const room of this.flatMap.rooms) {
-        this.gameStats.addToStat('electricity', room.electricityPerTick);
-      }
+      this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
+      this.gameStats.addToStat('water', this.flatMap.waterDevices.consumePerTick);
 
       console.log('electricity', this.gameStats.getStat('electricity'));
+      console.log('water', this.gameStats.getStat('water'));
     }
 
     //#endregion

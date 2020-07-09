@@ -1,8 +1,8 @@
 import { IElectricityObject } from '../core/interfaces';
+import { gameConfig } from '../core/game.config';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
-import { RoomGroup } from '../groups/room.group';
 import { DeviceType } from '../actions/action-group.base';
 
 export class Teapot extends DeviceInteractiveEntity implements IElectricityObject {
@@ -13,7 +13,7 @@ export class Teapot extends DeviceInteractiveEntity implements IElectricityObjec
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
     super(scene, blocksGroup, 'teapot', DeviceType.Teapot);
 
-    this.electricityConsumePerTime = 0.05;
+    this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.teapot;
     this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
 
@@ -30,11 +30,5 @@ export class Teapot extends DeviceInteractiveEntity implements IElectricityObjec
     super.turnOff();
 
     this.setTexture('teapot');
-  }
-
-  addGroup(group: RoomGroup) {
-    super.addGroup(group);
-
-    group.addDevice(this);
   }
 }

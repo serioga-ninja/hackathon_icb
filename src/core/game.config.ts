@@ -6,7 +6,29 @@ export const gameConfig: any = {
   debug: false,
   playerWidth: 20,
   allowToKill: false,
-  speedOfWaiting: 500
+  speedOfWaiting: 500,
+  moodDestroyers: {
+    lightsOff: 0.05,
+    vacuumProblem: 0.05,
+  },
+  consumePerTick: {
+    water: {
+      bath: 0.05,
+      sink: 0.05,
+    },
+    electricity: {
+      light: 0.05,
+      tv: 0.05,
+      fan: 0.05,
+      vacuum: 0.05,
+      teapot: 0.05,
+      fridge: 0.05,
+      music: 0.05,
+      microwave: 0.05,
+      oven: 0.05,
+      computer: 0.05,
+    }
+  }
 };
 
 export const tileSize: number = gameConfig.height / 13;

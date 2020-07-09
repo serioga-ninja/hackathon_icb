@@ -1,8 +1,8 @@
+import { gameConfig } from '../core/game.config';
 import { IElectricityObject } from '../core/interfaces';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
-import { RoomGroup } from '../groups/room.group';
 import { DeviceType } from '../actions/action-group.base';
 
 export class Computer extends DeviceInteractiveEntity implements IElectricityObject {
@@ -14,12 +14,12 @@ export class Computer extends DeviceInteractiveEntity implements IElectricityObj
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
     super(scene, blocksGroup, 'computer', DeviceType.Computer);
 
-    this.electricityConsumePerTime = 0.05;
+    this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.computer;
     this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
 
-    let x = blocksGroup.children.entries[0].x,
-        y = blocksGroup.children.entries[0].y;
+    let x = blocksGroup.children.entries[0].x;
+    let y = blocksGroup.children.entries[0].y;
 
     this.turnOnOverlay = new Phaser.Geom.Polygon([
       x + 52, y + 13,
@@ -43,12 +43,5 @@ export class Computer extends DeviceInteractiveEntity implements IElectricityObj
     super.turnOff();
 
     this.graphics.clear();
-  }
-
-
-  addGroup(group: RoomGroup) {
-    super.addGroup(group);
-
-    group.addDevice(this);
   }
 }
