@@ -6,7 +6,7 @@ export class DoorGroup extends GroupBase {
   private connectedRooms: RoomGroup[];
 
   get groupType() {
-    return EGroupTypes.doors;
+    return EGroupTypes.Doors;
   }
 
   constructor(scene: Phaser.Scene, children?: Phaser.GameObjects.GameObject[] | Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig, config?: Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig) {

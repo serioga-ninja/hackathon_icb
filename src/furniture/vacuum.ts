@@ -1,3 +1,4 @@
+import { DeviceType } from '../actions/action-group.base';
 import { MoveToWrapper } from '../core/move-to-wrapper';
 import { NavigationLogic } from '../core/navigation.logic';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
@@ -14,7 +15,7 @@ export class Vacuum extends DeviceInteractiveEntity {
   private moveToWrapper: MoveToWrapper;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, navigationLogic: NavigationLogic, movableBlocks: FlatBlockEntity[]) {
-    super(scene, blocksGroup, 'vacuum');
+    super(scene, blocksGroup, 'vacuum', DeviceType.Vacuum);
 
     this.navigationLogic = navigationLogic;
     this.currentPosition = blocksGroup.getChildren()[0] as FlatBlockEntity;

@@ -17,7 +17,7 @@ export class RoomGroup extends GroupBase {
   public relatedRooms: RoomGroup[];
 
   get groupType() {
-    return EGroupTypes.room;
+    return EGroupTypes.Room;
   }
 
   get movableBlocks(): FlatBlockEntity[] {

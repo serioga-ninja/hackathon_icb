@@ -5,7 +5,7 @@ import { RoomGroup } from '../groups/room.group';
 export class Light extends DeviceInteractiveEntity {
 
   onPointerdown() {
-    const rooms = this.getGroup(EGroupTypes.room) as RoomGroup;
+    const rooms = this.getGroup(EGroupTypes.Room) as RoomGroup;
     rooms.toggleLight();
   }
 }

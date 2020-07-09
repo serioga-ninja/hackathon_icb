@@ -23,6 +23,7 @@ import { Microwave } from './furniture/microwave';
 import { Oven } from './furniture/oven';
 import { Computer } from './furniture/computer';
 import { Sink } from './furniture/sink';
+import { WallsGroup } from './groups/walls.group';
 
 const sprayMap = [
   'wallG',
@@ -34,12 +35,6 @@ const sprayMap = [
   'door'
 ];
 
-export interface ITileEntity {
-  cordX: number;
-  cordY: number;
-  houseParticleType: EHouseParticles;
-}
-
 // [x, y]
 const relatedCoordinatesHelper = [
   [0, -1],
@@ -47,6 +42,24 @@ const relatedCoordinatesHelper = [
   [1, 0],
   [0, 1],
 ];
+
+class BlockTypeWrapper {
+
+  blockType: EHouseParticles;
+
+  get isWall() {
+    return [
+      EHouseParticles.Wall,
+      EHouseParticles.WallG,
+      EHouseParticles.WallT,
+      EHouseParticles.WallX
+    ].indexOf(this.blockType) !== -1;
+  }
+
+  constructor(blockType: string) {
+    this.blockType = parseInt(blockType) as EHouseParticles;
+  }
+}
 
 export class FlatMap {
   generatedBlocks: FlatBlockEntity[][];
@@ -58,9 +71,10 @@ export class FlatMap {
   scene: Phaser.Scene;
   devices: DeviceEntity[];
   vacuum: Vacuum;
+  walls: WallsGroup;
 
   get startBlock() {
-    return this.generatedBlocks[2][17];
+    return this.generatedBlocks[12][12];
   }
 
   constructor(scene: Phaser.Scene) {
@@ -70,6 +84,7 @@ export class FlatMap {
     this.parsedMap = [];
     this.doors = [];
     this.devices = [];
+    this.walls = new WallsGroup(scene);
     this.movableBlocks = [];
     this.flatGroup = new FlatGroup(scene);
   }
@@ -81,6 +96,8 @@ export class FlatMap {
     this.generateDoors();
     this.generateRooms();
     this.generateDoorsEntranceBlocks();
+
+    this.walls.correctWallSprites(this.generatedBlocks);
   }
 
   getDevices(type: DeviceType) {
@@ -95,7 +112,11 @@ export class FlatMap {
 
     this.devices.push(...flatDevices);
     this.devices.push(...flatFurnitures);
-    this.movableBlocks = this.movableBlocks.filter((block) => block.isMovable);
+
+
+    const movableBlocks = this.movableBlocks.filter((block) => block.isMovable);
+    this.movableBlocks.length = 0;
+    this.movableBlocks.push(...movableBlocks);
   }
 
   compileFurniture(navigationLogic: NavigationLogic, device: any, role?: DeviceType): DeviceEntity {
@@ -106,7 +127,7 @@ export class FlatMap {
       let block = this.generatedBlocks[elem[0]][elem[1]];
       blockGroup.push(block);
     });
-    const group = blockGroup[0].getGroup(EGroupTypes.room);
+    const group = blockGroup[0].getGroup(EGroupTypes.Room);
 
     switch (role) {
       case DeviceType.Light:
@@ -158,18 +179,24 @@ export class FlatMap {
   generateFlatSpriteBlocks(scene: Phaser.Scene) {
     this.generatedBlocks = this.parsedMap.map((row, y) => {
       return row.map((blockType, x) => {
+        const blockTypeWrapper = new BlockTypeWrapper(blockType);
+
         const block = new FlatBlockEntity(scene,
           (x * tileSize) + (tileSize / 2),
           (y * tileSize) + (tileSize / 2),
-          sprayMap[parseInt(blockType)],
+          sprayMap[blockTypeWrapper.blockType],
           {
             width: tileSize,
             height: tileSize,
-            blockType: parseInt(blockType),
+            blockType: blockTypeWrapper.blockType,
             matrix: { x, y }
           });
 
         this.flatGroup.add(block);
+
+        if (blockTypeWrapper.isWall) {
+          this.walls.add(block);
+        }
 
         return block;
       })
@@ -179,17 +206,10 @@ export class FlatMap {
   regenerateMapSymbolToEnum() {
     const enumTypeMap = houseMap
       .trim()
-      .replace(/1/g, EHouseParticles.Wall)
-      .replace(/0/g, EHouseParticles.WallG)
-      .replace(/2/g, EHouseParticles.WallT)
-      .replace(/\+/g, EHouseParticles.WallX)
-      .replace(/=/g, EHouseParticles.Door)
-      .replace(/@/g, EHouseParticles.Window)
-      .replace(/\./g, EHouseParticles.FreeSpace)
       .match(/.{1,21}/g);
 
     enumTypeMap.forEach((houseLine: string) => {
-      this.parsedMap.push([...<any>houseLine]);
+      this.parsedMap.push(houseLine.split(''));
     });
   }
 
@@ -227,7 +247,7 @@ export class FlatMap {
       block.addGroup(group);
 
       for (const relatedBlock of block.relatedMovableBlocks) {
-        if (relatedBlock.isDoor && !relatedBlock.hasGroup(EGroupTypes.doors)) {
+        if (relatedBlock.isDoor && !relatedBlock.hasGroup(EGroupTypes.Doors)) {
           generateGroupRecursive(relatedBlock, group);
         }
       }
@@ -236,7 +256,7 @@ export class FlatMap {
     };
 
     for (const block of this.movableBlocks) {
-      if (block.isDoor && !block.hasGroup(EGroupTypes.doors)) {
+      if (block.isDoor && !block.hasGroup(EGroupTypes.Doors)) {
         this.doors.push(generateGroupRecursive(block));
       }
     }
@@ -248,12 +268,12 @@ export class FlatMap {
       block.addGroup(group);
 
       for (const relatedBlock of block.relatedMovableBlocks) {
-        if (relatedBlock.isDoor && relatedBlock.hasGroup(EGroupTypes.doors)) {
-          const doorGroup = relatedBlock.getGroup(EGroupTypes.doors) as DoorGroup;
+        if (relatedBlock.isDoor && relatedBlock.hasGroup(EGroupTypes.Doors)) {
+          const doorGroup = relatedBlock.getGroup(EGroupTypes.Doors) as DoorGroup;
           group.addDoors(doorGroup);
           doorGroup.addRoom(group);
           relatedBlock.addGroup(group);
-        } else if (relatedBlock.isMovable && !relatedBlock.hasGroup(EGroupTypes.room)) {
+        } else if (relatedBlock.isMovable && !relatedBlock.hasGroup(EGroupTypes.Room)) {
           generateGroupRecursive(relatedBlock, group);
         }
       }
@@ -262,7 +282,7 @@ export class FlatMap {
     }
 
     for (const block of this.movableBlocks) {
-      if (block.isMovable && !block.isDoor && !block.hasGroup(EGroupTypes.room)) {
+      if (block.isMovable && !block.isDoor && !block.hasGroup(EGroupTypes.Room)) {
         this.rooms.push(generateGroupRecursive(block));
       }
     }
