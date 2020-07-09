@@ -7,6 +7,10 @@ export const gameConfig: any = {
   playerWidth: 20,
   allowToKill: false,
   speedOfWaiting: 500,
+  moodDestroyers: {
+    lightsOff: 0.05,
+    vacuumProblem: 0.05,
+  },
   consumePerTick: {
     water: {
       bath: 0.05,

@@ -1,15 +1,15 @@
+import { gameConfig } from '../core/game.config';
+import { GameStats } from '../core/game.stats';
 import { EGroupTypes, GroupBase } from '../core/group.base';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { DoorGroup } from './door.group';
-import Timeout = NodeJS.Timeout;
 
 export class RoomGroup extends GroupBase {
 
   private electricityDevicesPerTick: number;
   private connectedDoors: DoorGroup[];
   private lightsOn: boolean;
-  private timeToDieTimer: Timeout;
 
   public relatedRooms: RoomGroup[];
 
@@ -19,10 +19,6 @@ export class RoomGroup extends GroupBase {
 
   get movableBlocks(): FlatBlockEntity[] {
     return this.getChildren().filter((block: FlatBlockEntity) => block.isMovable) as FlatBlockEntity[];
-  }
-
-  get electricityPerTick(): number {
-    return !this.lightsOn ? 0 : this.getChildren().length * FlatBlockEntity.ElectricityPerTick;
   }
 
   constructor(scene: Phaser.Scene, children?: Phaser.GameObjects.GameObject[] | Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig, config?: Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig) {
@@ -35,17 +31,10 @@ export class RoomGroup extends GroupBase {
   }
 
 
-  overlapHuman(human: HumanEntity) {
+  overlapHuman(human: HumanEntity, gameStats: GameStats) {
     this.scene.physics.add.overlap(this, human, () => {
       if (!this.lightsOn) {
-        this.timeToDieTimer = setTimeout(() => {
-          const isOverlapping = this.scene.physics.world.overlap(this, human);
-          if (!this.lightsOn && isOverlapping) {
-            human.makeDead();
-          }
-        }, 1000);
-      } else if (this.lightsOn && this.timeToDieTimer) {
-        clearTimeout(this.timeToDieTimer);
+        gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.lightsOff);
       }
     });
   }

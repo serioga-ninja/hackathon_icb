@@ -1,6 +1,8 @@
 export interface IGameStats {
   electricity: number;
   water: number;
+  humanMood: number;
+  money: number;
 }
 
 export class GameStats {
@@ -8,7 +10,10 @@ export class GameStats {
   stats: IGameStats;
 
   constructor() {
-    this.stats = {} as IGameStats;
+    this.stats = {
+      humanMood: 100,
+      money: 100,
+    } as IGameStats;
   }
 
   getStat<K extends keyof IGameStats>(key: K): IGameStats[K] {
@@ -24,6 +29,14 @@ export class GameStats {
       this.stats[key] = value;
     } else {
       this.stats[key] += value;
+    }
+  }
+
+  decreaseToStat<K extends keyof IGameStats>(key: K, value: number) {
+    if (typeof this.stats[key] !== 'number') {
+      this.stats[key] = value;
+    } else {
+      this.stats[key] -= value;
     }
   }
 
