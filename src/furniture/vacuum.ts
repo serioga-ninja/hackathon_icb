@@ -23,6 +23,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   private chargeBlock: FlatBlockEntity;
   private garbageGroup: GarbageGroup;
   private moveToWrapper: MoveToWrapper;
+  private _movingAnimationTime: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, navigationLogic: NavigationLogic, garbageGroup: GarbageGroup) {
     super(scene, blocksGroup, 'vacuum', DeviceType.Vacuum);
@@ -33,6 +34,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.vacuum;
     this.garbageGroup = garbageGroup;
     this.scene.physics.world.enableBody(this, DYNAMIC_BODY);
+    this._movingAnimationTime = 0;
   }
 
   garbageAdded(movableBlocksGroup: MovableBlocksGroup) {
@@ -72,9 +74,17 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   turnOn() {
     super.turnOn();
 
+    this.setTexture('vacuum-on1');
+
     if (!this.path) {
       this.generateNewPath();
     }
+  }
+
+  turnOff() {
+    super.turnOff();
+
+    this.setTexture('vacuum');
   }
 
   update(time: number) {
@@ -84,6 +94,16 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     this.x = point.x;
     this.y = point.y;
     this.angle = this.moveToWrapper.angle;
+
+    if (time - this._movingAnimationTime > 200) {
+      if (this.texture.key === 'vacuum-on1') {
+        this.setTexture('vacuum-on2');
+      } else {
+        this.setTexture('vacuum-on1');
+      }
+
+      this._movingAnimationTime = time;
+    }
 
     if (this.widthTo(this.moveToWrapper.moveToPosition) < 1) {
       this.currentPosition = this.moveToWrapper.moveToPosition;

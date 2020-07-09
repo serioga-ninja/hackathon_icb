@@ -156,6 +156,14 @@ export const textures: any = [
     path: 'textures/furniture/vacuum.png'
   },
   {
+    key: 'vacuum-on1',
+    path: 'textures/furniture/vacuum-on1.png'
+  },
+  {
+    key: 'vacuum-on2',
+    path: 'textures/furniture/vacuum-on2.png'
+  },
+  {
     key: 'flower',
     path: 'textures/furniture/flower.png'
   },
