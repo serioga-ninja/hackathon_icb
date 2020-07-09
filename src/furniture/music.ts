@@ -5,16 +5,19 @@ import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { DeviceType } from '../actions/action-group.base';
 
+const spriteTextures: any = {
+  off: 'music',
+  on: 'musicOn'
+};
+
 export class Music extends DeviceInteractiveEntity implements IElectricityObject {
   placeToInteract: FlatBlockEntity;
-  graphics: Phaser.GameObjects.Graphics;
   electricityConsumePerTime: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
-    super(scene, blocksGroup, 'music', DeviceType.Music);
+    super(scene, blocksGroup, spriteTextures.off, DeviceType.Music);
 
     this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.music;
-    this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
 
     this.setInteractive();
@@ -23,12 +26,12 @@ export class Music extends DeviceInteractiveEntity implements IElectricityObject
   turnOn() {
     if (this.deviceState === EDeviceState.Working) return;
     this.deviceState = EDeviceState.Working;
-    this.setTexture('musicOn');
+    this.setTexture(spriteTextures.on);
   }
 
   turnOff() {
     super.turnOff();
 
-    this.setTexture('music');
+    this.setTexture(spriteTextures.off);
   }
 }

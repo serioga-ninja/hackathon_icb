@@ -5,6 +5,11 @@ import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { DeviceType } from '../actions/action-group.base';
 
+const spriteTextures: any = {
+  off: 'fridge',
+  on: 'fridgeOn'
+};
+
 export class Fridge extends DeviceInteractiveEntity implements IElectricityObject {
   placeToInteract: FlatBlockEntity;
   turnOnOverlay: Phaser.Geom.Polygon;
@@ -12,7 +17,7 @@ export class Fridge extends DeviceInteractiveEntity implements IElectricityObjec
   electricityConsumePerTime: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
-    super(scene, blocksGroup, 'fridge', DeviceType.Fridge);
+    super(scene, blocksGroup, spriteTextures.off, DeviceType.Fridge);
 
     this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.fridge;
     this.graphics = scene.add.graphics();
@@ -37,13 +42,13 @@ export class Fridge extends DeviceInteractiveEntity implements IElectricityObjec
     this.deviceState = EDeviceState.Working;
     this.graphics.fillGradientStyle(0xffccffAA, 0xffccffAA, 0xffccffFF, 0xffccffFF, .3);
     this.graphics.fillPoints(this.turnOnOverlay.points, true);
-    this.setTexture('fridgeOn');
+    this.setTexture(spriteTextures.on);
   }
 
   turnOff() {
     super.turnOff();
 
     this.graphics.clear();
-    this.setTexture('fridge');
+    this.setTexture(spriteTextures.off);
   }
 }

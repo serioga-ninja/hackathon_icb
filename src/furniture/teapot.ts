@@ -5,16 +5,19 @@ import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { DeviceType } from '../actions/action-group.base';
 
+const spriteTextures: any = {
+  off: 'teapot',
+  on: 'teapotOn'
+};
+
 export class Teapot extends DeviceInteractiveEntity implements IElectricityObject {
   placeToInteract: FlatBlockEntity;
-  graphics: Phaser.GameObjects.Graphics;
   electricityConsumePerTime: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
-    super(scene, blocksGroup, 'teapot', DeviceType.Teapot);
+    super(scene, blocksGroup, spriteTextures.off, DeviceType.Teapot);
 
     this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.teapot;
-    this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
 
     this.setInteractive();
@@ -23,12 +26,12 @@ export class Teapot extends DeviceInteractiveEntity implements IElectricityObjec
   turnOn() {
     if (this.deviceState === EDeviceState.Working) return;
     this.deviceState = EDeviceState.Working;
-    this.setTexture('teapotOn');
+    this.setTexture(spriteTextures.on);
   }
 
   turnOff() {
     super.turnOff();
 
-    this.setTexture('teapot');
+    this.setTexture(spriteTextures.off);
   }
 }

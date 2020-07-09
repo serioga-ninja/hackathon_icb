@@ -11,6 +11,9 @@ import { PlayComputerGroup } from './play-computer.group';
 import { TakeBathGroup } from './take-bath.group';
 import { OpenFridgeGroup } from './open-fridge.group';
 import { DrinkTeaGroup } from './drink-tea.group';
+import { TurnOvenGroup } from './turn-oven.group';
+import { UseMicrowaveGroup } from './use-microwave.group';
+import { UseSinkGroup } from './use-sink.group';
 
 export class ActionsLogic {
   private flatGroup: FlatGroup;
@@ -32,7 +35,7 @@ export class ActionsLogic {
   generateAction(): ActionGroupBase {
     const oldActionType = !!this.activeActionGroup ? this.activeActionGroup.actionType : -1;
     const min = 0;
-    const max = 6;
+    const max = 1;
     const rnd = Math.floor(min + Math.random() * (max + 1 - min));
     
     let actionGroup: ActionGroupBase;
@@ -40,7 +43,7 @@ export class ActionsLogic {
       case EActionTypes.GoTo:
         actionGroup = new GoToActionGroup(this.human, this.flatMap, this.navigationLogic);
         break;
-      case EActionTypes.WatchTV:
+      /*case EActionTypes.WatchTV:
         actionGroup = new WatchTVGroup(this.human, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.ListenMusic:
@@ -57,6 +60,15 @@ export class ActionsLogic {
         break;
       case EActionTypes.DrinkTea:
         actionGroup = new DrinkTeaGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case EActionTypes.TurnOven:
+        actionGroup = new TurnOvenGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case EActionTypes.UseMicrowave:
+        actionGroup = new UseMicrowaveGroup(this.human, this.flatMap, this.navigationLogic);
+        break;*/
+      case EActionTypes.UseSink:
+        actionGroup = new UseSinkGroup(this.human, this.flatMap, this.navigationLogic);
         break;
     }
 

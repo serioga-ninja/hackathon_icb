@@ -1,18 +1,37 @@
-import { DeviceType } from '../actions/action-group.base';
 import { gameConfig } from '../core/game.config';
 import { IElectricityObject } from '../core/interfaces';
-import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
+import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
+import { DeviceType } from '../actions/action-group.base';
+
+const spriteTextures: any = {
+  off: 'microwave',
+  on: 'microwaveOn'
+};
 
 export class Microwave extends DeviceInteractiveEntity implements IElectricityObject {
   placeToInteract: FlatBlockEntity;
   electricityConsumePerTime: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
-    super(scene, blocksGroup, 'microwave', DeviceType.Microwave);
+    super(scene, blocksGroup, spriteTextures.off, DeviceType.Microwave);
 
-    this.placeToInteract = placeToInteract;
     this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.microwave;
+    this.placeToInteract = placeToInteract;
+
+    this.setInteractive();
+  }
+
+  turnOn() {
+    if (this.deviceState === EDeviceState.Working) return;
+    this.deviceState = EDeviceState.Working;
+    this.setTexture(spriteTextures.on);
+  }
+
+  turnOff() {
+    super.turnOff();
+
+    this.setTexture(spriteTextures.off);
   }
 }

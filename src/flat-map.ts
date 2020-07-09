@@ -133,7 +133,10 @@ export class FlatMap {
       let block = this.generatedBlocks[elem[0]][elem[1]];
       blockGroup.push(block);
     });
+
     const group = blockGroup[0].getGroup(EGroupTypes.Room);
+    const x = device.blocks[0][0];
+    const y = device.blocks[0][1];
 
     switch (role) {
       case DeviceType.Light:
@@ -141,7 +144,7 @@ export class FlatMap {
         this.electricDevices.add(furniture);
         break;
       case DeviceType.TV:
-        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1] + 1]);
+        furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x + 1][y + 1]);
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Fan:
@@ -153,35 +156,35 @@ export class FlatMap {
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Bath:
-        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1] + 1]);
+        furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x + 1][y + 1]);
         this.waterDevices.add(furniture);
         break;
       case DeviceType.Sink:
-        furniture = new Sink(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);
+        furniture = new Sink(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x + 1][y], device.key);
         this.waterDevices.add(furniture);
         break;
       case DeviceType.Teapot:
-        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1]]);
+        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x - 1][y]);
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Fridge:
-        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1]]);
+        furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x - 1][y]);
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Music:
-        furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1]]);
+        furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x + 1][y]);
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Microwave:
-        furniture = new Microwave(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);
+        furniture = new Microwave(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x + 1][y]);
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Oven:
-        furniture = new Oven(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);
+        furniture = new Oven(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x + 1][y]);
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Computer:
-        furniture = new Computer(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1] + 1]);
+        furniture = new Computer(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x - 1][y + 1]);
         this.electricDevices.add(furniture);
         break;
       default:

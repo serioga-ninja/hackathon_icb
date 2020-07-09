@@ -6,7 +6,7 @@ export const gameConfig: any = {
   debug: false,
   playerWidth: 20,
   allowToKill: false,
-  speedOfWaiting: 500,
+  speedOfWaiting: 100,
   moodDestroyers: {
     lightsOff: 0.05,
     vacuumProblem: 0.05,
@@ -178,8 +178,16 @@ export const textures: any = [
     path: 'textures/furniture/sink.png'
   },
   {
+    key: 'sinkOn',
+    path: 'textures/furniture/sink-on.png'
+  },
+  {
     key: 'sinkBath',
     path: 'textures/furniture/sinkBath.png'
+  },
+  {
+    key: 'sinkBathOn',
+    path: 'textures/furniture/sinkBath-on.png'
   },
   {
     key: 'kitchen',
@@ -190,8 +198,16 @@ export const textures: any = [
     path: 'textures/furniture/microwave.png'
   },
   {
+    key: 'microwaveOn',
+    path: 'textures/furniture/microwave-on.png'
+  },
+  {
     key: 'oven',
     path: 'textures/furniture/oven.png'
+  },
+  {
+    key: 'ovenOn',
+    path: 'textures/furniture/oven-on.png'
   },
   {
     key: 'chair',
