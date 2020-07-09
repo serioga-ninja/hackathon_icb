@@ -80,6 +80,10 @@ export const textures: any = [
     path: 'textures/furniture/table.png'
   },
   {
+    key: 'table2',
+    path: 'textures/furniture/table2.png'
+  },
+  {
     key: 'bed',
     path: 'textures/furniture/bed.png'
   },
@@ -106,6 +110,10 @@ export const textures: any = [
   {
     key: 'teapot',
     path: 'textures/furniture/teapot.png'
+  },
+  {
+    key: 'teapotOn',
+    path: 'textures/furniture/teapot-on.png'
   },
   {
     key: 'tv',
@@ -166,6 +174,10 @@ export const textures: any = [
   {
     key: 'chair',
     path: 'textures/furniture/chair.png'
+  },
+  {
+    key: 'books',
+    path: 'textures/furniture/books.png'
   },
 ];
 
@@ -269,6 +281,11 @@ export const furnitures: any = [
     type: DeviceType.Simple
   },
   {
+    blocks: [[3, 17]],
+    key: 'table2',
+    type: DeviceType.Simple
+  },
+  {
     blocks: [[8, 1], [8, 2]],
     key: 'bed',
     type: DeviceType.Simple
@@ -331,6 +348,11 @@ export const furnitures: any = [
   {
     blocks: [[10, 6]],
     key: 'chair',
+    type: DeviceType.Simple
+  },
+  {
+    blocks: [[11, 18]],
+    key: 'books',
     type: DeviceType.Simple
   }
 ]
