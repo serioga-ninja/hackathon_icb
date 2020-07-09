@@ -112,7 +112,11 @@ export class FlatMap {
 
     this.devices.push(...flatDevices);
     this.devices.push(...flatFurnitures);
-    this.movableBlocks = this.movableBlocks.filter((block) => block.isMovable);
+
+
+    const movableBlocks = this.movableBlocks.filter((block) => block.isMovable);
+    this.movableBlocks.length = 0;
+    this.movableBlocks.push(...movableBlocks);
   }
 
   compileFurniture(navigationLogic: NavigationLogic, device: any, role?: DeviceType): DeviceEntity {
