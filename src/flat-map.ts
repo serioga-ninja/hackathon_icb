@@ -25,6 +25,7 @@ import { Oven } from './furniture/oven';
 import { Computer } from './furniture/computer';
 import { Sink } from './furniture/sink';
 import { WallsGroup } from './groups/walls.group';
+import { WaterDevicesGroup } from './groups/water-devices.group';
 
 const sprayMap = [
   'wallG',
@@ -74,6 +75,7 @@ export class FlatMap {
   vacuum: Vacuum;
   walls: WallsGroup;
   electricDevices: ElectricDevicesGroup;
+  waterDevices: WaterDevicesGroup;
 
   get startBlock() {
     return this.generatedBlocks[12][12];
@@ -90,6 +92,7 @@ export class FlatMap {
     this.movableBlocks = [];
     this.flatGroup = new FlatGroup(scene);
     this.electricDevices = new ElectricDevicesGroup(scene);
+    this.waterDevices = new WaterDevicesGroup(scene);
   }
 
   init() {
@@ -151,9 +154,11 @@ export class FlatMap {
         break;
       case DeviceType.Bath:
         furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1] + 1]);
+        this.waterDevices.add(furniture);
         break;
       case DeviceType.Sink:
-        furniture = new Sink(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Sink(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);
+        this.waterDevices.add(furniture);
         break;
       case DeviceType.Teapot:
         furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);

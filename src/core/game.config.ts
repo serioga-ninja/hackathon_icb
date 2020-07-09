@@ -8,6 +8,10 @@ export const gameConfig: any = {
   allowToKill: false,
   speedOfWaiting: 500,
   consumePerTick: {
+    water: {
+      bath: 0.05,
+      sink: 0.05,
+    },
     electricity: {
       light: 0.05,
       tv: 0.05,

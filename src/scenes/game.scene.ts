@@ -83,8 +83,10 @@ export class GameScene extends Phaser.Scene {
       this.perSecondTime = time;
 
       this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
+      this.gameStats.addToStat('water', this.flatMap.waterDevices.consumePerTick);
 
       console.log('electricity', this.gameStats.getStat('electricity'));
+      console.log('water', this.gameStats.getStat('water'));
     }
 
     //#endregion
