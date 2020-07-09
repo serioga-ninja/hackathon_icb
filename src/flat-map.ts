@@ -43,7 +43,7 @@ export interface ITileEntity {
 // [x, y]
 const relatedCoordinatesHelper = [
   [0, -1],
-  [-1, 0], 
+  [-1, 0],
   [1, 0],
   [0, 1],
 ];
@@ -60,7 +60,7 @@ export class FlatMap {
   vacuum: Vacuum;
 
   get startBlock() {
-    return this.generatedBlocks[12][12];
+    return this.generatedBlocks[2][17];
   }
 
   constructor(scene: Phaser.Scene) {
@@ -90,11 +90,12 @@ export class FlatMap {
   }
 
   generateDevices(navigationLogic: NavigationLogic) {
-    let flatDevices = devices.map((c: any) => this.compileFurniture(navigationLogic, c, c.type)),
-        flatFurnitures = furnitures.map((c: any) => this.compileFurniture(navigationLogic, c));
+    let flatDevices = devices.map((c: any) => this.compileFurniture(navigationLogic, c, c.type));
+    let flatFurnitures = furnitures.map((c: any) => this.compileFurniture(navigationLogic, c));
 
     this.devices.push(...flatDevices);
     this.devices.push(...flatFurnitures);
+    this.movableBlocks = this.movableBlocks.filter((block) => block.isMovable);
   }
 
   compileFurniture(navigationLogic: NavigationLogic, device: any, role?: DeviceType): DeviceEntity {
@@ -147,7 +148,7 @@ export class FlatMap {
       default:
         furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
     }
- 
+
     furniture.addGroup(group);
 
     return furniture;

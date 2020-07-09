@@ -70,11 +70,11 @@ export class NavigationLogic {
     return availablePathList;
   }
 
-  private findPath(path: FlatBlockEntity[], humanPosition: FlatBlockEntity): FlatBlockEntity[] {
+  private findPath(path: FlatBlockEntity[], startBlock: FlatBlockEntity): FlatBlockEntity[] {
     const currentPathBlock = path[path.length - 1];
-    const relatedFinalBlock = currentPathBlock.relatedMovableBlocks.find((b) => b.objID === humanPosition.objID);
+    const relatedFinalBlock = currentPathBlock.relatedMovableBlocks.find((b) => b.objID === startBlock.objID);
 
-    // we find the last humanPosition
+    // we find the last startBlock
     if (relatedFinalBlock) {
       return path;
     }
@@ -101,17 +101,10 @@ export class NavigationLogic {
     for (const relatedBlock of currentPathBlock.relatedMovableBlocks) {
       if (typeof relatedBlock.waveValue !== 'number' || relatedBlock.waveValue >= currentPathBlock.waveValue) continue;
 
-      const foundPath = this.findPath([...path, relatedBlock], humanPosition);
+      const foundPath = this.findPath([...path, relatedBlock], startBlock);
       if (foundPath.length < res.length) {
         res = foundPath;
       }
-    }
-
-    if (!res[0]) {
-      console.error(`Can't find path!`, path[0], humanPosition);
-      debugger;
-
-      return [];
     }
 
     return res;
