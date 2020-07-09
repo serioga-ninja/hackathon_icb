@@ -22,7 +22,12 @@ export class UseSinkGroup extends ActionGroupBase {
   constructor(human: HumanEntity, flatMap: FlatMap, navigationLogic: NavigationLogic) {
     super(human);
 
-    this.sinkBlock = flatMap.getDevices(DeviceType.Sink)[0] as Sink;
+    const min = 0;
+    const max = flatMap.getDevices(DeviceType.Sink).length - 1;
+    const rnd = Math.floor(min + Math.random() * (max + 1 - min));
+
+
+    this.sinkBlock = flatMap.getDevices(DeviceType.Sink)[rnd] as Sink;
     this.humanSitBlock = this.sinkBlock.placeToInteract;
     this.navigationLogic = navigationLogic;
   }

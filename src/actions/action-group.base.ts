@@ -5,14 +5,14 @@ import { gameConfig } from '../core/game.config';
 
 export enum EActionTypes {
   GoTo,
-  /*WatchTV,
+  WatchTV,
   ListenMusic,
   PlayComputer,
   TakeBath,
   OpenFridge,
   DrinkTea,
   TurnOven,
-  UseMicrowave,*/
+  UseMicrowave,
   UseSink,
   Welcome,
 }

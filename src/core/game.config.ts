@@ -6,8 +6,8 @@ export const gameConfig = {
   debug: false,
   playerWidth: 20,
   allowToKill: false,
-  speedOfWaiting: 500,
-  throwGarbageOncePerSec: 10,
+  speedOfWaiting: 100,
+  throwGarbageOncePerSec: 25,
   speed: {
     human: 3,
     vacuum: 2

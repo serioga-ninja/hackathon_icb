@@ -37,7 +37,7 @@ export class ActionsLogic {
   generateAction(): ActionGroupBase {
     const oldActionType = !!this.activeActionGroup ? this.activeActionGroup.actionType : -1;
     const min = 0;
-    const max = 1;
+    const max = 9;
     const rnd = Math.floor(min + Math.random() * (max + 1 - min));
 
     let actionGroup: ActionGroupBase;
@@ -45,7 +45,7 @@ export class ActionsLogic {
       case EActionTypes.GoTo:
         actionGroup = new GoToActionGroup(this.human, this.flatMap, this.navigationLogic);
         break;
-      /*case EActionTypes.WatchTV:
+      case EActionTypes.WatchTV:
         actionGroup = new WatchTVGroup(this.human, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.ListenMusic:
@@ -68,7 +68,7 @@ export class ActionsLogic {
         break;
       case EActionTypes.UseMicrowave:
         actionGroup = new UseMicrowaveGroup(this.human, this.flatMap, this.navigationLogic);
-        break;*/
+        break;
       case EActionTypes.UseSink:
         actionGroup = new UseSinkGroup(this.human, this.flatMap, this.navigationLogic);
         break;
