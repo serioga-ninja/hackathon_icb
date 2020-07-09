@@ -7,7 +7,6 @@ import { DeviceType } from '../actions/action-group.base';
 
 export class Music extends DeviceInteractiveEntity implements IElectricityObject {
   placeToInteract: FlatBlockEntity;
-  turnOnOverlay: Phaser.Geom.Polygon;
   graphics: Phaser.GameObjects.Graphics;
   electricityConsumePerTime: number;
 

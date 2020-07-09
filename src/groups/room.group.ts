@@ -75,7 +75,7 @@ export class RoomGroup extends GroupBase {
   toggleLight() {
     this.lightsOn = !this.lightsOn;
     this.getChildren().forEach((sprite: FlatBlockEntity) => {
-      sprite.alpha = !this.lightsOn ? 0.6 : 1;
+      sprite.alpha = !this.lightsOn ? 0.5 : 1;
     })
   }
 

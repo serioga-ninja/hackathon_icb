@@ -10,7 +10,7 @@ import { ListenMusicGroup } from './listen-music.group';
 import { PlayComputerGroup } from './play-computer.group';
 import { TakeBathGroup } from './take-bath.group';
 import { OpenFridgeGroup } from './open-fridge.group';
-
+import { DrinkTeaGroup } from './drink-tea.group';
 
 export class ActionsLogic {
   private flatGroup: FlatGroup;
@@ -32,7 +32,7 @@ export class ActionsLogic {
   generateAction(): ActionGroupBase {
     const oldActionType = !!this.activeActionGroup ? this.activeActionGroup.actionType : -1;
     const min = 0;
-    const max = 5;
+    const max = 6;
     const rnd = Math.floor(min + Math.random() * (max + 1 - min));
     
     let actionGroup: ActionGroupBase;
@@ -54,6 +54,9 @@ export class ActionsLogic {
         break;
       case EActionTypes.OpenFridge:
         actionGroup = new OpenFridgeGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case EActionTypes.DrinkTea:
+        actionGroup = new DrinkTeaGroup(this.human, this.flatMap, this.navigationLogic);
         break;
     }
 

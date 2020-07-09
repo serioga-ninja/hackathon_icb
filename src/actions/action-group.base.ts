@@ -9,7 +9,8 @@ export enum EActionTypes {
   ListenMusic,
   PlayComputer,
   TakeBath,
-  OpenFridge
+  OpenFridge,
+  DrinkTea
 }
 
 export enum DeviceType {

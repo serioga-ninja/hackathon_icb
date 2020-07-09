@@ -12,7 +12,7 @@ export abstract class SpriteEntity extends Phaser.GameObjects.Sprite {
     this.objID = `${x}-${y}`;
     this.scene = scene;
     this.scene.add.existing(this)
-    this.alpha = 0.6;
+    this.alpha = 0.5;
     this.relatedGroups = [];
   }
 

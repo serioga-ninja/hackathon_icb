@@ -149,7 +149,7 @@ export class FlatMap {
         furniture = new Sink(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
       case DeviceType.Teapot:
-        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1]]);
         break;
       case DeviceType.Fridge:
         furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1]]);
