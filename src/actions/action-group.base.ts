@@ -14,6 +14,7 @@ export enum EActionTypes {
   TurnOven,
   UseMicrowave,
   UseSink,
+  UseToilet,
   Welcome,
 }
 
@@ -30,7 +31,8 @@ export enum DeviceType {
   Fridge,
   Microwave,
   Oven,
-  Computer
+  Computer,
+  Toilet
 }
 
 export abstract class ActionGroupBase {

@@ -21,6 +21,7 @@ export const gameConfig = {
     water: {
       bath: 0.05,
       sink: 0.05,
+      toilet: 0.05,
     },
     electricity: {
       light: 0.05,
@@ -37,7 +38,7 @@ export const gameConfig = {
   }
 };
 
-export const tileSize: number = gameConfig.height / 13;
+export const tileSize: number = gameConfig.height / 14;
 
 export const houseMap: string =
   '011115111121115111110\n' +
@@ -52,7 +53,8 @@ export const houseMap: string =
   '544444444464446444441\n' +
   '144444444414441444441\n' +
   '144444444414441444441\n' +
-  '011115111121612111110';
+  '011115111121612111110\n' +
+  '777777777777777777777';
 
 export const textures: any = [
   {
@@ -82,6 +84,14 @@ export const textures: any = [
   {
     key: 'door',
     path: 'textures/house/door.jpg'
+  },
+  {
+    key: 'grass',
+    path: 'textures/house/grass.jpg'
+  },
+  {
+    key: 'doorCarpet',
+    path: 'textures/house/carpet.png'
   },
   {
     key: 'human',
@@ -152,6 +162,10 @@ export const textures: any = [
     path: 'textures/furniture/fan.png'
   },
   {
+    key: 'fanOn',
+    path: 'textures/furniture/fan-on.png'
+  },
+  {
     key: 'vacuum',
     path: 'textures/furniture/vacuum.png'
   },
@@ -178,6 +192,10 @@ export const textures: any = [
   {
     key: 'toilet',
     path: 'textures/furniture/toilet.png'
+  },
+  {
+    key: 'toiletOn',
+    path: 'textures/furniture/toilet-on.png'
   },
   {
     key: 'music',
@@ -232,8 +250,24 @@ export const textures: any = [
     path: 'textures/furniture/books.png'
   },
   {
-    key: 'garbage',
-    path: 'textures/furniture/garbage.png'
+    key: 'apple',
+    path: 'textures/garbage/apple.png'
+  },
+  {
+    key: 'banana',
+    path: 'textures/garbage/banana.png'
+  },
+  {
+    key: 'bottle',
+    path: 'textures/garbage/bottle.png'
+  },
+  {
+    key: 'chips',
+    path: 'textures/garbage/chips.png'
+  },
+  {
+    key: 'paper',
+    path: 'textures/garbage/paper.png'
   },
 ];
 
@@ -327,6 +361,11 @@ export const devices: any = [
     blocks: [[11, 4], [11, 5], [11, 6]],
     key: 'computer',
     type: DeviceType.Computer
+  },
+  {
+    blocks: [[11, 19]],
+    key: 'toilet',
+    type: DeviceType.Toilet
   }
 ]
 
@@ -387,13 +426,13 @@ export const furnitures: any = [
     type: DeviceType.Simple
   },
   {
-    blocks: [[7, 8], [7, 9], [8, 8], [8, 9]],
-    key: 'flowerBig',
+    blocks: [[9, 19]],
+    key: 'flower',
     type: DeviceType.Simple
   },
   {
-    blocks: [[11, 19]],
-    key: 'toilet',
+    blocks: [[7, 8], [7, 9], [8, 8], [8, 9]],
+    key: 'flowerBig',
     type: DeviceType.Simple
   },
   {
@@ -410,5 +449,20 @@ export const furnitures: any = [
     blocks: [[11, 18]],
     key: 'books',
     type: DeviceType.Simple
-  }
+  },
+  /*{
+    blocks: [[13, 12]],
+    key: 'doorCarpet',
+    type: DeviceType.Simple
+  },
+  {
+    blocks: [[13, 11]],
+    key: 'flower',
+    type: DeviceType.Simple
+  },
+  {
+    blocks: [[13, 13]],
+    key: 'flower',
+    type: DeviceType.Simple
+  },*/
 ]

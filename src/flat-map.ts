@@ -27,6 +27,7 @@ import { Microwave } from './furniture/microwave';
 import { Oven } from './furniture/oven';
 import { Computer } from './furniture/computer';
 import { Sink } from './furniture/sink';
+import { Toilet } from './furniture/toilet';
 import { WallsGroup } from './groups/walls.group';
 import { WaterDevicesGroup } from './groups/water-devices.group';
 
@@ -37,7 +38,8 @@ const sprayMap = [
   'wallX',
   'floor',
   'window',
-  'door'
+  'door',
+  'grass'
 ];
 
 // [x, y]
@@ -194,6 +196,10 @@ export class FlatMap {
       case DeviceType.Computer:
         furniture = new Computer(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x - 1][y + 1]);
         this.electricDevices.add(furniture);
+        break;
+      case DeviceType.Toilet:
+        furniture = new Toilet(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x - 1][y]);
+        this.waterDevices.add(furniture);
         break;
       default:
         furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);

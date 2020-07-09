@@ -19,7 +19,8 @@ export enum EHouseParticles {
   WallX,
   FreeSpace,
   Window,
-  Door
+  Door,
+  Grass
 }
 
 const pathAvailableBlockTypes: EHouseParticles[] = [

@@ -14,6 +14,7 @@ import { DrinkTeaGroup } from './drink-tea.group';
 import { TurnOvenGroup } from './turn-oven.group';
 import { UseMicrowaveGroup } from './use-microwave.group';
 import { UseSinkGroup } from './use-sink.group';
+import { UseToiletGroup } from './use-toilet.group';
 import { WelcomeGroup } from './welcome.group';
 
 export class ActionsLogic {
@@ -37,7 +38,7 @@ export class ActionsLogic {
   generateAction(): ActionGroupBase {
     const oldActionType = !!this.activeActionGroup ? this.activeActionGroup.actionType : -1;
     const min = 0;
-    const max = 9;
+    const max = 10;
     const rnd = Math.floor(min + Math.random() * (max + 1 - min));
 
     let actionGroup: ActionGroupBase;
@@ -71,6 +72,9 @@ export class ActionsLogic {
         break;
       case EActionTypes.UseSink:
         actionGroup = new UseSinkGroup(this.human, this.flatMap, this.navigationLogic);
+        break;
+      case EActionTypes.UseToilet:
+        actionGroup = new UseToiletGroup(this.human, this.flatMap, this.navigationLogic);
         break;
     }
 

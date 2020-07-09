@@ -28,7 +28,7 @@ export class RoomGroup extends GroupBase {
     this.electricityDevicesPerTick = 0;
     this.connectedDoors = [];
     this.relatedRooms = [];
-    this.lightsOn = false;
+    this.lightOff();
   }
 
 
@@ -44,6 +44,13 @@ export class RoomGroup extends GroupBase {
       if (!this.lightsOn) {
         gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.lightsOff);
       }
+    });
+  }
+
+  lightOff() {
+    this.lightsOn = false;
+    this.getChildren().forEach((sprite: FlatBlockEntity) => {
+      sprite.alpha = !this.lightsOn ? 0.5 : 1;
     });
   }
 
