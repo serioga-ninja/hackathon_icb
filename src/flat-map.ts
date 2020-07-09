@@ -9,6 +9,7 @@ import { DoorGroup } from './groups/door.group';
 import { ElectricDevicesGroup } from './groups/electric-devices.group';
 import { FlatGroup } from './groups/flat.group';
 import { GarbageGroup } from './groups/garbage.group';
+import { MovableBlocksGroup } from './groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
 
@@ -68,6 +69,7 @@ class BlockTypeWrapper {
 export class FlatMap {
   generatedBlocks: FlatBlockEntity[][];
   movableBlocks: FlatBlockEntity[];
+  movableBlocksGroup: MovableBlocksGroup;
   parsedMap: string[][];
   flatGroup: FlatGroup;
   rooms: RoomGroup[];
@@ -97,6 +99,7 @@ export class FlatMap {
     this.electricDevices = new ElectricDevicesGroup(scene);
     this.waterDevices = new WaterDevicesGroup(scene);
     this.garbage = new GarbageGroup(scene, [], { createCallback: this.onGarbageAddCallback.bind(this) });
+    this.movableBlocksGroup = new MovableBlocksGroup(scene);
   }
 
   init() {
@@ -127,6 +130,7 @@ export class FlatMap {
     const movableBlocks = this.movableBlocks.filter((block) => block.isMovable);
     this.movableBlocks.length = 0;
     this.movableBlocks.push(...movableBlocks);
+    this.movableBlocksGroup.addMultiple(this.movableBlocks);
   }
 
   compileFurniture(navigationLogic: NavigationLogic, device: any, role?: DeviceType): DeviceEntity {
@@ -333,6 +337,6 @@ export class FlatMap {
   }
 
   onGarbageAddCallback(item: GarbageEntity) {
-    this.vacuum.garbageAdded();
+    this.vacuum.garbageAdded(this.movableBlocksGroup);
   }
 }

@@ -7,6 +7,7 @@ import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interact
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { GarbageEntity } from '../entity/garbage.entity';
 import { GarbageGroup } from '../groups/garbage.group';
+import { MovableBlocksGroup } from '../groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import DYNAMIC_BODY = Phaser.Physics.Arcade.DYNAMIC_BODY;
 
@@ -34,17 +35,17 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     this.scene.physics.world.enableBody(this, DYNAMIC_BODY);
   }
 
-  garbageAdded() {
+  garbageAdded(movableBlocksGroup: MovableBlocksGroup) {
     if (this.deviceState !== EDeviceState.Working) return;
 
-    this.currentPosition = this.overlapBlock;
+    this.currentPosition = movableBlocksGroup.getClosest(this.x, this.y);
     this.generateNewPath();
   }
 
   generateNewPath() {
     let startPosition = this.currentPosition;
     let endPosition = this.currentPosition;
-    this.path = new Phaser.Curves.Path(startPosition.x, startPosition.y);
+    this.path = new Phaser.Curves.Path(this.x, this.y);
 
     if (this.garbageGroup.getLength() === 0 && this.currentPosition.objID !== this.chargeBlock.objID) {
       // generate path to the charger
