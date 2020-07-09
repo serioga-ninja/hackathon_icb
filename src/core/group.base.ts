@@ -6,6 +6,8 @@ export enum EGroupTypes {
   Walls,
   ElectricDevices,
   WaterDevices,
+  Garbage,
+  MovableBlocks,
 }
 
 export abstract class GroupBase extends Phaser.GameObjects.Group {

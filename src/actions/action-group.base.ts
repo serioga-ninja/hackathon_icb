@@ -13,7 +13,8 @@ export enum EActionTypes {
   DrinkTea,
   TurnOven,
   UseMicrowave,*/
-  UseSink
+  UseSink,
+  Welcome,
 }
 
 export enum DeviceType {
@@ -45,10 +46,12 @@ export abstract class ActionGroupBase {
   protected activeAction: HumanActionBase;
 
   public speed = gameConfig.speedOfWaiting;
+  public inProgress: boolean;
 
   constructor(human: HumanEntity) {
     this.human = human;
     this._finished = false;
+    this.inProgress = false;
     this.actions = [];
   }
 

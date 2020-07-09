@@ -11,14 +11,14 @@ export class MoveToWrapper {
   angle: number;
   lastPosition: { x: number; y: number; };
 
-  constructor(currentPosition: FlatBlockEntity, moveToPosition: FlatBlockEntity, path: Phaser.Curves.Path) {
+  constructor(currentPosition: FlatBlockEntity, moveToPosition: FlatBlockEntity, path: Phaser.Curves.Path, speed: number) {
     this.moveToPosition = moveToPosition;
     this.currentPosition = currentPosition;
 
     this.path = path;
     this.position = 0;
     this.vec = new Phaser.Math.Vector2();
-    this.speed = 1 / (this.path.getLength() / 3);
+    this.speed = 1 / (this.path.getLength() / speed);
     this.lastPosition = { x: currentPosition.x, y: currentPosition.y };
   }
 

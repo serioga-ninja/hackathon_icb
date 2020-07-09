@@ -1,13 +1,19 @@
 import { DeviceType } from '../actions/action-group.base';
 
-export const gameConfig: any = {
+export const gameConfig = {
   width: window.innerWidth - 20,
   height: window.innerHeight - 20,
   debug: false,
   playerWidth: 20,
   allowToKill: false,
-  speedOfWaiting: 100,
+  speedOfWaiting: 500,
+  throwGarbageOncePerSec: 10,
+  speed: {
+    human: 3,
+    vacuum: 2
+  },
   moodDestroyers: {
+    garbage: 0.05,
     lightsOff: 0.05,
     vacuumProblem: 0.05,
   },
@@ -216,6 +222,10 @@ export const textures: any = [
   {
     key: 'books',
     path: 'textures/furniture/books.png'
+  },
+  {
+    key: 'garbage',
+    path: 'textures/furniture/garbage.png'
   },
 ];
 

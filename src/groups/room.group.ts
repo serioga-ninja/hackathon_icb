@@ -3,6 +3,7 @@ import { GameStats } from '../core/game.stats';
 import { EGroupTypes, GroupBase } from '../core/group.base';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
+import { Vacuum } from '../furniture/vacuum';
 import { DoorGroup } from './door.group';
 
 export class RoomGroup extends GroupBase {
@@ -32,7 +33,14 @@ export class RoomGroup extends GroupBase {
 
 
   overlapHuman(human: HumanEntity, gameStats: GameStats) {
-    this.scene.physics.add.overlap(this, human, () => {
+    this.scene.physics.add.overlap(this, human, (block: FlatBlockEntity, human: HumanEntity) => {
+      if (block.isMovable && !human.overlapBlock) {
+        human.overlapBlock = block;
+      } else if (block.isMovable && human.overlapBlock && human.widthTo(block) < human.widthTo(human.overlapBlock)) {
+        human.overlapBlock = block;
+      }
+
+
       if (!this.lightsOn) {
         gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.lightsOff);
       }
