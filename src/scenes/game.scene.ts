@@ -1,6 +1,7 @@
 import { ActionsLogic } from '../actions/actions.logic';
 import { GameStats } from '../core/game.stats';
 import { NavigationLogic } from '../core/navigation.logic';
+import { GarbageEntity } from '../entity/garbage.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
 import { gameConfig, textures } from '../core/game.config';
@@ -58,12 +59,19 @@ export class GameScene extends Phaser.Scene {
       room.overlapHuman(this.humanEntity, this.gameStats);
     }
 
+    this.flatMap.flatGroup.overlapVacuum(this.flatMap.vacuum);
+
     this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
       console.log(pointer.x, pointer.y);
     }, this);
 
     this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
       this.gameStats.decreaseToStat('humanMood', gameConfig.vacuumProblem);
+    });
+
+    this.physics.add.overlap(this.flatMap.garbage, this.flatMap.vacuum, (garbageEntity: GarbageEntity) => {
+      this.flatMap.garbage.remove(garbageEntity);
+      garbageEntity.destroy(true);
     });
   }
 

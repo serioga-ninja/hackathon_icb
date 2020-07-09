@@ -3,6 +3,7 @@ import { DeviceType } from './actions/action-group.base';
 import { NavigationLogic } from './core/navigation.logic';
 import { DeviceEntity } from './entity/device.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
+import { GarbageEntity } from './entity/garbage.entity';
 
 import { DoorGroup } from './groups/door.group';
 import { ElectricDevicesGroup } from './groups/electric-devices.group';
@@ -95,7 +96,7 @@ export class FlatMap {
     this.flatGroup = new FlatGroup(scene);
     this.electricDevices = new ElectricDevicesGroup(scene);
     this.waterDevices = new WaterDevicesGroup(scene);
-    this.garbage = new GarbageGroup(scene);
+    this.garbage = new GarbageGroup(scene, [], { createCallback: this.onGarbageAddCallback.bind(this) });
   }
 
   init() {
@@ -152,7 +153,7 @@ export class FlatMap {
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Vacuum:
-        furniture = this.vacuum = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.movableBlocks);
+        furniture = this.vacuum = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.garbage);
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Bath:
@@ -329,5 +330,9 @@ export class FlatMap {
 
   update(time: number) {
     this.vacuum.update(time);
+  }
+
+  onGarbageAddCallback(item: GarbageEntity) {
+    this.vacuum.garbageAdded();
   }
 }

@@ -3,6 +3,7 @@ import { GameStats } from '../core/game.stats';
 import { EGroupTypes, GroupBase } from '../core/group.base';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
+import { Vacuum } from '../furniture/vacuum';
 import { DoorGroup } from './door.group';
 
 export class RoomGroup extends GroupBase {
