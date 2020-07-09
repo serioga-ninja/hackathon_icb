@@ -1,6 +1,6 @@
 import { DeviceType } from '../actions/action-group.base';
 
-export const gameConfig: any = {
+export const gameConfig = {
   width: window.innerWidth - 20,
   height: window.innerHeight - 20,
   debug: false,
@@ -13,6 +13,7 @@ export const gameConfig: any = {
     vacuum: 2
   },
   moodDestroyers: {
+    garbage: 0.05,
     lightsOff: 0.05,
     vacuumProblem: 0.05,
   },

@@ -66,13 +66,11 @@ export class GameScene extends Phaser.Scene {
     }, this);
 
     this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
-      this.gameStats.decreaseToStat('humanMood', gameConfig.vacuumProblem);
+      this.gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.vacuumProblem);
     });
 
-    this.physics.add.overlap(this.flatMap.garbage, this.flatMap.vacuum, (garbageEntity: GarbageEntity) => {
-      this.flatMap.garbage.remove(garbageEntity);
-      garbageEntity.destroy(true);
-    });
+    this.flatMap.garbage.overlapVacuum(this.flatMap.vacuum);
+    this.flatMap.garbage.overlapHuman(this.humanEntity, this.gameStats);
   }
 
   /**
@@ -89,9 +87,6 @@ export class GameScene extends Phaser.Scene {
 
       this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
       this.gameStats.addToStat('water', this.flatMap.waterDevices.consumePerTick);
-
-      console.log('electricity', this.gameStats.getStat('electricity'));
-      console.log('water', this.gameStats.getStat('water'));
     }
 
     //#endregion
