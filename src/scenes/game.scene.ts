@@ -1,13 +1,13 @@
 import { ActionsLogic } from '../actions/actions.logic';
 import { GameStats } from '../core/game.stats';
 import { NavigationLogic } from '../core/navigation.logic';
-import { GarbageEntity } from '../entity/garbage.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
-import { gameConfig, textures } from '../core/game.config';
+import { gameConfig, textures, audio, tileSize } from '../core/game.config';
 
 export class GameScene extends Phaser.Scene {
 
+  private audio: Phaser.Sound.BaseSound;
   private humanEntity: HumanEntity;
   private navigationLogic: NavigationLogic;
   private actionLogic: ActionsLogic;
@@ -38,6 +38,10 @@ export class GameScene extends Phaser.Scene {
     textures.forEach((texture: any) => {
       this.load.image(texture.key, texture.path);
     });
+
+    audio.forEach((sound: any) => {
+      this.load.audio(sound.key, sound.path);
+    });
   }
 
   /**
@@ -45,6 +49,11 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
+    //this.add.tileSprite(0, 0, tileSize, tileSize, 'grass');
+
+    this.audio = this.sound.add('gameAudio', {volume: 0.4, loop: true});
+    this.audio.play();
+
     this.flatMap = new FlatMap(this);
     this.flatMap.init();
 

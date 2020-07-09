@@ -1,8 +1,10 @@
 import { DeviceType } from '../actions/action-group.base';
 
 export const gameConfig = {
-  width: window.innerWidth - 20,
-  height: window.innerHeight - 20,
+  width: window.innerWidth - 15,
+  maxWidth: 1600,
+  height: window.innerHeight - 15,
+  maxHeight: 1100,
   debug: false,
   playerWidth: 20,
   allowToKill: false,
@@ -146,6 +148,10 @@ export const textures: any = [
     path: 'textures/furniture/fridge-on.png'
   },
   {
+    key: 'fridgeDoor',
+    path: 'textures/furniture/fridge-door.png'
+  },
+  {
     key: 'teapot',
     path: 'textures/furniture/teapot.png'
   },
@@ -268,8 +274,15 @@ export const textures: any = [
   {
     key: 'paper',
     path: 'textures/garbage/paper.png'
-  },
+  }
 ];
+
+export const audio: any = [
+  {
+    key: 'gameAudio',
+    path: 'sounds/game.ogg'
+  }
+]
 
 export const devices: any = [
   {

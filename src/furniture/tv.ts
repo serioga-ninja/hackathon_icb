@@ -1,4 +1,4 @@
-import { gameConfig } from '../core/game.config';
+import { gameConfig, tileSize } from '../core/game.config';
 import { IElectricityObject } from '../core/interfaces';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
@@ -22,10 +22,10 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
     let y = blocksGroup.children.entries[0].y;
 
     this.turnOnOverlay = new Phaser.Geom.Polygon([
-      x + 10, y - 13,
-      x + 95, y - 13,
-      x + 135, y + 70,
-      x - 30, y + 70
+      x + tileSize * .15, y - tileSize * .25,
+      x + tileSize * 1.8, y - tileSize * .25,
+      x + tileSize * 2.5, y + tileSize,
+      x - tileSize * .6, y + tileSize
     ]);
 
     this.setInteractive();

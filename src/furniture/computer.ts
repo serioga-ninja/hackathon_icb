@@ -1,4 +1,4 @@
-import { gameConfig } from '../core/game.config';
+import { gameConfig, tileSize } from '../core/game.config';
 import { IElectricityObject } from '../core/interfaces';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
@@ -22,10 +22,10 @@ export class Computer extends DeviceInteractiveEntity implements IElectricityObj
     let y = blocksGroup.children.entries[0].y;
 
     this.turnOnOverlay = new Phaser.Geom.Polygon([
-      x + 52, y + 13,
-      x + 117, y + 13,
-      x + 145, y - 50,
-      x + 25, y - 50
+      x + tileSize, y + tileSize * .25,
+      x + tileSize * 2.15, y + tileSize * .25,
+      x + tileSize * 2.8, y - tileSize * .9,
+      x + tileSize * .4, y - tileSize * .9
     ]);
 
     this.setInteractive();
@@ -35,7 +35,7 @@ export class Computer extends DeviceInteractiveEntity implements IElectricityObj
     if (this.deviceState === EDeviceState.Working) return;
 
     this.deviceState = EDeviceState.Working;
-    this.graphics.fillGradientStyle(0xffccffAA, 0xffccffAA, 0xffccffFF, 0xffccffFF, .3);
+    this.graphics.fillGradientStyle(0xffffffAA, 0xffffffAA, 0xffffffFF, 0xffffffFF, .3);
     this.graphics.fillPoints(this.turnOnOverlay.points, true);
   }
 

@@ -1,5 +1,5 @@
 import 'phaser';
-import { gameConfig } from './core/game.config';
+import { gameConfig, tileSize } from './core/game.config';
 import { GameScene } from './scenes/game.scene';
 import { WelcomeScene } from './scenes/welcome.scene';
 import GameConfig = Phaser.Types.Core.GameConfig;
@@ -31,11 +31,26 @@ export class SmartHouseGame extends Phaser.Game {
 
 window.onload = () => {
   const game = new SmartHouseGame(config),
-    gameObj = document.getElementById('game');
-
+        gameObj = document.getElementById('game');
+    
   gameObj.focus();
+  
+  const resize = () => {
+    const w = window.innerWidth
+    const h = window.innerHeight
 
+    let scale = Math.min(w / gameConfig.width, h / gameConfig.height)
+    let newWidth = Math.min(w / scale, gameConfig.maxWidth)
+    let newHeight = Math.min(h / scale, gameConfig.maxHeight)
+
+    console.log(newWidth, newHeight, tileSize);
+    // resize the game
+    game.scale.setGameSize(newWidth, newHeight);
+    game.scale.autoCenter = Phaser.Scale.CENTER_BOTH;
+  }
   window.addEventListener('resize', () => {
-    game.scene.game.scale.updateScale();
+    resize();
   });
+
+  resize();
 };

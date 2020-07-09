@@ -239,9 +239,7 @@ export class FlatMap {
   }
 
   regenerateMapSymbolToEnum() {
-    const enumTypeMap = houseMap
-      .trim()
-      .match(/.{1,21}/g);
+    const enumTypeMap = houseMap.trim().match(/.{1,21}/g);
 
     enumTypeMap.forEach((houseLine: string) => {
       this.parsedMap.push(houseLine.split(''));
