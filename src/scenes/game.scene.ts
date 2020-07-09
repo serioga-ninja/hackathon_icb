@@ -10,7 +10,7 @@ export class GameScene extends Phaser.Scene {
   private navigationLogic: NavigationLogic;
   private actionLogic: ActionsLogic;
   private flatMap: FlatMap;
-
+  testTitle: Phaser.GameObjects.Text;
   constructor() {
     super({
       key: 'GameScene'
@@ -62,6 +62,12 @@ export class GameScene extends Phaser.Scene {
 
     this.input.on('pointerdown', (pointer) => {
       console.log(pointer.x, pointer.y);
+    }, this);
+
+    this.testTitle = this.add.text(1750, 750, 'Final Scene', { font: '24px Arial Bold', fill: '#adc100' });
+
+    this.testTitle.on('pointerdown', function (/*pointer*/) {
+      this.scene.start('FinalScene');
     }, this);
   }
 

@@ -2,14 +2,16 @@ import 'phaser';
 import { gameConfig } from './core/game.config';
 import { GameScene } from './scenes/game.scene';
 import { WelcomeScene } from './scenes/welcome.scene';
+import { FinalScene } from "./scenes/final.scene";
 import GameConfig = Phaser.Types.Core.GameConfig;
+import { ScoreScene } from "./scenes/score.scene";
 
 const config: GameConfig = {
   title: 'SmartHouseSurvival',
   width: gameConfig.width,
   height: gameConfig.height,
   parent: 'game',
-  scene: [new WelcomeScene(), new GameScene()],
+  scene: [new WelcomeScene(), new GameScene(), new FinalScene(), new ScoreScene()],
   physics: {
     default: 'arcade',
     arcade: {
