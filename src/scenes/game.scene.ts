@@ -54,12 +54,14 @@ export class GameScene extends Phaser.Scene {
     const startBlock = this.flatMap.startBlock;
     this.humanEntity = new HumanEntity(this, startBlock, this.navigationLogic, this.flatMap.garbage);
 
-    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);//, this.flatMap.generatedBlocks[5][16]);
+    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);
+
+
     for (const room of this.flatMap.rooms) {
       room.overlapHuman(this.humanEntity, this.gameStats);
     }
 
-    this.flatMap.flatGroup.overlapVacuum(this.flatMap.vacuum);
+    // this.flatMap.flatGroup.overlapVacuum(this.flatMap.vacuum);
 
     this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
       console.log(pointer.x, pointer.y);

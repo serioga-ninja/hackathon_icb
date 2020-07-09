@@ -11,6 +11,7 @@ import { PlayComputerGroup } from './play-computer.group';
 import { TakeBathGroup } from './take-bath.group';
 import { OpenFridgeGroup } from './open-fridge.group';
 import { DrinkTeaGroup } from './drink-tea.group';
+import { WelcomeGroup } from './welcome.group';
 
 export class ActionsLogic {
   private flatGroup: FlatGroup;
@@ -27,6 +28,7 @@ export class ActionsLogic {
     this.human = human;
     this.navigationLogic = navigationLogic;
     this.debugBlock = debugBlock;
+    this.activeActionGroup = new WelcomeGroup(human);
   }
 
   generateAction(): ActionGroupBase {
@@ -34,7 +36,7 @@ export class ActionsLogic {
     const min = 0;
     const max = 6;
     const rnd = Math.floor(min + Math.random() * (max + 1 - min));
-    
+
     let actionGroup: ActionGroupBase;
     switch (rnd) {
       case EActionTypes.GoTo:
@@ -72,8 +74,12 @@ export class ActionsLogic {
     if (!this.activeActionGroup || this.activeActionGroup && this.activeActionGroup.finished) {
       this.activeActionGroup = this.generateAction();
       if (this.activeActionGroup) {
+        this.activeActionGroup.inProgress = true;
         this.activeActionGroup.start();
       }
+    } else if (!this.activeActionGroup.inProgress) {
+      this.activeActionGroup.inProgress = true;
+      this.activeActionGroup.start();
     } else {
       this.activeActionGroup.update(time);
       if (this.activeActionGroup.finished) {

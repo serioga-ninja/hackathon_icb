@@ -5,6 +5,7 @@ import { GarbageGroup } from '../groups/garbage.group';
 import { FlatBlockEntity } from './flat-block.entity';
 import DYNAMIC_BODY = Phaser.Physics.Arcade.DYNAMIC_BODY;
 import { tileSize } from '../core/game.config';
+import { HumanMessageEntity } from './human-message.entity';
 
 export enum EHumanState {
   waiting,
@@ -40,6 +41,7 @@ export class HumanEntity extends SpriteEntity {
 
   public overlapBlock: FlatBlockEntity;
 
+  private _humanMessage: HumanMessageEntity;
   private _state: EHumanState;
   private _navigationLogic: NavigationLogic;
   private _garbageGroup: GarbageGroup;
@@ -72,6 +74,10 @@ export class HumanEntity extends SpriteEntity {
   update(time: number) {
     switch (this._state) {
       case EHumanState.moving:
+        if (this._humanMessage) {
+          this._humanMessage.updatePosition(this);
+        }
+
         if (time - this._movingAnimationTime > 200) {
           if (this.texture.key === 'human-go-2') {
             this.setTexture('human-go-1');
@@ -83,5 +89,16 @@ export class HumanEntity extends SpriteEntity {
         }
         break;
     }
+  }
+
+  say(message: string, width: number, height: number, liveTime: number = 5000) {
+    if (this._humanMessage && this._humanMessage.message === message) return;
+
+    if (this._humanMessage) {
+      this._humanMessage.destroy(true);
+    }
+
+    this._humanMessage = new HumanMessageEntity(this.scene, this, width, height, liveTime, message);
+    this._humanMessage.draw();
   }
 }
