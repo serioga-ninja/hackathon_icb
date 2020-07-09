@@ -13,8 +13,8 @@ export interface IFlatBlockOptions {
 }
 
 export enum EHouseParticles {
-  Wall,
   WallG,
+  Wall,
   WallT,
   WallX,
   FreeSpace,
@@ -38,8 +38,6 @@ export class FlatBlockEntity extends SpriteEntity {
 
   public readonly blockType: EHouseParticles;
   public relatedMovableBlocks: FlatBlockEntity[];
-  public relatedNotMovableBlocks: FlatBlockEntity[];
-
 
   public readonly isDoor: boolean;
   public isMovable: boolean;
@@ -99,7 +97,7 @@ export class FlatBlockEntity extends SpriteEntity {
 
   getEntranceFromRoom(room: RoomGroup): FlatBlockEntity {
     return this.relatedEntranceBlocks
-      .find((block) => block.getGroup(EGroupTypes.room).groupId === room.groupId);
+      .find((block) => block.getGroup(EGroupTypes.Room).groupId === room.groupId);
   }
 
   makeImovable() {
@@ -113,5 +111,9 @@ export class FlatBlockEntity extends SpriteEntity {
         .relatedMovableBlocks
         .filter((block) => block.objID !== this.objID);
     }
+  }
+
+  setCorrectWalSprite() {
+
   }
 }

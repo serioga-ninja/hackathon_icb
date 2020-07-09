@@ -138,7 +138,7 @@ export class NavigationLogic {
   }
 
   generatePath(startPosition: FlatBlockEntity, endPosition: FlatBlockEntity): Phaser.Curves.Path {
-    const availableRoomPaths = this.generateAvailableRoomPath([startPosition.getGroup(EGroupTypes.room) as RoomGroup], endPosition.getGroup(EGroupTypes.room) as RoomGroup);
+    const availableRoomPaths = this.generateAvailableRoomPath([startPosition.getGroup(EGroupTypes.Room) as RoomGroup], endPosition.getGroup(EGroupTypes.Room) as RoomGroup);
 
     let minPath: RoomGroup[] = new Array(10000);
 
@@ -173,7 +173,7 @@ export class NavigationLogic {
           const doors = room.relatedToRoomDoor(minPath[i + 1]).getChildren()[0] as FlatBlockEntity;
           const entranceBlock = doors.getEntranceFromRoom(room);
           const exitBlock = doors.relatedEntranceBlocks
-            .find((block) => block.getGroup(EGroupTypes.room).groupId !== room.groupId);
+            .find((block) => block.getGroup(EGroupTypes.Room).groupId !== room.groupId);
 
           this.generateRoomWaveNumbers(room, blockPath[blockPath.length - 1]);
           const blockFoundPath = this.findPath([entranceBlock], blockPath[blockPath.length - 1]);
