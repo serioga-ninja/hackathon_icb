@@ -1,5 +1,6 @@
 export interface IGameStats {
   electricity: number;
+  water: number;
 }
 
 export class GameStats {

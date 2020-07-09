@@ -1,8 +1,8 @@
+import { gameConfig } from '../core/game.config';
 import { IElectricityObject } from '../core/interfaces';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
-import { RoomGroup } from '../groups/room.group';
 import { DeviceType } from '../actions/action-group.base';
 
 export class Music extends DeviceInteractiveEntity implements IElectricityObject {
@@ -14,7 +14,7 @@ export class Music extends DeviceInteractiveEntity implements IElectricityObject
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
     super(scene, blocksGroup, 'music', DeviceType.Music);
 
-    this.electricityConsumePerTime = 0.05;
+    this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.music;
     this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
 
@@ -31,11 +31,5 @@ export class Music extends DeviceInteractiveEntity implements IElectricityObject
     super.turnOff();
 
     this.setTexture('music');
-  }
-
-  addGroup(group: RoomGroup) {
-    super.addGroup(group);
-
-    group.addDevice(this);
   }
 }

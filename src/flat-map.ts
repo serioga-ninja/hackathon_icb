@@ -5,6 +5,7 @@ import { DeviceEntity } from './entity/device.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 
 import { DoorGroup } from './groups/door.group';
+import { ElectricDevicesGroup } from './groups/electric-devices.group';
 import { FlatGroup } from './groups/flat.group';
 import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
@@ -72,6 +73,7 @@ export class FlatMap {
   devices: DeviceEntity[];
   vacuum: Vacuum;
   walls: WallsGroup;
+  electricDevices: ElectricDevicesGroup;
 
   get startBlock() {
     return this.generatedBlocks[12][12];
@@ -87,6 +89,7 @@ export class FlatMap {
     this.walls = new WallsGroup(scene);
     this.movableBlocks = [];
     this.flatGroup = new FlatGroup(scene);
+    this.electricDevices = new ElectricDevicesGroup(scene);
   }
 
   init() {
@@ -131,16 +134,20 @@ export class FlatMap {
 
     switch (role) {
       case DeviceType.Light:
-        furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Light(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup));
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.TV:
         furniture = new TV(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1] + 1]);
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.Fan:
-        furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Fan(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.Vacuum:
         furniture = this.vacuum = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.movableBlocks);
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.Bath:
         furniture = new Bath(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1] + 1]);
@@ -149,22 +156,28 @@ export class FlatMap {
         furniture = new Sink(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
       case DeviceType.Teapot:
-        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Teapot(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.Fridge:
         furniture = new Fridge(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1]]);
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.Music:
         furniture = new Music(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] + 1][device.blocks[0][1]]);
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.Microwave:
-        furniture = new Microwave(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Microwave(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.Oven:
-        furniture = new Oven(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+        furniture = new Oven(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), null);
+        this.electricDevices.add(furniture);
         break;
       case DeviceType.Computer:
         furniture = new Computer(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[device.blocks[0][0] - 1][device.blocks[0][1] + 1]);
+        this.electricDevices.add(furniture);
         break;
       default:
         furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);

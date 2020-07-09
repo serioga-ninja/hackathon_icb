@@ -82,9 +82,7 @@ export class GameScene extends Phaser.Scene {
     if (time - this.perSecondTime > 1000) {
       this.perSecondTime = time;
 
-      for (const room of this.flatMap.rooms) {
-        this.gameStats.addToStat('electricity', room.electricityPerTick);
-      }
+      this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
 
       console.log('electricity', this.gameStats.getStat('electricity'));
     }
