@@ -7,6 +7,7 @@ import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 import { DoorGroup } from './groups/door.group';
 import { ElectricDevicesGroup } from './groups/electric-devices.group';
 import { FlatGroup } from './groups/flat.group';
+import { GarbageGroup } from './groups/garbage.group';
 import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
 
@@ -76,6 +77,7 @@ export class FlatMap {
   walls: WallsGroup;
   electricDevices: ElectricDevicesGroup;
   waterDevices: WaterDevicesGroup;
+  garbage: GarbageGroup;
 
   get startBlock() {
     return this.generatedBlocks[12][12];
@@ -93,6 +95,7 @@ export class FlatMap {
     this.flatGroup = new FlatGroup(scene);
     this.electricDevices = new ElectricDevicesGroup(scene);
     this.waterDevices = new WaterDevicesGroup(scene);
+    this.garbage = new GarbageGroup(scene);
   }
 
   init() {

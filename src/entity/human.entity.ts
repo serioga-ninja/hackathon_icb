@@ -1,6 +1,7 @@
 import { gameConfig } from '../core/game.config';
 import { NavigationLogic } from '../core/navigation.logic';
 import { SpriteEntity } from '../core/sprite.entity';
+import { GarbageGroup } from '../groups/garbage.group';
 import { FlatBlockEntity } from './flat-block.entity';
 import DYNAMIC_BODY = Phaser.Physics.Arcade.DYNAMIC_BODY;
 import { tileSize } from '../core/game.config';
@@ -12,7 +13,6 @@ export enum EHumanState {
 
 export interface IHumanEntityOptions {
   navigationLogic: NavigationLogic;
-  startBlock: FlatBlockEntity;
 }
 
 export class HumanEntity extends SpriteEntity {
@@ -38,29 +38,35 @@ export class HumanEntity extends SpriteEntity {
     }
   }
 
+  public overlapBlock: FlatBlockEntity;
+
   private _state: EHumanState;
   private _navigationLogic: NavigationLogic;
+  private _garbageGroup: GarbageGroup;
   private _currentFlatEntity: FlatBlockEntity;
   private _movingAnimationTime: number;
 
-  public follower: Phaser.GameObjects.PathFollower;
   public dead: boolean;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, key: string, options: IHumanEntityOptions) {
-    super(scene, x, y, key);
+  constructor(scene: Phaser.Scene, startBlock: FlatBlockEntity, navigationLogic: NavigationLogic, garbageGroup: GarbageGroup) {
+    super(scene, startBlock.x, startBlock.y, 'human');
 
     this._state = EHumanState.waiting;
-    this._navigationLogic = options.navigationLogic;
+    this._navigationLogic = navigationLogic;
+    this._garbageGroup = garbageGroup;
     this.setDisplaySize(tileSize, tileSize);
-    this.currentFlatEntity = options.startBlock;
+    this.currentFlatEntity = startBlock;
     this.setData('speed', 3);
-    this.follower = new Phaser.GameObjects.PathFollower(scene, null, x, y, key);
-    this.follower.setVisible(false);
     this.scene.physics.world.enableBody(this, DYNAMIC_BODY);
     this.angle = 180;
     this.alpha = 1;
     this._movingAnimationTime = 0;
     this.dead = false;
+
+    // left garbage
+    setInterval(() => {
+      this._garbageGroup.throwGarbage(this.overlapBlock);
+    }, gameConfig.throwGarbageOncePerSec * 1000);
   }
 
   update(time: number) {

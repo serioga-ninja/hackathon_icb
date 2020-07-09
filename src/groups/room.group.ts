@@ -32,7 +32,14 @@ export class RoomGroup extends GroupBase {
 
 
   overlapHuman(human: HumanEntity, gameStats: GameStats) {
-    this.scene.physics.add.overlap(this, human, () => {
+    this.scene.physics.add.overlap(this, human, (block: FlatBlockEntity, human: HumanEntity) => {
+      if (block.isMovable && !human.overlapBlock) {
+        human.overlapBlock = block;
+      } else if (block.isMovable && human.overlapBlock && human.widthTo(block) < human.widthTo(human.overlapBlock)) {
+        human.overlapBlock = block;
+      }
+
+
       if (!this.lightsOn) {
         gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.lightsOff);
       }

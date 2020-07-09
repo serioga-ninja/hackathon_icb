@@ -7,6 +7,11 @@ export const gameConfig: any = {
   playerWidth: 20,
   allowToKill: false,
   speedOfWaiting: 500,
+  throwGarbageOncePerSec: 30,
+  speed: {
+    human: 3,
+    vacuum: 2
+  },
   moodDestroyers: {
     lightsOff: 0.05,
     vacuumProblem: 0.05,
@@ -200,6 +205,10 @@ export const textures: any = [
   {
     key: 'books',
     path: 'textures/furniture/books.png'
+  },
+  {
+    key: 'garbage',
+    path: 'textures/furniture/garbage.png'
   },
 ];
 

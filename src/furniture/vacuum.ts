@@ -33,7 +33,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     const rnd = Math.floor(Math.random() * (max - min)) + min;
     const endPosition = this.movableBlocks[rnd];
     this.path = this.navigationLogic.generatePath(this.currentPosition, endPosition);
-    this.moveToWrapper = new MoveToWrapper(this.currentPosition, endPosition, this.path);
+    this.moveToWrapper = new MoveToWrapper(this.currentPosition, endPosition, this.path, gameConfig.speed.vacuum);
   }
 
   turnOn() {
