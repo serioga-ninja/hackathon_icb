@@ -125,15 +125,16 @@ export class FlatMap {
   }
 
   generateDecoration() {
-    let device = decor[1];
-    let blockGroup: FlatBlockEntity[] = [];
+    decor.forEach((device) => {
+      let blockGroup: FlatBlockEntity[] = [];
 
-    device.blocks.forEach((elem: any) => {
-      let block = this.generatedBlocks[elem[0]][elem[1]];
-      blockGroup.push(block);
+      device.blocks.forEach((elem: any) => {
+        let block = this.generatedBlocks[elem[0]][elem[1]];
+        blockGroup.push(block);
+      });
+  
+      new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
     });
-
-    new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type)
   }
 
   generateDevices(navigationLogic: NavigationLogic) {
