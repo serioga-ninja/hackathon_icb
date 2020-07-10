@@ -52,9 +52,7 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
-    //this.add.tileSprite(0, 0, tileSize, tileSize, 'grass');
-
-    this.audio = this.sound.add('gameAudio', { volume: 0.4, loop: true });
+    this.audio = this.sound.add('gameAudio', { volume: 0.3, loop: true });
     this.audio.play();
 
     this.flatMap = new FlatMap(this);

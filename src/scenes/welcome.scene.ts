@@ -20,7 +20,7 @@ export class WelcomeScene extends Phaser.Scene {
 
     image.setScale(scale).setScrollFactor(0);
 
-    this.audio = this.sound.add('startAudio', {volume: 0.4});
+    this.audio = this.sound.add('startAudio', {volume: 0.3, loop: true});
     this.audio.play();
 
     this.input.on('pointerdown', function (/*pointer*/) {

@@ -18,14 +18,13 @@ export class Computer extends DeviceInteractiveEntity implements IElectricityObj
     this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
 
-    let x = blocksGroup.children.entries[0].x;
-    let y = blocksGroup.children.entries[0].y;
+    const {x, y} = blocksGroup.children.entries[0] as FlatBlockEntity;
 
     this.turnOnOverlay = new Phaser.Geom.Polygon([
-      x + tileSize, y + tileSize * .25,
-      x + tileSize * 2.15, y + tileSize * .25,
-      x + tileSize * 2.8, y - tileSize * .9,
-      x + tileSize * .4, y - tileSize * .9
+      new Phaser.Geom.Point(x + tileSize, y + tileSize * .25),
+      new Phaser.Geom.Point(x + tileSize * 2.15, y + tileSize * .25),
+      new Phaser.Geom.Point(x + tileSize * 2.8, y - tileSize * .9),
+      new Phaser.Geom.Point(x + tileSize * .4, y - tileSize * .9)
     ]);
 
     this.setInteractive();
