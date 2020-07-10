@@ -13,19 +13,30 @@ export interface IFlatBlockOptions {
 }
 
 export enum EHouseParticles {
-  WallVertical,
-  WallHorizontal,
+  WallG,
+  Wall,
+  WallT,
   WallX,
   FreeSpace,
   Window,
   Door,
+  Grass,
+  Stats
 }
 
 const pathAvailableBlockTypes: EHouseParticles[] = [
   EHouseParticles.FreeSpace, EHouseParticles.Door
 ];
 
+const wallTypes: EHouseParticles[] = [
+  EHouseParticles.WallG, EHouseParticles.Wall, EHouseParticles.WallT, EHouseParticles.WallX
+];
+
 export class FlatBlockEntity extends SpriteEntity {
+
+  static get ElectricityPerTick() {
+    return 0.005;
+  }
 
   private readonly _position: Point;
   private _waveValue: number;
@@ -33,10 +44,10 @@ export class FlatBlockEntity extends SpriteEntity {
 
   public readonly blockType: EHouseParticles;
   public relatedMovableBlocks: FlatBlockEntity[];
-  public relatedNotMovableBlocks: FlatBlockEntity[];
-
 
   public readonly isDoor: boolean;
+  public readonly isWindow: boolean;
+  public readonly isWall: boolean;
   public isMovable: boolean;
   public humanCanPath: boolean;
   public matrix: { x: number; y: number; };
@@ -73,10 +84,17 @@ export class FlatBlockEntity extends SpriteEntity {
     this.setDisplaySize(options.width, options.height);
     this.scene.physics.world.enableBody(this, STATIC_BODY);
     this.isMovable = pathAvailableBlockTypes.indexOf(options.blockType) !== -1;
+    this.isWall = wallTypes.indexOf(options.blockType) !== -1;
+    this.isWindow = options.blockType === EHouseParticles.Window;
     this.humanCanPath = this.isMovable;
     this.isDoor = options.blockType === EHouseParticles.Door;
     this.matrix = options.matrix;
     this.relatedEntranceBlocks = [];
+    this.relatedMovableBlocks = [];
+
+    if (this.isMovable && !this.isDoor) {
+      this.alpha = 0.5;
+    }
 
 
     if (gameConfig.debug) {
@@ -94,7 +112,7 @@ export class FlatBlockEntity extends SpriteEntity {
 
   getEntranceFromRoom(room: RoomGroup): FlatBlockEntity {
     return this.relatedEntranceBlocks
-      .find((block) => block.getGroup(EGroupTypes.room).groupId === room.groupId);
+      .find((block) => block.getGroup(EGroupTypes.Room).groupId === room.groupId);
   }
 
   makeImovable() {
@@ -108,5 +126,9 @@ export class FlatBlockEntity extends SpriteEntity {
         .relatedMovableBlocks
         .filter((block) => block.objID !== this.objID);
     }
+  }
+
+  setCorrectWalSprite() {
+
   }
 }

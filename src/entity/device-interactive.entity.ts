@@ -1,6 +1,7 @@
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { DeviceEntity } from './device.entity';
 import { FlatBlockEntity } from './flat-block.entity';
+import { DeviceType } from '../actions/action-group.base';
 
 export enum EDeviceState {
   Working,
@@ -13,8 +14,8 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
 
   deviceState: EDeviceState;
 
-  constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, key: string) {
-    super(scene, blocksGroup, key);
+  constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, key: string, type: DeviceType) {
+    super(scene, blocksGroup, key, type);
 
     this.deviceState = EDeviceState.NotWorking;
 
@@ -30,20 +31,21 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
 
   toggleWorkingState() {
     if (this.deviceState === EDeviceState.NotWorking) {
-      this.deviceState = EDeviceState.Working;
+      this.turnOn();
     } else {
-      this.deviceState = EDeviceState.NotWorking;
+      this.turnOff();
     }
   }
 
   turnOn() {
-
+    this.deviceState = EDeviceState.Working;
   }
 
-  //#region Event Listeners callbacks
+  turnOff() {
+    this.deviceState = EDeviceState.NotWorking;
+  }
+
   onPointerdown() {
-
+    this.toggleWorkingState();
   }
-
-  //#endregion
 }

@@ -1,19 +1,23 @@
+import { gameConfig } from '../core/game.config';
+import { GameStats } from '../core/game.stats';
+import { AUCH_THAT_HURTS, HUMAN_IN_THE_DARK1, HUMAN_IN_THE_DARK2 } from '../core/game.vocabulary';
 import { EGroupTypes, GroupBase } from '../core/group.base';
+import { randomFromArr } from '../core/utils';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
+import { Vacuum } from '../furniture/vacuum';
 import { DoorGroup } from './door.group';
-import Timeout = NodeJS.Timeout;
 
 export class RoomGroup extends GroupBase {
 
+  private electricityDevicesPerTick: number;
   private connectedDoors: DoorGroup[];
   private lightsOn: boolean;
-  private timeToDieTimer: Timeout;
 
   public relatedRooms: RoomGroup[];
 
   get groupType() {
-    return EGroupTypes.room;
+    return EGroupTypes.Room;
   }
 
   get movableBlocks(): FlatBlockEntity[] {
@@ -23,30 +27,42 @@ export class RoomGroup extends GroupBase {
   constructor(scene: Phaser.Scene, children?: Phaser.GameObjects.GameObject[] | Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig, config?: Phaser.Types.GameObjects.Group.GroupConfig | Phaser.Types.GameObjects.Group.GroupCreateConfig) {
     super(scene, children, config);
 
+    this.electricityDevicesPerTick = 0;
     this.connectedDoors = [];
     this.relatedRooms = [];
-    this.lightsOn = false;
+    this.lightOff();
   }
 
-  overlapHuman(human: HumanEntity) {
-    this.scene.physics.add.overlap(this, human, () => {
-      if (!this.lightsOn) {
-        this.timeToDieTimer = setTimeout(() => {
-          const isOverlapping = this.scene.physics.world.overlap(this, human);
-          if (!this.lightsOn && isOverlapping) {
-            human.makeDead();
-          }
-        }, 1000);
-      } else if (this.lightsOn && this.timeToDieTimer) {
-        clearTimeout(this.timeToDieTimer);
+
+  overlapHuman(human: HumanEntity, gameStats: GameStats) {
+    this.scene.physics.add.overlap(this, human, (block: FlatBlockEntity, human: HumanEntity) => {
+      if (block.isMovable && !human.overlapBlock) {
+        human.overlapBlock = block;
+      } else if (block.isMovable && human.overlapBlock && human.widthTo(block) < human.widthTo(human.overlapBlock)) {
+        human.overlapBlock = block;
       }
+
+
+      if (!this.lightsOn) {
+        gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.lightsOff);
+        if (!human.hasMessage) {
+          human.say(randomFromArr([HUMAN_IN_THE_DARK1, HUMAN_IN_THE_DARK2, AUCH_THAT_HURTS]), 300, 75, 2000);
+        }
+      }
+    });
+  }
+
+  lightOff() {
+    this.lightsOn = false;
+    this.getChildren().forEach((sprite: FlatBlockEntity) => {
+      sprite.alpha = !this.lightsOn ? 0.5 : 1;
     });
   }
 
   toggleLight() {
     this.lightsOn = !this.lightsOn;
     this.getChildren().forEach((sprite: FlatBlockEntity) => {
-      sprite.alpha = !this.lightsOn ? 0.6 : 1;
+      sprite.alpha = !this.lightsOn ? 0.5 : 1;
     })
   }
 

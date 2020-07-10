@@ -1,6 +1,5 @@
 export class WelcomeScene extends Phaser.Scene {
-  title: Phaser.GameObjects.Text;
-  hint: Phaser.GameObjects.Text;
+  private audio: Phaser.Sound.BaseSound;
 
   constructor() {
     super({
@@ -8,11 +7,26 @@ export class WelcomeScene extends Phaser.Scene {
     });
   }
 
+  preload(): void {
+    this.load.image('start', 'textures/game/start.jpg');
+    this.load.audio('startAudio', 'sounds/start.ogg');
+  }
+
   create(): void {
-    this.title = this.add.text(100, 200, 'Smart House Survival', { font: '100px Arial Bold', fill: '#de0025' });
-    this.hint = this.add.text(500, 350, 'Click to start', { font: '24px Arial Bold', fill: '#adc100' });
+    let width = this.cameras.main.width,
+        height = this.cameras.main.height,
+        image = this.add.image(width / 2, height / 2, 'start'),
+        scale = Math.max(width / image.width, height / image.height);
+
+    image.setScale(scale).setScrollFactor(0);
+
+    this.audio = this.sound.add('startAudio', {volume: 0.4});
+    this.audio.play();
+    this.audio.resume();
+
     this.input.on('pointerdown', function (/*pointer*/) {
-      this.scene.start('FinalScene');
+      this.audio.stop();
+      this.scene.start('GameScene');
     }, this);
   }
 }
