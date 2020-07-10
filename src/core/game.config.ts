@@ -16,6 +16,7 @@ export const gameConfig = {
   allowToKill: false,
   speedOfWaiting: 100,
   throwGarbageOncePerSec: 25,
+  evilModVacuumWidth: ((window.innerHeight - 15) / 15) * 3,
   speed: {
     human: 3,
     vacuum: 2

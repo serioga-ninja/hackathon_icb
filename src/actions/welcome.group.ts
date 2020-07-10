@@ -1,3 +1,4 @@
+import { WELCOME_MESSAGE } from '../core/game.vocabulary';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -33,7 +34,7 @@ export class WelcomeGroup extends ActionGroupBase {
 
   start() {
     this.actions.push(
-      new SayHumanAction(this.human, 'What a nice day to be a live!', 5000, false),
+      new SayHumanAction(this.human, WELCOME_MESSAGE, 5000, false),
       new ForceGoHumanAction(this.human, this.block, 0.5),
       new MoveHumanAction(this.human, this.humanSitBlock, this.navigationLogic),
       new RotateHumanAction(this.human, 0),
