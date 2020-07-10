@@ -32,7 +32,7 @@ export class ActionsLogic {
     this.human = human;
     this.navigationLogic = navigationLogic;
     this.debugBlock = debugBlock;
-    this.activeActionGroup = new WelcomeGroup(human);
+    this.activeActionGroup = new WelcomeGroup(human, flatMap, navigationLogic);
   }
 
   generateAction(): ActionGroupBase {
