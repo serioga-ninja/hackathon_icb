@@ -279,6 +279,18 @@ export const textures: any = [
   {
     key: 'paper',
     path: 'textures/garbage/paper.png'
+  },
+  {
+    key: 'stat',
+    path: 'textures/game/tile.jpg'
+  },
+  {
+    key: 'cover1',
+    path: 'textures/game/carpet1.jpg'
+  },
+  {
+    key: 'cover2',
+    path: 'textures/game/carpet2.jpg'
   }
 ];
 
@@ -384,7 +396,7 @@ export const devices: any = [
     blocks: [[12, 19]],
     key: 'toilet',
     type: DeviceType.Toilet
-  }
+  },
 ]
 
 export const furnitures: any = [
@@ -468,10 +480,20 @@ export const furnitures: any = [
     key: 'books',
     type: DeviceType.Simple
   },
-  /*{
+  {
     blocks: [[14, 12]],
     key: 'doorCarpet',
-    type: DeviceType.Simple
+    type: DeviceType.Cover
+  },
+  {
+    blocks: [[14, 12]],
+    key: 'cover1',
+    type: DeviceType.Cover
+  },
+  {
+    blocks: [[14, 12]],
+    key: 'cover2',
+    type: DeviceType.Cover
   },
   {
     blocks: [[14, 11]],
@@ -482,5 +504,5 @@ export const furnitures: any = [
     blocks: [[14, 13]],
     key: 'flower',
     type: DeviceType.Simple
-  },*/
+  },
 ]

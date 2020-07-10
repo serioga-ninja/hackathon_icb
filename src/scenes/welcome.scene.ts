@@ -22,6 +22,7 @@ export class WelcomeScene extends Phaser.Scene {
 
     this.audio = this.sound.add('startAudio', {volume: 0.4});
     this.audio.play();
+    this.audio.resume();
 
     this.input.on('pointerdown', function (/*pointer*/) {
       this.audio.stop();

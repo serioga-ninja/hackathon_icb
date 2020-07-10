@@ -8,6 +8,18 @@ export class MovableBlocksGroup extends GroupBase {
     return EGroupTypes.MovableBlocks;
   }
 
+  get coords() {
+    const minX = Math.min(...this.getChildren().map((block: FlatBlockEntity) => block.x));
+    const maxX = Math.max(...this.getChildren().map((block: FlatBlockEntity) => block.x));
+    const minY = Math.min(...this.getChildren().map((block: FlatBlockEntity) => block.y));
+    const maxY = Math.max(...this.getChildren().map((block: FlatBlockEntity) => block.y));
+
+    return {
+      x: (maxX + minX) / 2,
+      y: (maxY + minY) / 2,
+    }
+  }
+
   getClosest(x: number, y: number): FlatBlockEntity {
     let distance = Number.MAX_VALUE;
     let res: FlatBlockEntity;

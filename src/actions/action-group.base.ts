@@ -20,6 +20,7 @@ export enum EActionTypes {
 
 export enum DeviceType {
   Simple,
+  Cover,
   TV,
   Music,
   Light,

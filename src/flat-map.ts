@@ -2,6 +2,7 @@ import { EGroupTypes } from './core/group.base';
 import { DeviceType } from './actions/action-group.base';
 import { NavigationLogic } from './core/navigation.logic';
 import { DeviceEntity } from './entity/device.entity';
+import { CoverEntity } from './entity/cover.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 import { GarbageEntity } from './entity/garbage.entity';
 
@@ -201,6 +202,9 @@ export class FlatMap {
       case DeviceType.Toilet:
         furniture = new Toilet(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x - 1][y]);
         this.waterDevices.add(furniture);
+        break;
+      case DeviceType.Cover:
+        furniture = new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
       default:
         furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
