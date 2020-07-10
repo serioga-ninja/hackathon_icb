@@ -320,7 +320,23 @@ export const textures: any = [
   {
     key: 'cover2',
     path: 'textures/house/carpet2.png'
-  }
+  },
+  {
+    key: 'final',
+    path: 'textures/game/final.png'
+  },
+  {
+    key: 'leaderboard',
+    path: 'textures/game/leaderboard.png'
+  },
+  {
+    key: 'replay',
+    path: 'textures/game/replay.png'
+  },
+  {
+    key: 'score',
+    path: 'textures/game/score.png'
+  },
 ];
 
 export const audio: any = [
