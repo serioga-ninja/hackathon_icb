@@ -1,4 +1,10 @@
 export class ScoreScene extends Phaser.Scene {
+  private readonly LINESPACING: number = 12;
+  private readonly SCOREBOARDSTYLE = { font: "18px Arial", fill: "#adc100", align: "left" };
+  private playerRankList: string = "";
+  private playerNameList: string = "";
+  private playerScoreList: string = "";
+
   title: Phaser.GameObjects.Text;
   text: Phaser.GameObjects.Text;
   tryAgain: Phaser.GameObjects.Text;
@@ -12,10 +18,6 @@ export class ScoreScene extends Phaser.Scene {
 
   point: number = 150;
   reason: string = 'Some Strange reason';
-
-
-  heroName: string = 'Andrii';
-  heroPoint: string = '765';
 
   leaderBoardData = [
     {
@@ -40,10 +42,6 @@ export class ScoreScene extends Phaser.Scene {
   }
 
   create(): void {
-    let playerRankList = "";
-    let playerNameList = "";
-    let playerScoreList = "";
-
     this.title = this.add.text(500, 200, 'You Died', { font: '100px Arial Bold', fill: '#de0025' });
     this.text = this.add.text(500, 350, '', { font: '24px Arial Bold', fill: '#adc100' });
 
@@ -52,8 +50,28 @@ export class ScoreScene extends Phaser.Scene {
     this.name = this.add.text(600, 550, 'Name', { font: '24px Arial Bold', fill: '#00c133' });
     this.score = this.add.text(700, 550, 'Score', { font: '24px Arial Bold', fill: '#00c133' });
 
+    this.makeScoreBoardGrid();
+
+    this.playerRankPosition = this.add.text(500, 600, this.playerRankList, this.SCOREBOARDSTYLE);
+    this.playerName = this.add.text(600, 600, this.playerNameList, this.SCOREBOARDSTYLE);
+    this.playerScore = this.add.text(700, 600, this.playerScoreList, this.SCOREBOARDSTYLE);
+    this.playerRankPosition.lineSpacing = this.playerName.lineSpacing = this.playerScore.lineSpacing = this.LINESPACING;
+
+    this.text.setText([
+      'Score: ' + this.point,
+      'Reason: ' + this.reason,
+    ]);
+
+
+    this.tryAgain.on('pointerdown', function (/*pointer*/) {
+      this.scene.start('GameScene');
+    }, this);
+  }
+
+
+  makeScoreBoardGrid(): void  {
     this.leaderBoardData.sort((a, b) => {
-      return a.heroPoint - b.heroPoint;
+      return b.heroPoint - a.heroPoint;
     });
 
     this.leaderBoardData.forEach((plaer, index) => {
@@ -69,30 +87,9 @@ export class ScoreScene extends Phaser.Scene {
         rankPosition = rank + 'th '
       }
 
-      playerRankList += rankPosition + "\n";
-      playerNameList += plaer.heroName + "\n";
-      playerScoreList += plaer.heroPoint + "\n";
+      this.playerRankList += rankPosition + "\n";
+      this.playerNameList += plaer.heroName + "\n";
+      this.playerScoreList += plaer.heroPoint + "\n";
     });
-
-    const style = { font: "18px Arial", fill: "#adc100", align: "left" };
-
-    this.playerRankPosition = this.add.text(500, 600, playerRankList, style);
-    this.playerName = this.add.text(600, 600, playerNameList, style);
-    this.playerScore = this.add.text(700, 600, playerScoreList, style);
-    this.playerRankPosition.lineSpacing = 8;
-    this.playerName.lineSpacing = 8;
-    this.playerScore.lineSpacing = 8;
-
-
-
-    this.text.setText([
-      'Score: ' + this.point,
-      'Reason: ' + this.reason,
-    ]);
-
-
-    this.tryAgain.on('pointerdown', function (/*pointer*/) {
-      this.scene.start('GameScene');
-    }, this);
   }
 }

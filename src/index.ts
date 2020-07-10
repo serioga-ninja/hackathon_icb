@@ -2,7 +2,6 @@ import 'phaser';
 import { gameConfig, tileSize } from './core/game.config';
 import { GameScene } from './scenes/game.scene';
 import { WelcomeScene } from './scenes/welcome.scene';
-import { FinalScene } from "./scenes/final.scene";
 import GameConfig = Phaser.Types.Core.GameConfig;
 import { ScoreScene } from "./scenes/score.scene";
 
@@ -11,7 +10,7 @@ const config: GameConfig = {
   width: gameConfig.width,
   height: gameConfig.height,
   parent: 'game',
-  scene: [new WelcomeScene(), new GameScene(), new FinalScene(), new ScoreScene()],
+  scene: [new WelcomeScene(), new GameScene(), new ScoreScene()],
   physics: {
     default: 'arcade',
     arcade: {
@@ -34,9 +33,9 @@ export class SmartHouseGame extends Phaser.Game {
 window.onload = () => {
   const game = new SmartHouseGame(config),
         gameObj = document.getElementById('game');
-    
+
   gameObj.focus();
-  
+
   const resize = () => {
     const w = window.innerWidth
     const h = window.innerHeight
