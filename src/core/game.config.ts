@@ -22,6 +22,7 @@ export const gameConfig = {
     vacuum: 2
   },
   moodDestroyers: {
+    turnOffTV: 20,
     garbage: 0.05,
     lightsOff: 0.05,
     vacuumProblem: 0.05,

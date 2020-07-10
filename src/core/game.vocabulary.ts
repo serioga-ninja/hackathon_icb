@@ -5,3 +5,4 @@ export const HUMAN_IN_THE_DARK1 = `It's dark over here! I may hit something acci
 export const HUMAN_IN_THE_DARK2 = `Can someone turn on the light?`;
 export const HUMAN_DISGUSTING = `DISGUSTING!`;
 export const AUCH_THAT_HURTS = `AUCH! That hurts!`;
+export const I_WAS_WATCHING = `HEY! I was watching!`;

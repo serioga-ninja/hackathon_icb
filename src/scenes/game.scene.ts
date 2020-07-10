@@ -65,7 +65,7 @@ export class GameScene extends Phaser.Scene {
     this.humanEntity = new HumanEntity(this, startBlock, this.navigationLogic, this.flatMap.garbage);
     this.flatMap.vacuum.setHuman(this.humanEntity);
 
-    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);
+    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic, this.gameStats);
 
 
     for (const room of this.flatMap.rooms) {
