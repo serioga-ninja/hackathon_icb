@@ -463,11 +463,11 @@ export const furnitures: any = [
     key: 'books',
     type: DeviceType.Simple
   },
-  /*{
-    blocks: [[13, 12]],
-    key: 'doorCarpet',
-    type: DeviceType.Simple
-  },
+  // {
+  //   blocks: [[13, 12]],
+  //   key: 'doorCarpet',
+  //   type: DeviceType.Simple
+  // },
   {
     blocks: [[13, 11]],
     key: 'flower',
@@ -477,5 +477,5 @@ export const furnitures: any = [
     blocks: [[13, 13]],
     key: 'flower',
     type: DeviceType.Simple
-  },*/
+  },
 ]

@@ -74,8 +74,8 @@ export class HumanMessageEntity extends Phaser.GameObjects.Graphics {
 
     this.x = human.x;
     this.y = human.y - human.height;
-    this._text.x = this.x + (100 / 2) - (b.width / 2);
-    this._text.y = this.y + (50 / 2) - (b.height / 2);
+    this._text.x = this.x + (this._width / 2) - (b.width / 2);
+    this._text.y = this.y + (this._height / 2) - (b.height / 2);
   }
 
   destroy(fromScene?: boolean) {

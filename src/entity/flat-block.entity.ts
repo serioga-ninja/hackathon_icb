@@ -81,6 +81,11 @@ export class FlatBlockEntity extends SpriteEntity {
     this.isDoor = options.blockType === EHouseParticles.Door;
     this.matrix = options.matrix;
     this.relatedEntranceBlocks = [];
+    this.relatedMovableBlocks = [];
+
+    if (this.isMovable && !this.isDoor) {
+      this.alpha = 0.5;
+    }
 
 
     if (gameConfig.debug) {
