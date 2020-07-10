@@ -10,7 +10,8 @@ import { MessageEntity } from './message.entity';
 
 export enum EHumanState {
   waiting,
-  moving
+  moving,
+  siting
 }
 
 export interface IHumanEntityOptions {
@@ -35,8 +36,12 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
   set state(state: EHumanState) {
     this._state = state;
 
-    if (state === EHumanState.waiting) {
-      this.setTexture('human');
+    switch (state) {
+      case EHumanState.waiting:
+        this.setTexture('human');
+        break;
+      case EHumanState.siting:
+        this.setTexture('human-sit');
     }
   }
 

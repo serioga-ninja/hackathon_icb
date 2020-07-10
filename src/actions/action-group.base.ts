@@ -1,3 +1,4 @@
+import { GameStats } from '../core/game.stats';
 import { HumanEntity } from '../entity/human.entity';
 import { HumanActionBase } from './human-action.base';
 
@@ -44,6 +45,7 @@ export abstract class ActionGroupBase {
   abstract readonly actionType: EActionTypes;
 
   protected human: HumanEntity;
+  protected gameStats: GameStats;
   protected _finished: boolean;
   protected actions: HumanActionBase[];
   protected activeAction: HumanActionBase;
@@ -51,8 +53,9 @@ export abstract class ActionGroupBase {
   public speed = gameConfig.speedOfWaiting;
   public inProgress: boolean;
 
-  constructor(human: HumanEntity) {
+  constructor(human: HumanEntity, gameStats?: GameStats) {
     this.human = human;
+    this.gameStats = gameStats;
     this._finished = false;
     this.inProgress = false;
     this.actions = [];
@@ -75,6 +78,7 @@ export abstract class ActionGroupBase {
 
     if (!this.activeAction.inProgress) {
       this.activeAction.start();
+      this.activeAction.inProgress = true;
     } else {
       this.activeAction.update(time);
     }

@@ -1,6 +1,8 @@
+import { GameStats } from '../core/game.stats';
 import { HumanEntity } from '../entity/human.entity';
 
 export abstract class HumanActionBase {
+  public gameStats?: GameStats;
 
   protected human: HumanEntity;
   protected _finished: boolean;
@@ -11,8 +13,9 @@ export abstract class HumanActionBase {
     return this._finished;
   }
 
-  constructor(human: HumanEntity) {
+  constructor(human: HumanEntity, gameStats?: GameStats) {
     this.human = human;
+    this.gameStats = gameStats;
     this._finished = false;
     this.inProgress = false;
   }
@@ -20,4 +23,8 @@ export abstract class HumanActionBase {
   abstract start(): void;
 
   abstract update(time: number): void;
+
+  finish() {
+    this._finished = true;
+  }
 }

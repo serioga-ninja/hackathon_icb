@@ -1,4 +1,5 @@
 import { DeviceType } from '../actions/action-group.base';
+import { EStat } from '../entity/stat.entity';
 
 export interface IFurniture {
   blocks: any;
@@ -22,9 +23,18 @@ export const gameConfig = {
     vacuum: 2
   },
   moodDestroyers: {
+    turnOffBath: 20,
+    turnOffMusic: 20,
+    turnOffTV: 20,
+    closeFridge: 20,
     garbage: 0.05,
     lightsOff: 0.05,
     vacuumProblem: 0.05,
+  },
+  consumePerClick: {
+    water: {
+      toilet: 20
+    }
   },
   consumePerTick: {
     water: {
@@ -110,6 +120,10 @@ export const textures: any = [
   {
     key: 'human',
     path: 'textures/person/stand.png'
+  },
+  {
+    key: 'human-sit',
+    path: 'textures/person/sit.png'
   },
   {
     key: 'human-go-1',
@@ -514,13 +528,28 @@ export const decor: IFurniture[] = [
     type: DeviceType.Cover
   },
   {
-    blocks: [[9, 4], [9, 5], [9, 6], [10, 4], [10, 5], [10, 6], [11, 4], [11, 5], [11, 6]],
+    blocks: [[8, 4], [8, 5], [8, 6], [9, 4], [9, 5], [9, 6], [10, 4], [10, 5], [10, 6], [11, 4], [11, 5], [11, 6], [12, 4], [12, 5], [12, 6]],
     key: 'cover1',
     type: DeviceType.Cover
   },
   {
-    blocks: [[2, 16], [2, 17], [2, 18], [3, 16], [3, 17], [3, 18], [4, 16], [4, 17], [4, 18]],
+    blocks: [[3, 16], [3, 17], [3, 18], [4, 16], [4, 17], [4, 18], [5, 16], [5, 17], [5, 18]],
     key: 'cover2',
     type: DeviceType.Cover
   },
+]
+
+export const stats: any = [
+  {
+    blocks: [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6]],
+    type: EStat.Score
+  },
+  {
+    blocks: [[0, 7], [0, 8], [0, 9], [0, 10], [0, 11], [0, 12], [0, 13]],
+    type: EStat.Mood
+  },
+  {
+    blocks: [[0, 14], [0, 15], [0, 16], [0, 17], [0, 18], [0, 19], [0, 20]],
+    type: EStat.Money
+  }
 ]

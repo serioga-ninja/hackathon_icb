@@ -5,7 +5,14 @@ export interface IGameStats {
   money: number;
 }
 
+let instance: GameStats;
+
 export class GameStats {
+
+  static get instance(): GameStats {
+    return instance || (instance = new GameStats());
+  }
+
 
   stats: IGameStats;
 
@@ -30,8 +37,6 @@ export class GameStats {
     } else {
       this.stats[key] += value;
     }
-
-    console.log(key, this.stats[key]);
   }
 
   decreaseToStat<K extends keyof IGameStats>(key: K, value: number) {
@@ -40,7 +45,6 @@ export class GameStats {
     } else {
       this.stats[key] -= value;
     }
-    console.log(key, this.stats[key]);
   }
 
 }

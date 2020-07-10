@@ -27,7 +27,7 @@ export class GameScene extends Phaser.Scene {
    * by calling scene.start(key, [params])
    */
   init(params: any): void {
-    this.gameStats = new GameStats();
+    this.gameStats = GameStats.instance;
     this.perSecondTime = 0;
   }
 
@@ -43,6 +43,8 @@ export class GameScene extends Phaser.Scene {
     audio.forEach((sound: any) => {
       this.load.audio(sound.key, sound.path);
     });
+
+    this.load.bitmapFont('font', 'font/gem.png', 'font/gem.xml');
   }
 
   /**
@@ -65,7 +67,7 @@ export class GameScene extends Phaser.Scene {
     this.humanEntity = new HumanEntity(this, startBlock, this.navigationLogic, this.flatMap.garbage);
     this.flatMap.vacuum.setHuman(this.humanEntity);
 
-    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);
+    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic, this.gameStats);
 
 
     for (const room of this.flatMap.rooms) {
