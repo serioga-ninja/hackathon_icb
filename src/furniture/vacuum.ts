@@ -38,10 +38,6 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   }
 
   garbageAdded(movableBlocksGroup: MovableBlocksGroup) {
-    if (this.deviceState !== EDeviceState.Working) return;
-
-    this.currentPosition = movableBlocksGroup.getClosest(this.x, this.y);
-    this.generateNewPath();
   }
 
   generateNewPath() {

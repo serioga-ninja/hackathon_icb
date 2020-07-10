@@ -1,4 +1,4 @@
-import { gameConfig } from '../core/game.config';
+import { gameConfig, tileSize } from '../core/game.config';
 import { GameStats } from '../core/game.stats';
 import { EGroupTypes, GroupBase } from '../core/group.base';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
@@ -28,8 +28,10 @@ export class GarbageGroup extends GroupBase {
 
   overlapVacuum(vacuum: Vacuum) {
     this.scene.physics.add.overlap(this, vacuum, (garbageEntity: GarbageEntity) => {
-      this.remove(garbageEntity);
-      garbageEntity.destroy(true);
+      if (vacuum.widthTo(garbageEntity) < tileSize / 2) {
+        this.remove(garbageEntity);
+        garbageEntity.destroy(true);
+      }
     });
   }
 }
