@@ -1,9 +1,8 @@
-import { textures } from "../core/game.config";
-
 export class ScoreScene extends Phaser.Scene {
   private playerRankList: string = "";
   private playerNameList: string = "";
   private playerScoreList: string = "";
+  private audio: Phaser.Sound.BaseSound;
 
   name: Phaser.GameObjects.BitmapText;
   rank: Phaser.GameObjects.BitmapText;
@@ -37,18 +36,14 @@ export class ScoreScene extends Phaser.Scene {
     });
   }
 
-  preload(): void {
-    textures.forEach((texture: any) => {
-      this.load.image(texture.key, texture.path);
-    });
-    this.load.bitmapFont('font', 'font/gem.png', 'font/gem.xml');
-  }
-
   create(): void {
     let width = this.cameras.main.width,
       height = this.cameras.main.height,
       bg = this.add.image(width / 2, height / 2, 'final'),
       scale = Math.max(width / bg.width, height / bg.height);
+
+    this.audio = this.sound.add('endAudio', {volume: 0.5, loop: true});
+    this.audio.play();
 
     bg.setScale(scale).setScrollFactor(0);
     let scoreImg = this.add.image(500,400, 'score');
@@ -61,6 +56,8 @@ export class ScoreScene extends Phaser.Scene {
 
 
     replayImg.on('pointerdown', function (/*pointer*/) {
+      this.scene.stop();
+      this.audio.stop();
       this.scene.start('GameScene');
     }, this);
 

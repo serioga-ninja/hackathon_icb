@@ -3,7 +3,7 @@ import { DeviceType } from './actions/action-group.base';
 import { NavigationLogic } from './core/navigation.logic';
 import { DeviceEntity } from './entity/device.entity';
 import { CoverEntity } from './entity/cover.entity';
-import { StatEntity } from './entity/stat.entity';
+import { StatEntity, IStats, EStat } from './entity/stat.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 import { GarbageEntity } from './entity/garbage.entity';
 
@@ -15,7 +15,7 @@ import { MovableBlocksGroup } from './groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
 
-import { houseMap, tileSize, devices, furnitures, startHuman, decor, stats } from './core/game.config';
+import { houseMap, tileSize, devices, furnitures, startHuman, decor, stats, gameConfig } from './core/game.config';
 
 import { Light } from './furniture/light';
 import { TV } from './furniture/tv';
@@ -32,6 +32,7 @@ import { Sink } from './furniture/sink';
 import { Toilet } from './furniture/toilet';
 import { WallsGroup } from './groups/walls.group';
 import { WaterDevicesGroup } from './groups/water-devices.group';
+import { GameStats } from './core/game.stats';
 
 const sprayMap = [
   'wallG',
@@ -86,6 +87,8 @@ export class FlatMap {
   electricDevices: ElectricDevicesGroup;
   waterDevices: WaterDevicesGroup;
   garbage: GarbageGroup;
+  stats: IStats;
+  gameStats: GameStats;
 
   get startBlock() {
     return this.generatedBlocks[startHuman.y][startHuman.x];
@@ -105,6 +108,8 @@ export class FlatMap {
     this.waterDevices = new WaterDevicesGroup(scene);
     this.garbage = new GarbageGroup(scene, [], { createCallback: this.onGarbageAddCallback.bind(this) });
     this.movableBlocksGroup = new MovableBlocksGroup(scene);
+    this.gameStats = GameStats.instance;
+    this.stats = {}
   }
 
   init() {
@@ -149,7 +154,34 @@ export class FlatMap {
       });
 
       new StatEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), stat.type);
+
+      this.updateStatsValue(0, stat.type, blockGroup[0].x + tileSize * 1.7, blockGroup[0].y - tileSize * .17, true);
     });
+  }
+
+  updateStatsValue(time: number, type?: EStat, x?: number, y?: number, create?: boolean) {
+    let moodStat = this.gameStats.getStat('humanMood').toFixed(2),
+        moneyStat = this.gameStats.getStat('money').toFixed(2);
+
+    if (create) {
+      switch (type) {
+        case EStat.Score:
+          this.stats.score = this.scene.add.bitmapText(x, y, 'font', '0', 25);
+          break;
+        case EStat.Mood:
+          this.stats.mood = this.scene.add.bitmapText(x, y, 'font', moodStat.toString(), 25);
+          break;
+        case EStat.Money:
+          this.stats.money = this.scene.add.bitmapText(x, y, 'font', `$${moneyStat.toString()}`, 25);
+          break;
+      }
+    } else {
+      this.stats.score.text = time.toFixed().toString();
+      this.stats.mood.text = this.gameStats.getStat('humanMood') > 0 ? moodStat.toString() : '0';
+      this.stats.money.text = this.gameStats.getStat('money') > 0 ? `$${moneyStat.toString()}` : '0';
+      
+    }
+    
   }
 
   generateDevices(navigationLogic: NavigationLogic) {
@@ -370,8 +402,12 @@ export class FlatMap {
     }
   }
 
+  
+
   update(time: number, secondLeft: boolean) {
     this.vacuum.update(time, secondLeft);
+
+    this.updateStatsValue(time * 0.001);
   }
 
   onGarbageAddCallback(item: GarbageEntity) {

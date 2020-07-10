@@ -4,7 +4,7 @@ import { AUCH_THAT_HURTS } from '../core/game.vocabulary';
 import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
-import { gameConfig, textures, audio, tileSize } from '../core/game.config';
+import { gameConfig } from '../core/game.config';
 
 export class GameScene extends Phaser.Scene {
 
@@ -35,16 +35,8 @@ export class GameScene extends Phaser.Scene {
    * is called before the scene objects are created, and it contains loading assets; these assets are cached, so when
    * the scene is restarted, they are not reloaded
    */
+
   preload(): void {
-    textures.forEach((texture: any) => {
-      this.load.image(texture.key, texture.path);
-    });
-
-    audio.forEach((sound: any) => {
-      this.load.audio(sound.key, sound.path);
-    });
-
-    this.load.bitmapFont('font', 'font/gem.png', 'font/gem.xml');
     this.load.spritesheet('suicide', 'textures/person/suicide.png', { frameWidth: 106, frameHeight: 106 });
   }
 
@@ -112,12 +104,23 @@ export class GameScene extends Phaser.Scene {
       this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
       this.gameStats.addToStat('water', this.flatMap.waterDevices.consumePerTick);
     }
-
     //#endregion
 
-    console.log('mood', this.gameStats.getStat('humanMood'));
+    // Counting cost of electricity and water
+    let electricity = this.gameStats.getStat('electricity'),
+        water = this.gameStats.getStat('water'),
+        moneyLeft = gameConfig.initialMoney - (electricity * gameConfig.electricityCost) - (water * gameConfig.waterCost);
+
+    this.gameStats.updateStat('money', moneyLeft);
+
     if ((this.gameStats.getStat('humanMood') <= 0 || this.gameStats.getStat('money') <= 0) && gameConfig.allowToKill && !this.humanEntity.finalSceneInProgress) {
       this.actionLogic.runFinalScene();
+      
+      /*if (!this.actionLogic.finalSceneInProgress) {
+        this.audio.stop();
+        this.scene.stop();
+        this.scene.start('ScoreScene');
+      }*/
     }
   }
 }

@@ -1,13 +1,17 @@
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { SpriteEntity } from '../core/sprite.entity';
-import { FlatBlockEntity } from './flat-block.entity';
 import { tileSize } from '../core/game.config';
-import { DeviceType } from '../actions/action-group.base';
 
 export enum EStat {
     Score,
     Mood, 
     Money
+}
+
+export interface IStats {
+  score?: Phaser.GameObjects.BitmapText,
+  mood?: Phaser.GameObjects.BitmapText,
+  money?: Phaser.GameObjects.BitmapText
 }
 
 export class StatEntity extends SpriteEntity {
@@ -19,11 +23,19 @@ export class StatEntity extends SpriteEntity {
 
     this.blocksGroup = blocksGroup;
     this.statType = type;
+    
 
     this.setDisplaySize(tileSize * 7, tileSize * 1);
     this.generateText();
 
     this.alpha = 1;
+  }
+
+  generateText() {
+    let x = this.blocksGroup.coords.x,
+        y = this.blocksGroup.coords.y;
+
+    this.scene.add.bitmapText(x - tileSize * 3, y - tileSize * .17, 'font', this.generateStatName(this.statType), 25);
   }
 
   generateStatName(type: EStat): string {
@@ -35,12 +47,5 @@ export class StatEntity extends SpriteEntity {
         case EStat.Money:
             return 'MONEY: ';
     }
-  }
-
-  generateText() {
-    let x = this.blocksGroup.coords.x,
-        y = this.blocksGroup.coords.y;
-
-    this.scene.add.bitmapText(x - tileSize * 3, y - tileSize * .17, 'font', this.generateStatName(this.statType), 25);
   }
 }

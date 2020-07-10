@@ -1,3 +1,5 @@
+import { gameConfig } from "./game.config";
+
 export interface IGameStats {
   electricity: number;
   water: number;
@@ -18,8 +20,8 @@ export class GameStats {
 
   constructor() {
     this.stats = {
-      humanMood: 100,
-      money: 100,
+      humanMood: gameConfig.initialMood,
+      money: gameConfig.initialMoney,
     } as IGameStats;
   }
 
@@ -29,6 +31,10 @@ export class GameStats {
     }
 
     return this.stats[key];
+  }
+
+  updateStat<K extends keyof IGameStats>(key: K, value: number) {
+    this.stats[key] = value;
   }
 
   addToStat<K extends keyof IGameStats>(key: K, value: number) {

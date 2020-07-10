@@ -15,42 +15,45 @@ export const gameConfig = {
   debug: false,
   playerWidth: 20,
   allowToKill: true,
-  speedOfWaiting: 5000,
-  throwGarbageOncePerSec: 20,
+  speedOfWaiting: 500,
+  throwGarbageOncePerSec: 15,
   evilModVacuumWidth: ((window.innerHeight - 15) / 15) * 3,
   speed: {
     human: 3,
     vacuum: 2
   },
+  initialMood: 100,
+  initialMoney: 100,
+  electricityCost: 1.5,
+  waterCost: 1,
   moodDestroyers: {
-    turnOffBath: 20,
-    turnOffMusic: 20,
-    turnOffTV: 20,
-    closeFridge: 20,
-    garbage: 0.05,
-    lightsOff: 0.05,
-    vacuumProblem: 0.05,
+    turnOffBath: 5,
+    turnOffMusic: 5,
+    turnOffTV: 5,
+    closeFridge: 5,
+    garbage: 0.1,
+    lightsOff: 0.03,
+    vacuumProblem: 0.1,
   },
   consumePerClick: {
     water: {
-      toilet: 20
+      toilet: 5
     }
   },
   consumePerTick: {
     water: {
-      bath: 0.05,
-      sink: 0.05,
-      toilet: 0.05,
+      bath: 0.5,
+      sink: 0.05
     },
     electricity: {
-      light: 0.05,
-      tv: 0.05,
-      fan: 0.05,
+      light: 0.02,
+      tv: 0.1,
+      fan: 0.03,
       vacuum: 0.05,
-      teapot: 0.05,
-      fridge: 0.05,
+      teapot: 0.1,
+      fridge: 0.04,
       music: 0.05,
-      microwave: 0.05,
+      microwave: 0.1,
       oven: 0.05,
       computer: 0.05,
     }
@@ -341,12 +344,24 @@ export const textures: any = [
     key: 'score',
     path: 'textures/game/score.jpg'
   },
+  {
+    key: 'start',
+    path: 'textures/game/start.jpg'
+  }
 ];
 
 export const audio: any = [
   {
+    key: 'startAudio',
+    path: 'sounds/start.ogg'
+  },
+  {
     key: 'gameAudio',
     path: 'sounds/game.ogg'
+  },
+  {
+    key: 'endAudio',
+    path: 'sounds/death.ogg'
   }
 ]
 
