@@ -1,3 +1,5 @@
+import { ICanSay } from '../core/interfaces';
+
 export interface IRelatedEntity {
   x: number;
   y: number;
@@ -9,15 +11,17 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
   private _width: number;
   private _height: number;
   private lifeTimer: NodeJS.Timeout;
+  private entity: ICanSay;
 
   public message: string;
 
-  constructor(scene: Phaser.Scene, entity: IRelatedEntity, width: number, height: number, lifeTime: number, message: string) {
+  constructor(scene: Phaser.Scene, entity: ICanSay, width: number, height: number, lifeTime: number, message: string) {
     super(scene, { x: entity.x, y: entity.y - entity.height });
     this.scene.add.existing(this);
 
 
     this.message = message;
+    this.entity = entity;
     this._width = width;
     this._height = height;
     this.lifeTimer = setTimeout(() => {
@@ -90,5 +94,7 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
     }
 
     super.destroy(fromScene);
+
+    this.entity.messageDestroyed();
   }
 }

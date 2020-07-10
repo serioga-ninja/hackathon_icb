@@ -1,7 +1,7 @@
 import { DeviceType } from '../actions/action-group.base';
 import { gameConfig } from '../core/game.config';
 import { VACUUM_CLEAN_DONE, VACUUM_EVIL_MODE_ACTIVATED } from '../core/game.vocabulary';
-import { IElectricityObject } from '../core/interfaces';
+import { ICanSay, IElectricityObject } from '../core/interfaces';
 import { MoveToWrapper } from '../core/move-to-wrapper';
 import { NavigationLogic } from '../core/navigation.logic';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
@@ -14,7 +14,7 @@ import { MovableBlocksGroup } from '../groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import DYNAMIC_BODY = Phaser.Physics.Arcade.DYNAMIC_BODY;
 
-export class Vacuum extends DeviceInteractiveEntity implements IElectricityObject {
+export class Vacuum extends DeviceInteractiveEntity implements IElectricityObject, ICanSay {
 
   placeToInteract: null;
   electricityConsumePerTime: number;
@@ -160,4 +160,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     this.human = human;
   }
 
+  messageDestroyed() {
+    this.message = null;
+  }
 }
