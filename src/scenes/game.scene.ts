@@ -51,7 +51,7 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     //this.add.tileSprite(0, 0, tileSize, tileSize, 'grass');
 
-    this.audio = this.sound.add('gameAudio', {volume: 0.4, loop: true});
+    this.audio = this.sound.add('gameAudio', { volume: 0.4, loop: true });
     this.audio.play();
 
     this.flatMap = new FlatMap(this);
@@ -62,6 +62,7 @@ export class GameScene extends Phaser.Scene {
 
     const startBlock = this.flatMap.startBlock;
     this.humanEntity = new HumanEntity(this, startBlock, this.navigationLogic, this.flatMap.garbage);
+    this.flatMap.vacuum.setHuman(this.humanEntity);
 
     this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);
 
@@ -86,12 +87,14 @@ export class GameScene extends Phaser.Scene {
    * is called every tick and contains the dynamic part of the scene — everything that moves, flashes, etc.
    */
   update(time: number): void {
+    const secondLeft = time - this.perSecondTime > 1000;
+
     this.actionLogic.update(time);
     this.humanEntity.update(time);
-    this.flatMap.update(time);
+    this.flatMap.update(time, secondLeft);
 
     //#region Per Second update area
-    if (time - this.perSecondTime > 1000) {
+    if (secondLeft) {
       this.perSecondTime = time;
 
       this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);

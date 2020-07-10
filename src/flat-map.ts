@@ -177,7 +177,7 @@ export class FlatMap {
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Vacuum:
-        furniture = this.vacuum = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.garbage);
+        furniture = this.vacuum = new Vacuum(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), navigationLogic, this.garbage, this.movableBlocksGroup);
         this.electricDevices.add(furniture);
         break;
       case DeviceType.Bath:
@@ -354,8 +354,8 @@ export class FlatMap {
     }
   }
 
-  update(time: number) {
-    this.vacuum.update(time);
+  update(time: number, secondLeft: boolean) {
+    this.vacuum.update(time, secondLeft);
   }
 
   onGarbageAddCallback(item: GarbageEntity) {
