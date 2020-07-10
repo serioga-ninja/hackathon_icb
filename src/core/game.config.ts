@@ -323,11 +323,11 @@ export const textures: any = [
   },
   {
     key: 'final',
-    path: 'textures/game/final.png'
+    path: 'textures/game/final.jpg'
   },
   {
     key: 'leaderboard',
-    path: 'textures/game/leaderboard.png'
+    path: 'textures/game/leaderboard.jpg'
   },
   {
     key: 'replay',
@@ -335,7 +335,7 @@ export const textures: any = [
   },
   {
     key: 'score',
-    path: 'textures/game/score.png'
+    path: 'textures/game/score.jpg'
   },
 ];
 

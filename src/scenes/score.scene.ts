@@ -1,22 +1,17 @@
 import { textures } from "../core/game.config";
 
 export class ScoreScene extends Phaser.Scene {
-  private readonly LINESPACING: number = 12;
-  private readonly SCOREBOARDSTYLE = { font: "18px Arial", fill: "#adc100", align: "left" };
   private playerRankList: string = "";
   private playerNameList: string = "";
   private playerScoreList: string = "";
 
-  title: Phaser.GameObjects.Text;
-  text: Phaser.GameObjects.Text;
-  tryAgain: Phaser.GameObjects.Text;
-  name: Phaser.GameObjects.Text;
-  rank: Phaser.GameObjects.Text;
-  score: Phaser.GameObjects.Text;
+  name: Phaser.GameObjects.BitmapText;
+  rank: Phaser.GameObjects.BitmapText;
+  score: Phaser.GameObjects.BitmapText;
 
-  playerRankPosition: Phaser.GameObjects.Text;
-  playerName: Phaser.GameObjects.Text;
-  playerScore: Phaser.GameObjects.Text;
+  playerRankPosition: Phaser.GameObjects.BitmapText;
+  playerName: Phaser.GameObjects.BitmapText;
+  playerScore: Phaser.GameObjects.BitmapText;
 
   point: number = 150;
 
@@ -46,44 +41,40 @@ export class ScoreScene extends Phaser.Scene {
     textures.forEach((texture: any) => {
       this.load.image(texture.key, texture.path);
     });
+    this.load.bitmapFont('font', 'font/gem.png', 'font/gem.xml');
   }
 
   create(): void {
     let width = this.cameras.main.width,
       height = this.cameras.main.height,
-      image = this.add.image(width / 2, height / 2, 'final'),
-      scale = Math.max(width / image.width, height / image.height);
+      bg = this.add.image(width / 2, height / 2, 'final'),
+      scale = Math.max(width / bg.width, height / bg.height);
 
-    image.setScale(scale).setScrollFactor(0);
+    bg.setScale(scale).setScrollFactor(0);
+    let scoreImg = this.add.image(500,400, 'score');
+    let leaderboardImg = this.add.image(500, 750, 'leaderboard');
+    let replayImg = this.add.image(1375,725, 'replay').setInteractive();
 
-
-
-
-    this.title = this.add.text(500, 200, 'You Died', { font: '100px Arial Bold', fill: '#de0025' });
-    this.text = this.add.text(500, 350, '', { font: '24px Arial Bold', fill: '#adc100' });
-    this.text.setText([
-      'Score: ' + this.point,
-    ]);
-
-    // Leader Board with table
-    // this.tryAgain = this.add.text(500, 450, 'Leader Board', { font: '50px Arial Bold', fill: '#de0025' });
-    // this.rank = this.add.text(500, 550, 'Rank', { font: '24px Arial Bold', fill: '#00c133' });
-    // this.name = this.add.text(600, 550, 'Name', { font: '24px Arial Bold', fill: '#00c133' });
-    // this.score = this.add.text(700, 550, 'Score', { font: '24px Arial Bold', fill: '#00c133' });
-    // this.makeScoreBoardGrid();
-    // this.playerRankPosition = this.add.text(500, 600, this.playerRankList, this.SCOREBOARDSTYLE);
-    // this.playerName = this.add.text(600, 600, this.playerNameList, this.SCOREBOARDSTYLE);
-    // this.playerScore = this.add.text(700, 600, this.playerScoreList, this.SCOREBOARDSTYLE);
-    // this.playerRankPosition.lineSpacing = this.playerName.lineSpacing = this.playerScore.lineSpacing = this.LINESPACING;
+    this.add.bitmapText(300, 375, 'font', `YOUR SCORE: ${this.point}`, 50);
+    this.add.bitmapText(350, 525, 'font', `LEADERBOARD`, 50);
+    this.add.bitmapText(335, 600, 'font', `Leaderboard coming soon...`, 25);
 
 
-
-
-    this.input.on('pointerdown', function (/*pointer*/) {
+    replayImg.on('pointerdown', function (/*pointer*/) {
       this.scene.start('GameScene');
     }, this);
-  }
 
+  //   // Leader Board with table
+  //   this.rank = this.add.bitmapText(100, 600, 'font', 'RANK', 25);
+  //   this.name = this.add.bitmapText(225, 600, 'font', 'NAME', 25);
+  //   this.score = this.add.bitmapText(600, 600, 'font', 'SCORE', 25);
+  //
+  //   this.makeScoreBoardGrid();
+  //
+  //   this.playerRankPosition = this.add.bitmapText(100, 650,'font', this.playerRankList, 20);
+  //   this.playerName = this.add.bitmapText(225, 650, 'font', this.playerNameList, 20);
+  //   this.playerScore = this.add.bitmapText(600, 650, 'font', this.playerScoreList, 20);
+  }
 
   makeScoreBoardGrid(): void  {
     this.leaderBoardData.sort((a, b) => {
