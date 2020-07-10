@@ -1,9 +1,8 @@
-import { HumanActionBase } from '../actions/human-action.base';
 import { gameConfig } from '../core/game.config';
+import { GameStats } from '../core/game.stats';
 import { IWaterObject } from '../core/interfaces';
-import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
+import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
-import { HumanEntity } from '../entity/human.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { DeviceType } from '../actions/action-group.base';
 
@@ -23,14 +22,12 @@ export class Toilet extends DeviceInteractiveEntity implements IWaterObject {
     this.placeToInteract = placeToInteract;
   }
 
-  turnOn(human?: HumanEntity, action?: HumanActionBase) {
-    super.turnOn(human, action);
-
+  makeADump() {
     this.setTexture(spriteTextures.on);
   }
 
-  turnOff() {
-    super.turnOff();
+  turnOn() {
+    GameStats.instance.decreaseToStat('water', gameConfig.consumePerClick.water.toilet);
 
     this.setTexture(spriteTextures.off);
   }

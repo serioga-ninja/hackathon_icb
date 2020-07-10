@@ -5,7 +5,14 @@ export interface IGameStats {
   money: number;
 }
 
+let instance: GameStats;
+
 export class GameStats {
+
+  static get instance(): GameStats {
+    return instance || (instance = new GameStats());
+  }
+
 
   stats: IGameStats;
 

@@ -27,7 +27,7 @@ export class GameScene extends Phaser.Scene {
    * by calling scene.start(key, [params])
    */
   init(params: any): void {
-    this.gameStats = new GameStats();
+    this.gameStats = GameStats.instance;
     this.perSecondTime = 0;
   }
 
