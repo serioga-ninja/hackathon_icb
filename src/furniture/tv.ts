@@ -2,7 +2,7 @@ import { HumanActionBase } from '../actions/human-action.base';
 import { gameConfig, tileSize } from '../core/game.config';
 import { I_WAS_WATCHING } from '../core/game.vocabulary';
 import { IElectricityObject } from '../core/interfaces';
-import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
+import { DeviceInteractiveEntity } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
@@ -21,14 +21,13 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
     this.graphics = scene.add.graphics();
     this.placeToInteract = placeToInteract;
 
-    let x = blocksGroup.children.entries[0].x;
-    let y = blocksGroup.children.entries[0].y;
+    const {x, y} = blocksGroup.children.entries[0] as FlatBlockEntity;
 
     this.turnOnOverlay = new Phaser.Geom.Polygon([
-      x + tileSize * .15, y - tileSize * .25,
-      x + tileSize * 1.8, y - tileSize * .25,
-      x + tileSize * 2.5, y + tileSize,
-      x - tileSize * .6, y + tileSize
+      new Phaser.Geom.Point(x + tileSize * .15, y - tileSize * .25),
+      new Phaser.Geom.Point(x + tileSize * 1.8, y - tileSize * .25),
+      new Phaser.Geom.Point(x + tileSize * 2.5, y + tileSize),
+      new Phaser.Geom.Point(x - tileSize * .6, y + tileSize)
     ]);
 
     this.setInteractive();

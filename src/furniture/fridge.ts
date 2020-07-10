@@ -23,8 +23,7 @@ export class Fridge extends DeviceInteractiveEntity implements IElectricityObjec
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
     super(scene, blocksGroup, spriteTextures.off, DeviceType.Fridge);
 
-    let x = blocksGroup.children.entries[0].x;
-    let y = blocksGroup.children.entries[0].y;
+    const {x, y} = blocksGroup.children.entries[0] as FlatBlockEntity;
 
     this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.fridge;
     this.graphics = scene.add.graphics();
@@ -35,10 +34,10 @@ export class Fridge extends DeviceInteractiveEntity implements IElectricityObjec
     this.scene.add.existing(this.openFridgeImg);
 
     this.turnOnOverlay = new Phaser.Geom.Polygon([
-      x - tileSize * .4, y - tileSize * .26,
-      x + tileSize * .4, y - tileSize * .26,
-      x + tileSize * .2, y - tileSize * 1.2,
-      x - tileSize, y - tileSize * 1.2
+      new Phaser.Geom.Point(x - tileSize * .4, y - tileSize * .26),
+      new Phaser.Geom.Point(x + tileSize * .4, y - tileSize * .26),
+      new Phaser.Geom.Point(x + tileSize * .2, y - tileSize * 1.2),
+      new Phaser.Geom.Point(x - tileSize, y - tileSize * 1.2)
     ]);
 
     this.setInteractive();
