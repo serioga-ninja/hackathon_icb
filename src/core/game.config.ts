@@ -1,5 +1,11 @@
 import { DeviceType } from '../actions/action-group.base';
 
+export interface IFurniture {
+  blocks: any;
+  key: string,
+  type: DeviceType
+}
+
 export const gameConfig = {
   width: window.innerWidth - 15,
   maxWidth: 1600,
@@ -189,6 +195,14 @@ export const textures: any = [
     path: 'textures/furniture/vacuum-on2.png'
   },
   {
+    key: 'vacuumRage-on1',
+    path: 'textures/furniture/vacuum-rage-on1.png'
+  },
+  {
+    key: 'vacuumRage-on2',
+    path: 'textures/furniture/vacuum-rage-on2.png'
+  },
+  {
     key: 'flower',
     path: 'textures/furniture/flower.png'
   },
@@ -286,11 +300,11 @@ export const textures: any = [
   },
   {
     key: 'cover1',
-    path: 'textures/game/carpet1.jpg'
+    path: 'textures/house/carpet1.png'
   },
   {
     key: 'cover2',
-    path: 'textures/game/carpet2.jpg'
+    path: 'textures/house/carpet2.png'
   }
 ];
 
@@ -301,7 +315,7 @@ export const audio: any = [
   }
 ]
 
-export const devices: any = [
+export const devices: IFurniture[] = [
   {
     blocks: [[6, 9]],
     key: 'light',
@@ -399,7 +413,7 @@ export const devices: any = [
   },
 ]
 
-export const furnitures: any = [
+export const furnitures: IFurniture[] = [
   {
     blocks: [[3, 6], [3, 7], [4, 6], [4, 7], [5, 6], [5, 7]],
     key: 'table',
@@ -481,21 +495,6 @@ export const furnitures: any = [
     type: DeviceType.Simple
   },
   {
-    blocks: [[14, 12]],
-    key: 'doorCarpet',
-    type: DeviceType.Cover
-  },
-  {
-    blocks: [[14, 12]],
-    key: 'cover1',
-    type: DeviceType.Cover
-  },
-  {
-    blocks: [[14, 12]],
-    key: 'cover2',
-    type: DeviceType.Cover
-  },
-  {
     blocks: [[14, 11]],
     key: 'flower',
     type: DeviceType.Simple
@@ -504,5 +503,23 @@ export const furnitures: any = [
     blocks: [[14, 13]],
     key: 'flower',
     type: DeviceType.Simple
+  },
+]
+
+export const decor: IFurniture[] = [
+  {
+    blocks: [[14, 12]],
+    key: 'doorCarpet',
+    type: DeviceType.Cover
+  },
+  {
+    blocks: [[9, 4], [9, 5], [9, 6], [10, 4], [10, 5], [10, 6], [11, 4], [11, 5], [11, 6]],
+    key: 'cover1',
+    type: DeviceType.Cover
+  },
+  {
+    blocks: [[2, 16], [2, 17], [2, 18], [3, 16], [3, 17], [3, 18], [4, 16], [4, 17], [4, 18]],
+    key: 'cover2',
+    type: DeviceType.Cover
   },
 ]

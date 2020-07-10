@@ -14,7 +14,7 @@ import { MovableBlocksGroup } from './groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
 
-import { houseMap, tileSize, devices, furnitures, startHuman } from './core/game.config';
+import { houseMap, tileSize, devices, furnitures, startHuman, decor } from './core/game.config';
 
 import { Light } from './furniture/light';
 import { TV } from './furniture/tv';
@@ -109,6 +109,7 @@ export class FlatMap {
   init() {
     this.regenerateMapSymbolToEnum();
     this.generateFlatSpriteBlocks(this.scene);
+    this.generateDecoration();
     this.generateMovableBlocks();
     this.generateDoors();
     this.generateRooms();
@@ -121,6 +122,18 @@ export class FlatMap {
     return this.devices.filter((device) => {
       return device.blockType === type;
     });
+  }
+
+  generateDecoration() {
+    let device = decor[1];
+    let blockGroup: FlatBlockEntity[] = [];
+
+    device.blocks.forEach((elem: any) => {
+      let block = this.generatedBlocks[elem[0]][elem[1]];
+      blockGroup.push(block);
+    });
+
+    new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type)
   }
 
   generateDevices(navigationLogic: NavigationLogic) {
@@ -139,7 +152,7 @@ export class FlatMap {
 
   compileFurniture(navigationLogic: NavigationLogic, device: any, role?: DeviceType): DeviceEntity {
     let blockGroup: FlatBlockEntity[] = [],
-      furniture;
+      furniture: DeviceEntity;
 
     device.blocks.forEach((elem: any) => {
       let block = this.generatedBlocks[elem[0]][elem[1]];
@@ -202,9 +215,6 @@ export class FlatMap {
       case DeviceType.Toilet:
         furniture = new Toilet(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), this.generatedBlocks[x - 1][y]);
         this.waterDevices.add(furniture);
-        break;
-      case DeviceType.Cover:
-        furniture = new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
         break;
       default:
         furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
