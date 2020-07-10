@@ -23,7 +23,7 @@ export class WallsGroup extends GroupBase {
         return row[c[0]];
       })
       .filter((block) => !!block)
-      .filter((block) => !block.isMovable || block.isDoor);
+      .filter((block) => block.isWall || block.isDoor || block.isWindow);
   }
 
   correctWallSprites(generatedBlocks: FlatBlockEntity[][]) {

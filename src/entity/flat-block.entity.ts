@@ -25,7 +25,11 @@ export enum EHouseParticles {
 }
 
 const pathAvailableBlockTypes: EHouseParticles[] = [
-  EHouseParticles.FreeSpace, EHouseParticles.Door, EHouseParticles.Grass
+  EHouseParticles.FreeSpace, EHouseParticles.Door
+];
+
+const wallTypes: EHouseParticles[] = [
+  EHouseParticles.WallG, EHouseParticles.Wall, EHouseParticles.WallT, EHouseParticles.WallX
 ];
 
 export class FlatBlockEntity extends SpriteEntity {
@@ -42,6 +46,8 @@ export class FlatBlockEntity extends SpriteEntity {
   public relatedMovableBlocks: FlatBlockEntity[];
 
   public readonly isDoor: boolean;
+  public readonly isWindow: boolean;
+  public readonly isWall: boolean;
   public isMovable: boolean;
   public humanCanPath: boolean;
   public matrix: { x: number; y: number; };
@@ -78,6 +84,8 @@ export class FlatBlockEntity extends SpriteEntity {
     this.setDisplaySize(options.width, options.height);
     this.scene.physics.world.enableBody(this, STATIC_BODY);
     this.isMovable = pathAvailableBlockTypes.indexOf(options.blockType) !== -1;
+    this.isWall = wallTypes.indexOf(options.blockType) !== -1;
+    this.isWindow = options.blockType === EHouseParticles.Window;
     this.humanCanPath = this.isMovable;
     this.isDoor = options.blockType === EHouseParticles.Door;
     this.matrix = options.matrix;
