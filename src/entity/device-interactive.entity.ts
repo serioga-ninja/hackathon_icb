@@ -1,7 +1,9 @@
+import { HumanActionBase } from '../actions/human-action.base';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { DeviceEntity } from './device.entity';
 import { FlatBlockEntity } from './flat-block.entity';
 import { DeviceType } from '../actions/action-group.base';
+import { HumanEntity } from './human.entity';
 
 export enum EDeviceState {
   Working,
@@ -11,6 +13,8 @@ export enum EDeviceState {
 export abstract class DeviceInteractiveEntity extends DeviceEntity {
 
   abstract placeToInteract: FlatBlockEntity;
+  protected humanAction: HumanActionBase;
+  protected human: HumanEntity;
 
   deviceState: EDeviceState;
 
@@ -37,7 +41,9 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
     }
   }
 
-  turnOn() {
+  turnOn(human?: HumanEntity, action?: HumanActionBase) {
+    this.humanAction = action;
+    this.human = human;
     this.deviceState = EDeviceState.Working;
   }
 

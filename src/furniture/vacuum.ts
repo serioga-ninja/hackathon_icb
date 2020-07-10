@@ -1,7 +1,7 @@
 import { DeviceType } from '../actions/action-group.base';
 import { gameConfig } from '../core/game.config';
 import { VACUUM_CLEAN_DONE, VACUUM_EVIL_MODE_ACTIVATED } from '../core/game.vocabulary';
-import { IElectricityObject } from '../core/interfaces';
+import { ICanSay, IElectricityObject } from '../core/interfaces';
 import { MoveToWrapper } from '../core/move-to-wrapper';
 import { NavigationLogic } from '../core/navigation.logic';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
@@ -14,7 +14,7 @@ import { MovableBlocksGroup } from '../groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import DYNAMIC_BODY = Phaser.Physics.Arcade.DYNAMIC_BODY;
 
-export class Vacuum extends DeviceInteractiveEntity implements IElectricityObject {
+export class Vacuum extends DeviceInteractiveEntity implements IElectricityObject, ICanSay {
 
   placeToInteract: null;
   electricityConsumePerTime: number;
@@ -29,7 +29,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   private _movingAnimationTime: number;
   private message: MessageEntity;
   private widthToHuman: number;
-  private human: HumanEntity;
+  protected human: HumanEntity;
   private evilMode: boolean;
   private movableBlocksGroup: MovableBlocksGroup;
 
@@ -80,7 +80,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   }
 
   turnOn() {
-    super.turnOn();
+    super.turnOn(this.human);
 
     this.setTexture('vacuum-on1');
 
@@ -119,16 +119,20 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     }
 
     if (secondLeft) {
-      this.widthToHuman = this.widthTo(this.human);
-      if (this.widthToHuman < gameConfig.evilModVacuumWidth && !this.evilMode) {
-        this.turnOnEvilMod();
-      } else if (this.widthToHuman < gameConfig.evilModVacuumWidth && this.evilMode) {
-        this.path = new Phaser.Curves.Path(this.x, this.y);
-        this.currentPosition = this.movableBlocksGroup.getClosest(this.x, this.y);
-        this.navigationLogic.generatePath(this.currentPosition, this.human.overlapBlock, this.path);
-        this.moveToWrapper = new MoveToWrapper(this.currentPosition, this.human.overlapBlock, this.path, gameConfig.speed.vacuum);
-      } else if (this.widthToHuman > gameConfig.evilModVacuumWidth && this.evilMode) {
-        this.turnOffEvilMod();
+      try {
+        this.widthToHuman = this.widthTo(this.human);
+        if (this.widthToHuman < gameConfig.evilModVacuumWidth && !this.evilMode) {
+          this.turnOnEvilMod();
+        } else if (this.widthToHuman < gameConfig.evilModVacuumWidth && this.evilMode) {
+          this.path = new Phaser.Curves.Path(this.x, this.y);
+          this.currentPosition = this.movableBlocksGroup.getClosest(this.human.x, this.human.y);
+          this.navigationLogic.generatePath(this.currentPosition, this.human.overlapBlock, this.path);
+          this.moveToWrapper = new MoveToWrapper(this.currentPosition, this.human.overlapBlock, this.path, gameConfig.speed.vacuum);
+        } else if (this.widthToHuman > gameConfig.evilModVacuumWidth && this.evilMode) {
+          this.turnOffEvilMod();
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
 
@@ -160,4 +164,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     this.human = human;
   }
 
+  messageDestroyed() {
+    this.message = null;
+  }
 }

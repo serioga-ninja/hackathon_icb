@@ -16,13 +16,14 @@ export const gameConfig = {
   playerWidth: 20,
   allowToKill: false,
   speedOfWaiting: 100,
-  throwGarbageOncePerSec: 25,
+  throwGarbageOncePerSec: 20,
   evilModVacuumWidth: ((window.innerHeight - 15) / 15) * 3,
   speed: {
     human: 3,
     vacuum: 2
   },
   moodDestroyers: {
+    turnOffTV: 20,
     garbage: 0.05,
     lightsOff: 0.05,
     vacuumProblem: 0.05,

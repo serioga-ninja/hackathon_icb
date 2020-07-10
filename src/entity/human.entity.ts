@@ -1,4 +1,5 @@
 import { gameConfig } from '../core/game.config';
+import { ICanSay } from '../core/interfaces';
 import { NavigationLogic } from '../core/navigation.logic';
 import { SpriteEntity } from '../core/sprite.entity';
 import { GarbageGroup } from '../groups/garbage.group';
@@ -16,7 +17,7 @@ export interface IHumanEntityOptions {
   navigationLogic: NavigationLogic;
 }
 
-export class HumanEntity extends SpriteEntity {
+export class HumanEntity extends SpriteEntity implements ICanSay {
   get currentFlatEntity(): FlatBlockEntity {
     return this._currentFlatEntity;
   }
@@ -37,6 +38,10 @@ export class HumanEntity extends SpriteEntity {
     if (state === EHumanState.waiting) {
       this.setTexture('human');
     }
+  }
+
+  get hasMessage() {
+    return !!this._humanMessage;
   }
 
   public overlapBlock: FlatBlockEntity;
@@ -100,5 +105,9 @@ export class HumanEntity extends SpriteEntity {
 
     this._humanMessage = new MessageEntity(this.scene, this, width, height, liveTime, message);
     this._humanMessage.draw();
+  }
+
+  messageDestroyed() {
+    this._humanMessage = null;
   }
 }

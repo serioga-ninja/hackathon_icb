@@ -1,5 +1,6 @@
 import { ActionsLogic } from '../actions/actions.logic';
 import { GameStats } from '../core/game.stats';
+import { AUCH_THAT_HURTS } from '../core/game.vocabulary';
 import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
@@ -66,7 +67,7 @@ export class GameScene extends Phaser.Scene {
     this.humanEntity = new HumanEntity(this, startBlock, this.navigationLogic, this.flatMap.garbage);
     this.flatMap.vacuum.setHuman(this.humanEntity);
 
-    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);
+    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic, this.gameStats);
 
 
     for (const room of this.flatMap.rooms) {
@@ -79,6 +80,9 @@ export class GameScene extends Phaser.Scene {
 
     this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
       this.gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.vacuumProblem);
+      if (!this.humanEntity.hasMessage) {
+        this.humanEntity.say(AUCH_THAT_HURTS, 100, 50, 2000);
+      }
     });
 
     this.flatMap.garbage.overlapVacuum(this.flatMap.vacuum);

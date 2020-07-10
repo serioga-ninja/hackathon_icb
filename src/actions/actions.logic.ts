@@ -1,3 +1,4 @@
+import { GameStats } from '../core/game.stats';
 import { ActionGroupBase, EActionTypes } from './action-group.base';
 import { GoToActionGroup } from './go-to.action-group';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
@@ -23,10 +24,12 @@ export class ActionsLogic {
   private navigationLogic: NavigationLogic;
   private debugBlock: FlatBlockEntity;
   private flatMap: FlatMap;
+  private gameStats: GameStats;
 
   private activeActionGroup: ActionGroupBase;
 
-  constructor(flatMap: FlatMap, human: HumanEntity, navigationLogic: NavigationLogic, debugBlock?: FlatBlockEntity) {
+  constructor(flatMap: FlatMap, human: HumanEntity, navigationLogic: NavigationLogic, gameStats: GameStats, debugBlock?: FlatBlockEntity) {
+    this.gameStats = gameStats;
     this.flatMap = flatMap;
     this.flatGroup = flatMap.flatGroup;
     this.human = human;
@@ -47,7 +50,7 @@ export class ActionsLogic {
         actionGroup = new GoToActionGroup(this.human, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.WatchTV:
-        actionGroup = new WatchTVGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new WatchTVGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.ListenMusic:
         actionGroup = new ListenMusicGroup(this.human, this.flatMap, this.navigationLogic);
