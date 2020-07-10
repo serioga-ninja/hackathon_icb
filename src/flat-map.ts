@@ -13,7 +13,7 @@ import { MovableBlocksGroup } from './groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
 
-import { houseMap, tileSize, devices, furnitures } from './core/game.config';
+import { houseMap, tileSize, devices, furnitures, startHuman } from './core/game.config';
 
 import { Light } from './furniture/light';
 import { TV } from './furniture/tv';
@@ -39,7 +39,8 @@ const sprayMap = [
   'floor',
   'window',
   'door',
-  'grass'
+  'grass',
+  ''
 ];
 
 // [x, y]
@@ -85,7 +86,7 @@ export class FlatMap {
   garbage: GarbageGroup;
 
   get startBlock() {
-    return this.generatedBlocks[13][12];
+    return this.generatedBlocks[startHuman.x][startHuman.y];
   }
 
   constructor(scene: Phaser.Scene) {

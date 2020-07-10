@@ -40,9 +40,14 @@ export const gameConfig = {
   }
 };
 
-export const tileSize: number = gameConfig.height / 14;
+export const tileSize: number = gameConfig.height / 15;
+export const startHuman: any = {
+  x: 14,
+  y: 12
+};
 
 export const houseMap: string =
+  '888888888888888888888\n' +
   '011115111121115111110\n' +
   '144444444414444444441\n' +
   '144444444414444444441\n' +
@@ -286,97 +291,97 @@ export const audio: any = [
 
 export const devices: any = [
   {
-    blocks: [[5, 9]],
+    blocks: [[6, 9]],
     key: 'light',
     type: DeviceType.Light
   },
   {
-    blocks: [[5, 11]],
+    blocks: [[6, 11]],
     key: 'light',
     type: DeviceType.Light
   },
   {
-    blocks: [[11, 9]],
+    blocks: [[12, 9]],
     key: 'light',
     type: DeviceType.Light
   },
   {
-    blocks: [[11, 11]],
+    blocks: [[12, 11]],
     key: 'light',
     type: DeviceType.Light
   },
   {
-    blocks: [[11, 15]],
+    blocks: [[12, 15]],
     key: 'light',
     type: DeviceType.Light
   },
   {
-    blocks: [[1, 16], [1, 17], [1, 18]],
+    blocks: [[2, 16], [2, 17], [2, 18]],
     key: 'tv',
     type: DeviceType.TV
   },
   {
-    blocks: [[1, 15]],
+    blocks: [[2, 15]],
     key: 'music',
     type: DeviceType.Music
   },
   {
-    blocks: [[7, 13]],
+    blocks: [[8, 13]],
     key: 'vacuum',
     type: DeviceType.Vacuum
   },
   {
-    blocks: [[5, 3]],
+    blocks: [[6, 3]],
     key: 'fridge',
     type: DeviceType.Fridge
   },
   {
-    blocks: [[5, 2]],
+    blocks: [[6, 2]],
     key: 'teapot',
     type: DeviceType.Teapot
   },
   {
-    blocks: [[7, 18], [7, 19]],
+    blocks: [[8, 18], [8, 19]],
     key: 'bath',
     type: DeviceType.Bath
   },
   {
-    blocks: [[7, 1], [7, 2]],
+    blocks: [[8, 1], [8, 2]],
     key: 'fan',
     type: DeviceType.Fan
   },
   {
-    blocks: [[1, 11], [1, 12]],
+    blocks: [[2, 11], [2, 12]],
     key: 'fan',
     type: DeviceType.Fan
   },
   {
-    blocks: [[1, 3]],
+    blocks: [[2, 3]],
     key: 'sink',
     type: DeviceType.Sink
   },
   {
-    blocks: [[7, 15]],
+    blocks: [[8, 15]],
     key: 'sinkBath',
     type: DeviceType.Sink
   },
   {
-    blocks: [[1, 2]],
+    blocks: [[2, 2]],
     key: 'microwave',
     type: DeviceType.Microwave
   },
   {
-    blocks: [[1, 4]],
+    blocks: [[2, 4]],
     key: 'oven',
     type: DeviceType.Oven
   },
   {
-    blocks: [[11, 4], [11, 5], [11, 6]],
+    blocks: [[12, 4], [12, 5], [12, 6]],
     key: 'computer',
     type: DeviceType.Computer
   },
   {
-    blocks: [[11, 19]],
+    blocks: [[12, 19]],
     key: 'toilet',
     type: DeviceType.Toilet
   }
@@ -384,97 +389,97 @@ export const devices: any = [
 
 export const furnitures: any = [
   {
-    blocks: [[2, 6], [2, 7], [3, 6], [3, 7], [4, 6], [4, 7]],
+    blocks: [[3, 6], [3, 7], [4, 6], [4, 7], [5, 6], [5, 7]],
     key: 'table',
     type: DeviceType.Simple
   },
   {
-    blocks: [[3, 17]],
+    blocks: [[4, 17]],
     key: 'table2',
     type: DeviceType.Simple
   },
   {
-    blocks: [[8, 1], [8, 2]],
+    blocks: [[9, 1], [9, 2]],
     key: 'bed',
     type: DeviceType.Simple
   },
   {
-    blocks: [[10, 1], [10, 2]],
+    blocks: [[11, 1], [11, 2]],
     key: 'bed',
     type: DeviceType.Simple
   },
   {
-    blocks: [[5, 18], [5, 19]],
+    blocks: [[6, 18], [6, 19]],
     key: 'couch',
     type: DeviceType.Simple
   },
   {
-    blocks: [[5, 15], [5, 16]],
+    blocks: [[6, 15], [6, 16]],
     key: 'couch',
     type: DeviceType.Simple
   },
   {
-    blocks: [[5, 17]],
+    blocks: [[6, 17]],
     key: 'flower',
     type: DeviceType.Simple
   },
   {
-    blocks: [[1, 9]],
+    blocks: [[2, 9]],
     key: 'flowerTable',
     type: DeviceType.Simple
   },
   {
-    blocks: [[11, 13]],
+    blocks: [[12, 13]],
     key: 'flower',
     type: DeviceType.Simple
   },
   {
-    blocks: [[1, 19]],
+    blocks: [[2, 19]],
     key: 'flower',
     type: DeviceType.Simple
   },
   {
-    blocks: [[9, 1]],
+    blocks: [[10, 1]],
     key: 'flower',
     type: DeviceType.Simple
   },
   {
-    blocks: [[9, 19]],
+    blocks: [[10, 19]],
     key: 'flower',
     type: DeviceType.Simple
   },
   {
-    blocks: [[7, 8], [7, 9], [8, 8], [8, 9]],
+    blocks: [[8, 8], [8, 9], [9, 8], [9, 9]],
     key: 'flowerBig',
     type: DeviceType.Simple
   },
   {
-    blocks: [[1, 1], [2, 1], [3, 1], [4, 1], [5, 1]],
+    blocks: [[2, 1], [3, 1], [4, 1], [5, 1], [6, 1]],
     key: 'kitchen',
     type: DeviceType.Simple
   },
   {
-    blocks: [[10, 6]],
+    blocks: [[11, 6]],
     key: 'chair',
     type: DeviceType.Simple
   },
   {
-    blocks: [[11, 18]],
+    blocks: [[12, 18]],
     key: 'books',
     type: DeviceType.Simple
   },
   /*{
-    blocks: [[13, 12]],
+    blocks: [[14, 12]],
     key: 'doorCarpet',
     type: DeviceType.Simple
   },
   {
-    blocks: [[13, 11]],
+    blocks: [[14, 11]],
     key: 'flower',
     type: DeviceType.Simple
   },
   {
-    blocks: [[13, 13]],
+    blocks: [[14, 13]],
     key: 'flower',
     type: DeviceType.Simple
   },*/
