@@ -1,3 +1,5 @@
+import { textures } from "../core/game.config";
+
 export class ScoreScene extends Phaser.Scene {
   private readonly LINESPACING: number = 12;
   private readonly SCOREBOARDSTYLE = { font: "18px Arial", fill: "#adc100", align: "left" };
@@ -17,7 +19,6 @@ export class ScoreScene extends Phaser.Scene {
   playerScore: Phaser.GameObjects.Text;
 
   point: number = 150;
-  reason: string = 'Some Strange reason';
 
   leaderBoardData = [
     {
@@ -41,29 +42,44 @@ export class ScoreScene extends Phaser.Scene {
     });
   }
 
+  preload(): void {
+    textures.forEach((texture: any) => {
+      this.load.image(texture.key, texture.path);
+    });
+  }
+
   create(): void {
+    let width = this.cameras.main.width,
+      height = this.cameras.main.height,
+      image = this.add.image(width / 2, height / 2, 'final'),
+      scale = Math.max(width / image.width, height / image.height);
+
+    image.setScale(scale).setScrollFactor(0);
+
+
+
+
     this.title = this.add.text(500, 200, 'You Died', { font: '100px Arial Bold', fill: '#de0025' });
     this.text = this.add.text(500, 350, '', { font: '24px Arial Bold', fill: '#adc100' });
-
-    this.tryAgain = this.add.text(500, 450, 'Score Board', { font: '50px Arial Bold', fill: '#de0025' });
-    this.rank = this.add.text(500, 550, 'Rank', { font: '24px Arial Bold', fill: '#00c133' });
-    this.name = this.add.text(600, 550, 'Name', { font: '24px Arial Bold', fill: '#00c133' });
-    this.score = this.add.text(700, 550, 'Score', { font: '24px Arial Bold', fill: '#00c133' });
-
-    this.makeScoreBoardGrid();
-
-    this.playerRankPosition = this.add.text(500, 600, this.playerRankList, this.SCOREBOARDSTYLE);
-    this.playerName = this.add.text(600, 600, this.playerNameList, this.SCOREBOARDSTYLE);
-    this.playerScore = this.add.text(700, 600, this.playerScoreList, this.SCOREBOARDSTYLE);
-    this.playerRankPosition.lineSpacing = this.playerName.lineSpacing = this.playerScore.lineSpacing = this.LINESPACING;
-
     this.text.setText([
       'Score: ' + this.point,
-      'Reason: ' + this.reason,
     ]);
 
+    // Leader Board with table
+    // this.tryAgain = this.add.text(500, 450, 'Leader Board', { font: '50px Arial Bold', fill: '#de0025' });
+    // this.rank = this.add.text(500, 550, 'Rank', { font: '24px Arial Bold', fill: '#00c133' });
+    // this.name = this.add.text(600, 550, 'Name', { font: '24px Arial Bold', fill: '#00c133' });
+    // this.score = this.add.text(700, 550, 'Score', { font: '24px Arial Bold', fill: '#00c133' });
+    // this.makeScoreBoardGrid();
+    // this.playerRankPosition = this.add.text(500, 600, this.playerRankList, this.SCOREBOARDSTYLE);
+    // this.playerName = this.add.text(600, 600, this.playerNameList, this.SCOREBOARDSTYLE);
+    // this.playerScore = this.add.text(700, 600, this.playerScoreList, this.SCOREBOARDSTYLE);
+    // this.playerRankPosition.lineSpacing = this.playerName.lineSpacing = this.playerScore.lineSpacing = this.LINESPACING;
 
-    this.tryAgain.on('pointerdown', function (/*pointer*/) {
+
+
+
+    this.input.on('pointerdown', function (/*pointer*/) {
       this.scene.start('GameScene');
     }, this);
   }
