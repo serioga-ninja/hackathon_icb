@@ -20,11 +20,12 @@ export enum EHouseParticles {
   FreeSpace,
   Window,
   Door,
-  Grass
+  Grass,
+  Stats
 }
 
 const pathAvailableBlockTypes: EHouseParticles[] = [
-  EHouseParticles.FreeSpace, EHouseParticles.Door
+  EHouseParticles.FreeSpace, EHouseParticles.Door, EHouseParticles.Grass
 ];
 
 export class FlatBlockEntity extends SpriteEntity {
