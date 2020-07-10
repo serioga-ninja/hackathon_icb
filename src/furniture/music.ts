@@ -1,21 +1,23 @@
+import { gameConfig } from '../core/game.config';
 import { IElectricityObject } from '../core/interfaces';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
-import { RoomGroup } from '../groups/room.group';
 import { DeviceType } from '../actions/action-group.base';
+
+const spriteTextures: any = {
+  off: 'music',
+  on: 'musicOn'
+};
 
 export class Music extends DeviceInteractiveEntity implements IElectricityObject {
   placeToInteract: FlatBlockEntity;
-  turnOnOverlay: Phaser.Geom.Polygon;
-  graphics: Phaser.GameObjects.Graphics;
   electricityConsumePerTime: number;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
-    super(scene, blocksGroup, 'music', DeviceType.Music);
+    super(scene, blocksGroup, spriteTextures.off, DeviceType.Music);
 
-    this.electricityConsumePerTime = 0.05;
-    this.graphics = scene.add.graphics();
+    this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.music;
     this.placeToInteract = placeToInteract;
 
     this.setInteractive();
@@ -24,18 +26,12 @@ export class Music extends DeviceInteractiveEntity implements IElectricityObject
   turnOn() {
     if (this.deviceState === EDeviceState.Working) return;
     this.deviceState = EDeviceState.Working;
-    this.setTexture('musicOn');
+    this.setTexture(spriteTextures.on);
   }
 
   turnOff() {
     super.turnOff();
 
-    this.setTexture('music');
-  }
-
-  addGroup(group: RoomGroup) {
-    super.addGroup(group);
-
-    group.addDevice(this);
+    this.setTexture(spriteTextures.off);
   }
 }

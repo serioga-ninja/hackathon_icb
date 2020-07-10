@@ -32,7 +32,7 @@ export class ListenMusicGroup extends ActionGroupBase {
       new MoveHumanAction(this.human, this.humanSitBlock, this.navigationLogic),
       new RotateHumanAction(this.human, 0),
       new TurnOnHumanAction(this.human, this.musicBlock),
-      new WaitHumanAction(this.human, 10000)
+      new WaitHumanAction(this.human, this.speed)
     );
   }
 }

@@ -70,11 +70,11 @@ export class NavigationLogic {
     return availablePathList;
   }
 
-  private findPath(path: FlatBlockEntity[], humanPosition: FlatBlockEntity): FlatBlockEntity[] {
+  private findPath(path: FlatBlockEntity[], startBlock: FlatBlockEntity): FlatBlockEntity[] {
     const currentPathBlock = path[path.length - 1];
-    const relatedFinalBlock = currentPathBlock.relatedMovableBlocks.find((b) => b.objID === humanPosition.objID);
+    const relatedFinalBlock = currentPathBlock.relatedMovableBlocks.find((b) => b.objID === startBlock.objID);
 
-    // we find the last humanPosition
+    // we find the last startBlock
     if (relatedFinalBlock) {
       return path;
     }
@@ -101,17 +101,10 @@ export class NavigationLogic {
     for (const relatedBlock of currentPathBlock.relatedMovableBlocks) {
       if (typeof relatedBlock.waveValue !== 'number' || relatedBlock.waveValue >= currentPathBlock.waveValue) continue;
 
-      const foundPath = this.findPath([...path, relatedBlock], humanPosition);
+      const foundPath = this.findPath([...path, relatedBlock], startBlock);
       if (foundPath.length < res.length) {
         res = foundPath;
       }
-    }
-
-    if (!res[0]) {
-      console.error(`Can't find path!`, path[0], humanPosition);
-      debugger;
-
-      return [];
     }
 
     return res;
@@ -144,8 +137,8 @@ export class NavigationLogic {
     }
   }
 
-  generatePath(startPosition: FlatBlockEntity, endPosition: FlatBlockEntity): Phaser.Curves.Path {
-    const availableRoomPaths = this.generateAvailableRoomPath([startPosition.getGroup(EGroupTypes.room) as RoomGroup], endPosition.getGroup(EGroupTypes.room) as RoomGroup);
+  generatePath(startPosition: FlatBlockEntity, endPosition: FlatBlockEntity, path: Phaser.Curves.Path = new Phaser.Curves.Path(startPosition.x, startPosition.y)): Phaser.Curves.Path {
+    const availableRoomPaths = this.generateAvailableRoomPath([startPosition.getGroup(EGroupTypes.Room) as RoomGroup], endPosition.getGroup(EGroupTypes.Room) as RoomGroup);
 
     let minPath: RoomGroup[] = new Array(10000);
 
@@ -164,7 +157,6 @@ export class NavigationLogic {
       console.error(`Can't find path!`, startPosition, endPosition);
     }
 
-    const path = new Phaser.Curves.Path(startPosition.x, startPosition.y);
     const blockPath: FlatBlockEntity[] = [startPosition];
 
     return minPath
@@ -180,7 +172,7 @@ export class NavigationLogic {
           const doors = room.relatedToRoomDoor(minPath[i + 1]).getChildren()[0] as FlatBlockEntity;
           const entranceBlock = doors.getEntranceFromRoom(room);
           const exitBlock = doors.relatedEntranceBlocks
-            .find((block) => block.getGroup(EGroupTypes.room).groupId !== room.groupId);
+            .find((block) => block.getGroup(EGroupTypes.Room).groupId !== room.groupId);
 
           this.generateRoomWaveNumbers(room, blockPath[blockPath.length - 1]);
           const blockFoundPath = this.findPath([entranceBlock], blockPath[blockPath.length - 1]);

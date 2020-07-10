@@ -32,7 +32,7 @@ export class MoveHumanAction extends HumanActionBase {
       console.groupEnd();
     }
     this._path = this.navigationLogic.generatePath(this.human.currentFlatEntity, this.block);
-    this._moveToFlatEntity = new MoveToWrapper(this.human.currentFlatEntity, this.block, this._path);
+    this._moveToFlatEntity = new MoveToWrapper(this.human.currentFlatEntity, this.block, this._path, gameConfig.speed.human);
     this.human.state = EHumanState.moving;
 
   }

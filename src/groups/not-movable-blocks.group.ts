@@ -4,7 +4,7 @@ import { FlatBlockEntity } from '../entity/flat-block.entity';
 export class NotMovableBlocksGroup extends GroupBase {
 
   get groupType() {
-    return EGroupTypes.notMovableBlocks;
+    return EGroupTypes.NotMovableBlocks;
   }
 
   get coords() {

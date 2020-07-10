@@ -14,7 +14,6 @@ export class DeviceEntity extends SpriteEntity {
 
     this.blocksGroup = blocksGroup;
     this.blockType = type;
-    console.log(this.blockType);
 
     this.setSizeOfBlock(this.blocksGroup);
     this.alpha = 1;
@@ -45,6 +44,13 @@ export class DeviceEntity extends SpriteEntity {
       case 4:
         size.width = 2;
         size.height = 2;
+        break;
+      case 5:
+        size.height = 5;
+        break;
+      case 6:
+        size.width = 2;
+        size.height = 3;
         break;
     }
 

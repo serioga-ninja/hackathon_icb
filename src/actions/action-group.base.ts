@@ -1,14 +1,26 @@
 import { HumanEntity } from '../entity/human.entity';
 import { HumanActionBase } from './human-action.base';
 
+import { gameConfig } from '../core/game.config';
+
 export enum EActionTypes {
   GoTo,
   WatchTV,
-  ListenMusic
+  ListenMusic,
+  PlayComputer,
+  TakeBath,
+  OpenFridge,
+  DrinkTea,
+  TurnOven,
+  UseMicrowave,
+  UseSink,
+  UseToilet,
+  Welcome,
 }
 
 export enum DeviceType {
   Simple,
+  Cover,
   TV,
   Music,
   Light,
@@ -17,7 +29,11 @@ export enum DeviceType {
   Bath,
   Sink,
   Teapot,
-  Fridge
+  Fridge,
+  Microwave,
+  Oven,
+  Computer,
+  Toilet
 }
 
 export abstract class ActionGroupBase {
@@ -32,9 +48,13 @@ export abstract class ActionGroupBase {
   protected actions: HumanActionBase[];
   protected activeAction: HumanActionBase;
 
+  public speed = gameConfig.speedOfWaiting;
+  public inProgress: boolean;
+
   constructor(human: HumanEntity) {
     this.human = human;
     this._finished = false;
+    this.inProgress = false;
     this.actions = [];
   }
 

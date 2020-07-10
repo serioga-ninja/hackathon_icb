@@ -3,10 +3,11 @@ import { GameStats } from '../core/game.stats';
 import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
-import { textures } from '../core/game.config';
+import { gameConfig, textures, audio, tileSize } from '../core/game.config';
 
 export class GameScene extends Phaser.Scene {
 
+  private audio: Phaser.Sound.BaseSound;
   private humanEntity: HumanEntity;
   private navigationLogic: NavigationLogic;
   private actionLogic: ActionsLogic;
@@ -46,6 +47,10 @@ export class GameScene extends Phaser.Scene {
     textures.forEach((texture: any) => {
       this.load.image(texture.key, assetsFolder + texture.path);
     });
+
+    audio.forEach((sound: any) => {
+      this.load.audio(sound.key, assetsFolder + sound.path);
+    });
   }
 
   /**
@@ -53,6 +58,11 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
+    //this.add.tileSprite(0, 0, tileSize, tileSize, 'grass');
+
+    this.audio = this.sound.add('gameAudio', { volume: 0.4, loop: true });
+    this.audio.play();
+
     this.flatMap = new FlatMap(this);
     this.flatMap.init();
 
@@ -60,14 +70,14 @@ export class GameScene extends Phaser.Scene {
     this.flatMap.generateDevices(this.navigationLogic);
 
     const startBlock = this.flatMap.startBlock;
-    this.humanEntity = new HumanEntity(this, startBlock.position.x, startBlock.position.y, 'human', {
-      startBlock,
-      navigationLogic: this.navigationLogic
-    });
+    this.humanEntity = new HumanEntity(this, startBlock, this.navigationLogic, this.flatMap.garbage);
+    this.flatMap.vacuum.setHuman(this.humanEntity);
 
-    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);//, this.flatMap.generatedBlocks[5][16]);
+    this.actionLogic = new ActionsLogic(this.flatMap, this.humanEntity, this.navigationLogic);
+
+
     for (const room of this.flatMap.rooms) {
-      room.overlapHuman(this.humanEntity);
+      room.overlapHuman(this.humanEntity, this.gameStats);
     }
 
     this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
@@ -75,27 +85,29 @@ export class GameScene extends Phaser.Scene {
     }, this);
 
     this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
-      this.humanEntity.makeDead();
+      this.gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.vacuumProblem);
     });
+
+    this.flatMap.garbage.overlapVacuum(this.flatMap.vacuum);
+    this.flatMap.garbage.overlapHuman(this.humanEntity, this.gameStats);
   }
 
   /**
    * is called every tick and contains the dynamic part of the scene — everything that moves, flashes, etc.
    */
   update(time: number): void {
+    const secondLeft = time - this.perSecondTime > 1000;
+
     this.actionLogic.update(time);
     this.humanEntity.update(time);
-    this.flatMap.update(time);
+    this.flatMap.update(time, secondLeft);
 
     //#region Per Second update area
-    if (time - this.perSecondTime > 1000) {
+    if (secondLeft) {
       this.perSecondTime = time;
 
-      for (const room of this.flatMap.rooms) {
-        this.gameStats.addToStat('electricity', room.electricityPerTick);
-      }
-
-      console.log('electricity', this.gameStats.getStat('electricity'));
+      this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
+      this.gameStats.addToStat('water', this.flatMap.waterDevices.consumePerTick);
     }
 
     //#endregion
