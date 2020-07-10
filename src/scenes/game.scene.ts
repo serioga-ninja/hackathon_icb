@@ -45,6 +45,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.load.bitmapFont('font', 'font/gem.png', 'font/gem.xml');
+    this.load.spritesheet('suicide', 'textures/person/suicide.png', { frameWidth: 106, frameHeight: 106 });
   }
 
   /**
@@ -52,6 +53,13 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
+    this.anims.create({
+      key: 'die',
+      frames: this.anims.generateFrameNumbers('suicide', {}),
+      frameRate: 4,
+      repeat: 0
+    });
+
     this.audio = this.sound.add('gameAudio', { volume: 0.3, loop: true });
     this.audio.play();
 
@@ -107,10 +115,9 @@ export class GameScene extends Phaser.Scene {
 
     //#endregion
 
-    if (this.humanEntity.dead) {
-      alert(`Time: ${this.time.now}`);
-      this.scene.stop();
-      // TODO: open end game scene and show stats etc
+    console.log('mood', this.gameStats.getStat('humanMood'));
+    if ((this.gameStats.getStat('humanMood') <= 0 || this.gameStats.getStat('money') <= 0) && gameConfig.allowToKill && !this.humanEntity.finalSceneInProgress) {
+      this.actionLogic.runFinalScene();
     }
   }
 }

@@ -88,7 +88,7 @@ export class FlatMap {
   garbage: GarbageGroup;
 
   get startBlock() {
-    return this.generatedBlocks[startHuman.x][startHuman.y];
+    return this.generatedBlocks[startHuman.y][startHuman.x];
   }
 
   constructor(scene: Phaser.Scene) {
@@ -134,7 +134,7 @@ export class FlatMap {
         let block = this.generatedBlocks[elem[0]][elem[1]];
         blockGroup.push(block);
       });
-  
+
       new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
     });
   }
@@ -147,7 +147,7 @@ export class FlatMap {
         let block = this.generatedBlocks[elem[0]][elem[1]];
         blockGroup.push(block);
       });
-  
+
       new StatEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), stat.type);
     });
   }
