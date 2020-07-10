@@ -1,3 +1,4 @@
+import { GameStats } from '../core/game.stats';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -19,8 +20,8 @@ export class TakeBathGroup extends ActionGroupBase {
   navigationLogic: NavigationLogic;
   humanSitBlock: FlatBlockEntity;
 
-  constructor(human: HumanEntity, flatMap: FlatMap, navigationLogic: NavigationLogic) {
-    super(human);
+  constructor(human: HumanEntity, gameStats: GameStats, flatMap: FlatMap, navigationLogic: NavigationLogic) {
+    super(human, gameStats);
 
     this.bathBlock = flatMap.getDevices(DeviceType.Bath)[0] as Bath;
     this.humanSitBlock = this.bathBlock.placeToInteract;

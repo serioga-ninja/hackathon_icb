@@ -10,12 +10,16 @@ export class ForceGoHumanAction extends HumanActionBase {
   private path: Phaser.Curves.Path;
   private moveToFlatEntity: MoveToWrapper;
   private speed: number;
+  private rotate: boolean;
+  private state: EHumanState;
 
-  constructor(human: HumanEntity, block: FlatBlockEntity, speed: number = gameConfig.speed.human / 3) {
+  constructor(human: HumanEntity, block: FlatBlockEntity, speed: number = gameConfig.speed.human / 3, rotate: boolean = true, state: EHumanState = EHumanState.moving) {
     super(human);
 
     this.block = block;
     this.speed = speed;
+    this.rotate = rotate;
+    this.state = state;
   }
 
   start() {
@@ -23,7 +27,7 @@ export class ForceGoHumanAction extends HumanActionBase {
     this.path.lineTo(this.block.x, this.block.y);
 
     this.moveToFlatEntity = new MoveToWrapper(this.human.currentFlatEntity, this.block, this.path, this.speed);
-    this.human.state = EHumanState.moving;
+    this.human.state = this.state;
     this.inProgress = true;
   }
 
@@ -36,11 +40,13 @@ export class ForceGoHumanAction extends HumanActionBase {
       const point = this.moveToFlatEntity.getPoint();
       human.x = point.x;
       human.y = point.y;
-      human.angle = this.moveToFlatEntity.angle;
+      if (this.rotate) {
+        human.angle = this.moveToFlatEntity.angle;
+      }
 
       if (human.widthTo(this.moveToFlatEntity.moveToPosition) < 1) {
         human.currentFlatEntity = this.moveToFlatEntity.moveToPosition;
-        human.state = EHumanState.waiting;
+        human.state = this.state;
 
         this.moveToFlatEntity = null;
         this._finished = true;

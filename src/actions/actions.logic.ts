@@ -53,31 +53,31 @@ export class ActionsLogic {
         actionGroup = new WatchTVGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.ListenMusic:
-        actionGroup = new ListenMusicGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new ListenMusicGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.PlayComputer:
         actionGroup = new PlayComputerGroup(this.human, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.TakeBath:
-        actionGroup = new TakeBathGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new TakeBathGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.OpenFridge:
-        actionGroup = new OpenFridgeGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new OpenFridgeGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.DrinkTea:
-        actionGroup = new DrinkTeaGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new DrinkTeaGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.TurnOven:
-        actionGroup = new TurnOvenGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new TurnOvenGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.UseMicrowave:
-        actionGroup = new UseMicrowaveGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new UseMicrowaveGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.UseSink:
-        actionGroup = new UseSinkGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new UseSinkGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.UseToilet:
-        actionGroup = new UseToiletGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new UseToiletGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
     }
 

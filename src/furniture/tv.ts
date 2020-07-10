@@ -31,6 +31,8 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
     ]);
 
     this.setInteractive();
+    this.humanMessage = I_WAS_WATCHING;
+    this.decreaseMood = gameConfig.moodDestroyers.turnOffTV;
   }
 
   turnOn(human?: HumanEntity, action?: HumanActionBase) {
@@ -45,11 +47,5 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
     super.turnOff();
 
     this.graphics.clear();
-
-    if (this.humanAction && !this.humanAction.finished) {
-      this.human.say(I_WAS_WATCHING, 300, 50, 2000);
-      this.humanAction.gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.turnOffTV);
-      this.humanAction.finish();
-    }
   }
 }

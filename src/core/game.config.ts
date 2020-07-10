@@ -23,10 +23,18 @@ export const gameConfig = {
     vacuum: 2
   },
   moodDestroyers: {
+    turnOffBath: 20,
+    turnOffMusic: 20,
     turnOffTV: 20,
+    closeFridge: 20,
     garbage: 0.05,
     lightsOff: 0.05,
     vacuumProblem: 0.05,
+  },
+  consumePerClick: {
+    water: {
+      toilet: 20
+    }
   },
   consumePerTick: {
     water: {
@@ -112,6 +120,10 @@ export const textures: any = [
   {
     key: 'human',
     path: 'textures/person/stand.png'
+  },
+  {
+    key: 'human-sit',
+    path: 'textures/person/sit.png'
   },
   {
     key: 'human-go-1',

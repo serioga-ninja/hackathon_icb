@@ -1,4 +1,5 @@
 import { HumanActionBase } from '../actions/human-action.base';
+import { SAD_FACE } from '../core/game.vocabulary';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import { DeviceEntity } from './device.entity';
 import { FlatBlockEntity } from './flat-block.entity';
@@ -15,6 +16,8 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
   abstract placeToInteract: FlatBlockEntity;
   protected humanAction: HumanActionBase;
   protected human: HumanEntity;
+  protected humanMessage: string;
+  protected decreaseMood: number;
 
   deviceState: EDeviceState;
 
@@ -22,6 +25,8 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
     super(scene, blocksGroup, key, type);
 
     this.deviceState = EDeviceState.NotWorking;
+    this.humanMessage = SAD_FACE;
+    this.decreaseMood = 20;
 
     this.setInteractive();
     this.initializeEvents();
@@ -49,6 +54,12 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
 
   turnOff() {
     this.deviceState = EDeviceState.NotWorking;
+
+    if (this.humanAction && !this.humanAction.finished) {
+      this.human.say(this.humanMessage, 300, 50, 2000);
+      this.humanAction.gameStats.decreaseToStat('humanMood', this.decreaseMood);
+      this.humanAction.finish();
+    }
   }
 
   onPointerdown() {
