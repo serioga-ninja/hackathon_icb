@@ -14,11 +14,20 @@ export enum EHumanState {
   siting
 }
 
-export interface IHumanEntityOptions {
-  navigationLogic: NavigationLogic;
-}
-
 export class HumanEntity extends SpriteEntity implements ICanSay {
+  get finalSceneInProgress(): boolean {
+    return this._finalSceneInProgress;
+  }
+
+  set finalSceneInProgress(value: boolean) {
+    this._finalSceneInProgress = value;
+
+    if (value && this._humanMessage) {
+      this._humanMessage.destroy(true);
+      this._humanMessage = null;
+    }
+  }
+
   get currentFlatEntity(): FlatBlockEntity {
     return this._currentFlatEntity;
   }
@@ -51,12 +60,14 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
 
   public overlapBlock: FlatBlockEntity;
 
+  private _finalSceneInProgress: boolean;
   private _humanMessage: MessageEntity;
   private _state: EHumanState;
   private _navigationLogic: NavigationLogic;
   private _garbageGroup: GarbageGroup;
   private _currentFlatEntity: FlatBlockEntity;
   private _movingAnimationTime: number;
+  private _garbage;
 
   public dead: boolean;
 
@@ -74,14 +85,17 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
     this.alpha = 1;
     this._movingAnimationTime = 0;
     this.dead = false;
+    this._finalSceneInProgress = false;
 
     // left garbage
-    setInterval(() => {
+    this._garbage = setInterval(() => {
       this._garbageGroup.throwGarbage(this.overlapBlock);
     }, gameConfig.throwGarbageOncePerSec * 1000);
   }
 
   update(time: number) {
+    if (this.dead) return;
+
     switch (this._state) {
       case EHumanState.moving:
         if (this._humanMessage) {
@@ -101,7 +115,10 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
     }
   }
 
-  say(message: string, width: number, height: number, liveTime: number = 5000) {
+  say(message: string, width: number, height: number, liveTime: number = 5000, force: boolean = false) {
+    if (this.dead) return;
+    if (this._finalSceneInProgress && !force) return;
+
     if (this._humanMessage && this._humanMessage.message === message) return;
 
     if (this._humanMessage) {
@@ -114,5 +131,19 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
 
   messageDestroyed() {
     this._humanMessage = null;
+  }
+
+  kill() {
+    if (this._humanMessage) {
+      this._humanMessage.destroy(true);
+      this._humanMessage = null;
+    }
+    if (this._garbage) {
+      clearTimeout(this._garbage);
+    }
+
+    this.dead = true;
+    this.setTexture('suicide');
+    this.anims.play('die');
   }
 }

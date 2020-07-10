@@ -1,6 +1,6 @@
 import { EGroupTypes, GroupBase } from './group.base';
 
-export abstract class SpriteEntity extends Phaser.GameObjects.Sprite {
+export class SpriteEntity extends Phaser.GameObjects.Sprite {
   protected relatedGroups: GroupBase[];
 
   body: Phaser.Physics.Arcade.Body;

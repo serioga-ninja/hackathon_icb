@@ -1,3 +1,4 @@
+import { gameConfig } from '../core/game.config';
 import { GameStats } from '../core/game.stats';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
@@ -31,7 +32,7 @@ export class UseMicrowaveGroup extends ActionGroupBase {
     this.actions.push(
       new MoveHumanAction(this.human, this.humanSitBlock, this.navigationLogic),
       new RotateHumanAction(this.human, 0),
-      new UseDeviceHumanAction(this.human, this.gameStats, this.microwaveBlock, 5000)
+      new UseDeviceHumanAction(this.human, this.gameStats, this.microwaveBlock, gameConfig.speedOfWaiting)
     );
   }
 }

@@ -14,8 +14,8 @@ export const gameConfig = {
   maxHeight: 1100,
   debug: false,
   playerWidth: 20,
-  allowToKill: false,
-  speedOfWaiting: 100,
+  allowToKill: true,
+  speedOfWaiting: 5000,
   throwGarbageOncePerSec: 20,
   evilModVacuumWidth: ((window.innerHeight - 15) / 15) * 3,
   speed: {
@@ -58,9 +58,13 @@ export const gameConfig = {
 };
 
 export const tileSize: number = gameConfig.height / 15;
-export const startHuman: any = {
-  x: 14,
-  y: 12
+export const startHuman = {
+  y: 14,
+  x: 12
+};
+export const endHuman = {
+  x: 12,
+  y: 11
 };
 
 export const houseMap: string =

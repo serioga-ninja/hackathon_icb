@@ -1,4 +1,4 @@
-import { HumanEntity } from '../entity/human.entity';
+import { EHumanState, HumanEntity } from '../entity/human.entity';
 import { HumanActionBase } from './human-action.base';
 
 export class WaitHumanAction extends HumanActionBase {
@@ -12,6 +12,7 @@ export class WaitHumanAction extends HumanActionBase {
   }
 
   start() {
+    this.human.state = EHumanState.waiting;
     setTimeout(() => {
       this._finished = true;
     }, this.ms);

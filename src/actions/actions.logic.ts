@@ -1,5 +1,6 @@
 import { GameStats } from '../core/game.stats';
 import { ActionGroupBase, EActionTypes } from './action-group.base';
+import { FinalGroup } from './final.group';
 import { GoToActionGroup } from './go-to.action-group';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -28,6 +29,8 @@ export class ActionsLogic {
 
   private activeActionGroup: ActionGroupBase;
 
+  public finalSceneInProgress: boolean;
+
   constructor(flatMap: FlatMap, human: HumanEntity, navigationLogic: NavigationLogic, gameStats: GameStats, debugBlock?: FlatBlockEntity) {
     this.gameStats = gameStats;
     this.flatMap = flatMap;
@@ -35,7 +38,8 @@ export class ActionsLogic {
     this.human = human;
     this.navigationLogic = navigationLogic;
     this.debugBlock = debugBlock;
-    this.activeActionGroup = new WelcomeGroup(human, flatMap, navigationLogic);
+    this.activeActionGroup = new WelcomeGroup(human, gameStats, flatMap, navigationLogic);
+    this.finalSceneInProgress = false;
   }
 
   generateAction(): ActionGroupBase {
@@ -90,6 +94,8 @@ export class ActionsLogic {
   }
 
   update(time: number) {
+    if (this.human.dead && (!this.activeActionGroup || this.activeActionGroup.finished)) return;
+
     if (!this.activeActionGroup || this.activeActionGroup && this.activeActionGroup.finished) {
       this.activeActionGroup = this.generateAction();
       if (this.activeActionGroup) {
@@ -105,5 +111,13 @@ export class ActionsLogic {
         this.activeActionGroup.done();
       }
     }
+  }
+
+  runFinalScene() {
+    this.human.finalSceneInProgress = true;
+    this.human.currentFlatEntity = this.flatMap.movableBlocksGroup.getClosest(this.human.x, this.human.y);
+    this.activeActionGroup = new FinalGroup(this.human, this.flatMap, this.navigationLogic);
+    this.activeActionGroup.start();
+    this.activeActionGroup.inProgress = true;
   }
 }
