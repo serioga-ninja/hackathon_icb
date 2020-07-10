@@ -25,7 +25,7 @@ export class WelcomeScene extends Phaser.Scene {
 
     this.input.on('pointerdown', function (/*pointer*/) {
       this.audio.stop();
-      this.scene.start('ScoreScene');
+      this.scene.start('GameScene');
     }, this);
   }
 }
