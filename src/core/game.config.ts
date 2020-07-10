@@ -1,4 +1,5 @@
 import { DeviceType } from '../actions/action-group.base';
+import { EStat } from '../entity/stat.entity';
 
 export interface IFurniture {
   blocks: any;
@@ -523,4 +524,19 @@ export const decor: IFurniture[] = [
     key: 'cover2',
     type: DeviceType.Cover
   },
+]
+
+export const stats: any = [
+  {
+    blocks: [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6]],
+    type: EStat.Score
+  },
+  {
+    blocks: [[0, 7], [0, 8], [0, 9], [0, 10], [0, 11], [0, 12], [0, 13]],
+    type: EStat.Mood
+  },
+  {
+    blocks: [[0, 14], [0, 15], [0, 16], [0, 17], [0, 18], [0, 19], [0, 20]],
+    type: EStat.Money
+  }
 ]

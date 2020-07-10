@@ -42,6 +42,8 @@ export class GameScene extends Phaser.Scene {
     audio.forEach((sound: any) => {
       this.load.audio(sound.key, sound.path);
     });
+
+    this.load.bitmapFont('font', 'font/gem.png', 'font/gem.xml');
   }
 
   /**

@@ -3,6 +3,7 @@ import { DeviceType } from './actions/action-group.base';
 import { NavigationLogic } from './core/navigation.logic';
 import { DeviceEntity } from './entity/device.entity';
 import { CoverEntity } from './entity/cover.entity';
+import { StatEntity } from './entity/stat.entity';
 import { EHouseParticles, FlatBlockEntity } from './entity/flat-block.entity';
 import { GarbageEntity } from './entity/garbage.entity';
 
@@ -14,7 +15,7 @@ import { MovableBlocksGroup } from './groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from './groups/not-movable-blocks.group';
 import { RoomGroup } from './groups/room.group';
 
-import { houseMap, tileSize, devices, furnitures, startHuman, decor } from './core/game.config';
+import { houseMap, tileSize, devices, furnitures, startHuman, decor, stats } from './core/game.config';
 
 import { Light } from './furniture/light';
 import { TV } from './furniture/tv';
@@ -110,6 +111,7 @@ export class FlatMap {
     this.regenerateMapSymbolToEnum();
     this.generateFlatSpriteBlocks(this.scene);
     this.generateDecoration();
+    this.generateStats();
     this.generateMovableBlocks();
     this.generateDoors();
     this.generateRooms();
@@ -134,6 +136,19 @@ export class FlatMap {
       });
   
       new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+    });
+  }
+
+  generateStats() {
+    stats.forEach((stat: any) => {
+      let blockGroup: FlatBlockEntity[] = [];
+
+      stat.blocks.forEach((elem: any) => {
+        let block = this.generatedBlocks[elem[0]][elem[1]];
+        blockGroup.push(block);
+      });
+  
+      new StatEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), stat.type);
     });
   }
 
