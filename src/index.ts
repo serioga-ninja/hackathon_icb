@@ -43,9 +43,8 @@ window.onload = () => {
     let newWidth = Math.min(w / scale, gameConfig.maxWidth)
     let newHeight = Math.min(h / scale, gameConfig.maxHeight)
 
-    console.log(newWidth, newHeight, tileSize);
     // resize the game
-    game.scale.setGameSize(newWidth, newHeight);
+    game.scale.setGameSize(newWidth + 60, newHeight);
     game.scale.autoCenter = Phaser.Scale.CENTER_BOTH;
   }
   window.addEventListener('resize', () => {

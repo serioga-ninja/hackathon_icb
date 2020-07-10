@@ -85,7 +85,7 @@ export class FlatMap {
   garbage: GarbageGroup;
 
   get startBlock() {
-    return this.generatedBlocks[12][12];
+    return this.generatedBlocks[13][12];
   }
 
   constructor(scene: Phaser.Scene) {
