@@ -1,5 +1,6 @@
 import { DeviceType } from '../actions/action-group.base';
 import { gameConfig } from '../core/game.config';
+import { VACUUM_CLEAN_DONE, VACUUM_EVIL_MODE_ACTIVATED } from '../core/game.vocabulary';
 import { IElectricityObject } from '../core/interfaces';
 import { MoveToWrapper } from '../core/move-to-wrapper';
 import { NavigationLogic } from '../core/navigation.logic';
@@ -68,7 +69,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
       }
     } else if (this.currentPosition.objID === this.chargeBlock.objID) {
       // if there is nothing to do - just turn of
-      this.say(`Everything is clean! I'm a good boy!`, 300, 50, 3000);
+      this.say(VACUUM_CLEAN_DONE, 300, 50, 3000);
       this.path = null;
       this.turnOff();
 
@@ -143,7 +144,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
 
   turnOnEvilMod() {
     this.evilMode = true;
-    this.say(`The reason of garbage detected! DESTROY! DESTROY! DESTROY!`, 350, 75, 2000);
+    this.say(VACUUM_EVIL_MODE_ACTIVATED, 350, 75, 2000);
   }
 
   say(message: string, width: number, height: number, liveTime: number = 5000) {
