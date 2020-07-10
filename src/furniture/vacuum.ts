@@ -124,7 +124,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
         this.turnOnEvilMod();
       } else if (this.widthToHuman < gameConfig.evilModVacuumWidth && this.evilMode) {
         this.path = new Phaser.Curves.Path(this.x, this.y);
-        this.currentPosition = this.movableBlocksGroup.getClosest(this.x, this.y);
+        this.currentPosition = this.movableBlocksGroup.getClosest(this.human.x, this.human.y);
         this.navigationLogic.generatePath(this.currentPosition, this.human.overlapBlock, this.path);
         this.moveToWrapper = new MoveToWrapper(this.currentPosition, this.human.overlapBlock, this.path, gameConfig.speed.vacuum);
       } else if (this.widthToHuman > gameConfig.evilModVacuumWidth && this.evilMode) {
