@@ -1,8 +1,8 @@
 import { DeviceType } from '../actions/action-group.base';
 
 export const gameConfig: any = {
-  width: window.innerWidth - 20,
-  height: window.innerHeight - 20,
+  width: window.innerWidth ,
+  height: window.innerHeight,
   debug: false,
   playerWidth: 20,
   allowToKill: false

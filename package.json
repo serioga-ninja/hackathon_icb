@@ -2,10 +2,13 @@
   "name": "hackathon_icb",
   "version": "0.0.1",
   "description": "the literal gods",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "build": "parcel build index.html",
-    "start": "parcel index.html --public-url /"
+    "build-parcel": "parcel build index.html",
+    "start-parcel": "parcel index.html --public-url /",
+    "start": "parcel build --no-content-hash src/index.ts && electron-forge start",
+    "package": "parcel build --no-content-hash src/index.ts && electron-forge package",
+    "make": "parcel build --no-content-hash src/index.ts && electron-forge make"
   },
   "staticFiles": {
     "staticPath": [
@@ -15,12 +18,48 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.52",
+    "@electron-forge/maker-deb": "^6.0.0-beta.52",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.52",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.52",
+    "@electron-forge/maker-zip": "^6.0.0-beta.52",
     "@types/node": "12.12.47",
+    "electron": "^9.1.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.4.3",
     "phaser": "^3.23.0",
     "ts-lint": "^4.5.1",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "hackathon_icb"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }

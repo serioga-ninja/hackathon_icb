@@ -34,8 +34,17 @@ export class GameScene extends Phaser.Scene {
    * the scene is restarted, they are not reloaded
    */
   preload(): void {
+    let assetsFolder = "";
+
+    //handling different asset folders 
+    //launched from parcel(localhost:1234) ENV = development
+    //launched from electron(standalone app) ENV = production
+    if (process.env.NODE_ENV !== 'development') {
+      assetsFolder = "assets//";
+    }
+
     textures.forEach((texture: any) => {
-      this.load.image(texture.key, texture.path);
+      this.load.image(texture.key, assetsFolder + texture.path);
     });
   }
 

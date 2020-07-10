@@ -118,3 +118,6 @@ dist
 
 yarn.lock
 .vscode/launch.json
+
+#electron-forge builds
+out/
