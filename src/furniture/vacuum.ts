@@ -6,6 +6,7 @@ import { NavigationLogic } from '../core/navigation.logic';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { GarbageEntity } from '../entity/garbage.entity';
+import { MessageEntity } from '../entity/message.entity';
 import { GarbageGroup } from '../groups/garbage.group';
 import { MovableBlocksGroup } from '../groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
@@ -24,6 +25,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   private garbageGroup: GarbageGroup;
   private moveToWrapper: MoveToWrapper;
   private _movingAnimationTime: number;
+  private message: MessageEntity;
 
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, navigationLogic: NavigationLogic, garbageGroup: GarbageGroup) {
     super(scene, blocksGroup, 'vacuum', DeviceType.Vacuum);
@@ -58,6 +60,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
       }
     } else if (this.currentPosition.objID === this.chargeBlock.objID) {
       // if there is nothing to do - just turn of
+      this.say(`Everything is clean! I'm a good boy!`, 300, 50, 3000);
       this.path = null;
       this.turnOff();
 
@@ -105,6 +108,15 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
       this.currentPosition = this.moveToWrapper.moveToPosition;
       this.generateNewPath();
     }
+  }
+
+  say(message: string, width: number, height: number, liveTime: number = 5000) {
+    if (this.message) {
+      this.message.destroy(true);
+    }
+
+    this.message = new MessageEntity(this.scene, this, width, height, liveTime, message);
+    this.message.draw();
   }
 
 }

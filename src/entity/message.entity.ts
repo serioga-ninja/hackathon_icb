@@ -1,6 +1,10 @@
-import { HumanEntity } from './human.entity';
+export interface IRelatedEntity {
+  x: number;
+  y: number;
+  height: number;
+};
 
-export class HumanMessageEntity extends Phaser.GameObjects.Graphics {
+export class MessageEntity extends Phaser.GameObjects.Graphics {
   private _text: Phaser.GameObjects.Text;
   private _width: number;
   private _height: number;
@@ -8,8 +12,8 @@ export class HumanMessageEntity extends Phaser.GameObjects.Graphics {
 
   public message: string;
 
-  constructor(scene: Phaser.Scene, human: HumanEntity, width: number, height: number, lifeTime: number, message: string) {
-    super(scene, { x: human.x, y: human.y - human.height });
+  constructor(scene: Phaser.Scene, entity: IRelatedEntity, width: number, height: number, lifeTime: number, message: string) {
+    super(scene, { x: entity.x, y: entity.y - entity.height });
     this.scene.add.existing(this);
 
 
@@ -69,11 +73,11 @@ export class HumanMessageEntity extends Phaser.GameObjects.Graphics {
     this._text.setPosition(this.x + (this._width / 2) - (b.width / 2), this.y + (this._height / 2) - (b.height / 2));
   }
 
-  updatePosition(human: HumanEntity) {
+  updatePosition(entity: IRelatedEntity) {
     const b = this._text.getBounds();
 
-    this.x = human.x;
-    this.y = human.y - human.height;
+    this.x = entity.x;
+    this.y = entity.y - entity.height;
     this._text.x = this.x + (this._width / 2) - (b.width / 2);
     this._text.y = this.y + (this._height / 2) - (b.height / 2);
   }
