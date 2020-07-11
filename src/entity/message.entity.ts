@@ -31,10 +31,10 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
 
   draw() {
     const bubblePadding = 10;
-    const arrowHeight = this._height / 4;
+    const arrowHeight = this._height / 5;
     //  Bubble shadow
     this.fillStyle(0x222222, 0.5);
-    this.fillRoundedRect(6, 6, this._width, this._height, 16);
+    this.fillRoundedRect(6, 6, this._width, this._height, 10);
 
     //  Bubble color
     this.fillStyle(0xffffff, 1);
@@ -43,8 +43,8 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
     this.lineStyle(4, 0x565656, 1);
 
     //  Bubble shape and outline
-    this.strokeRoundedRect(0, 0, this._width, this._height, 16);
-    this.fillRoundedRect(0, 0, this._width, this._height, 16);
+    this.strokeRoundedRect(0, 0, this._width, this._height, 10);
+    this.fillRoundedRect(0, 0, this._width, this._height, 10);
 
     //  Calculate arrow coordinates
     const point1X = Math.floor(this._width / 7);
@@ -66,7 +66,7 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
 
     this._text = this.scene.add.text(0, 0, this.message, {
       fontFamily: 'Arial',
-      fontSize: 20,
+      fontSize: 18,
       color: '#000000',
       align: 'center',
       wordWrap: { width: this._width - (bubblePadding * 2) }

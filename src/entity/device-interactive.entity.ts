@@ -5,6 +5,7 @@ import { DeviceEntity } from './device.entity';
 import { FlatBlockEntity } from './flat-block.entity';
 import { DeviceType } from '../actions/action-group.base';
 import { HumanEntity } from './human.entity';
+import { gameConfig } from '../core/game.config';
 
 export enum EDeviceState {
   Working,
@@ -18,6 +19,7 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
   protected human: HumanEntity;
   protected humanMessage: string;
   protected decreaseMood: number;
+  protected messageWidth: number;
 
   deviceState: EDeviceState;
 
@@ -26,7 +28,8 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
 
     this.deviceState = EDeviceState.NotWorking;
     this.humanMessage = SAD_FACE;
-    this.decreaseMood = 20;
+    this.messageWidth = 60;
+    this.decreaseMood = gameConfig.moodDestroyers.basic;
 
     this.setInteractive();
     this.initializeEvents();
@@ -56,7 +59,7 @@ export abstract class DeviceInteractiveEntity extends DeviceEntity {
     this.deviceState = EDeviceState.NotWorking;
 
     if (this.humanAction && !this.humanAction.finished) {
-      this.human.say(this.humanMessage, 300, 50, 2000);
+      this.human.say(this.humanMessage, this.messageWidth, 40, 2000);
       this.humanAction.gameStats.decreaseToStat('humanMood', this.decreaseMood);
       this.humanAction.finish();
     }

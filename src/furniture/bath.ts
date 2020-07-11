@@ -23,6 +23,7 @@ export class Bath extends DeviceInteractiveEntity implements IWaterObject {
     this.waterConsumePerTime = gameConfig.consumePerTick.water.bath;
     this.placeToInteract = placeToInteract;
     this.humanMessage = IM_GONA_BE_DIRTY;
+    this.messageWidth = 250;
     this.decreaseMood = gameConfig.moodDestroyers.turnOffBath;
   }
 

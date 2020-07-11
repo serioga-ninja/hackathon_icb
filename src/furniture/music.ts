@@ -25,6 +25,7 @@ export class Music extends DeviceInteractiveEntity implements IElectricityObject
 
     this.setInteractive();
     this.humanMessage = I_WAS_LISTENING;
+    this.messageWidth = 250;
     this.decreaseMood = gameConfig.moodDestroyers.turnOffMusic;
   }
 

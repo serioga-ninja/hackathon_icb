@@ -46,7 +46,7 @@ export class RoomGroup extends GroupBase {
       if (!this.lightsOn) {
         gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.lightsOff);
         if (!human.hasMessage) {
-          human.say(randomFromArr([HUMAN_IN_THE_DARK1, HUMAN_IN_THE_DARK2, AUCH_THAT_HURTS]), 300, 75, 2000);
+          human.say(randomFromArr([HUMAN_IN_THE_DARK1, HUMAN_IN_THE_DARK2]), 300, 50, 2000);
         }
       }
     });

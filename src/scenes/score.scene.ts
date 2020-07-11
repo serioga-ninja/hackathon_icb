@@ -61,9 +61,9 @@ export class ScoreScene extends Phaser.Scene {
     let replayImg = this.add.image(tileSize * 22, tileSize * 10, 'replay').setInteractive();
     replayImg.setScale(scale);
 
-    this.add.bitmapText(300, 375, 'font', `YOUR SCORE: ${GameStats.instance.getStat('score')}`, 50);
-    this.add.bitmapText(350, 525, 'font', `LEADERBOARD`, 50);
-    this.add.bitmapText(335, 600, 'font', `Leaderboard coming soon...`, 25);
+    this.add.bitmapText(tileSize * 6.5, tileSize * 3.5, 'font', `YOUR SCORE: ${GameStats.instance.getStat('score')}`, 50);
+    this.add.bitmapText(tileSize * 6.6, tileSize * 6.3, 'font', `LEADERBOARD`, 50);
+    this.add.bitmapText(tileSize * 6.4, tileSize * 7.5, 'font', `Leaderboard coming soon...`, 25);
 
 
     replayImg.on('pointerdown', function (/*pointer*/) {
