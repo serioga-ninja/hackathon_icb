@@ -14,8 +14,8 @@ export const gameConfig = {
   maxHeight: 1100,
   debug: false,
   playerWidth: 20,
-  allowToKill: false,
-  allowMusic: false,
+  allowToKill: true,
+  allowMusic: true,
   speedOfWaiting: 2000,
   throwGarbageOncePerSec: 15,
   evilModVacuumWidth: ((window.innerHeight - 15) / 15) * 3,
@@ -352,7 +352,7 @@ export const textures: any = [
   }
 ];
 
-export const audio: any = [
+export const audio = [
   {
     key: 'startAudio',
     path: 'sounds/start.ogg'

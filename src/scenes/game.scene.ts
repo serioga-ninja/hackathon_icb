@@ -10,6 +10,7 @@ import { NameInputGraphics } from '../graphics/name-input.graphics';
 export class GameScene extends Phaser.Scene {
 
   private audio: Phaser.Sound.BaseSound;
+  private endAudio: Phaser.Sound.BaseSound;
   private humanEntity: HumanEntity;
   private navigationLogic: NavigationLogic;
   private actionLogic: ActionsLogic;
@@ -57,9 +58,10 @@ export class GameScene extends Phaser.Scene {
       frameRate: 9,
       repeat: 0
     });
+    this.endAudio = this.sound.add('endAudio', { volume: 0.1, loop: true });
+    this.audio = this.sound.add('gameAudio', { volume: 0.1, loop: true });
 
     if (gameConfig.allowMusic) {
-      this.audio = this.sound.add('gameAudio', { volume: 0.1, loop: true });
       this.audio.play();
     }
 
@@ -128,7 +130,7 @@ export class GameScene extends Phaser.Scene {
     this.gameStats.updateStat('money', moneyLeft);
 
     if ((this.gameStats.getStat('humanMood') <= 0 || this.gameStats.getStat('money') <= 0) && gameConfig.allowToKill && !this.humanEntity.finalSceneInProgress) {
-      this.actionLogic.runFinalScene();
+      this.actionLogic.runFinalScene(this.audio, this.endAudio);
     } else if (this.humanEntity.finalSceneInProgress && this.actionLogic.activeGroupFinished) {
       if (gameConfig.allowMusic) {
         this.audio.stop();

@@ -35,11 +35,6 @@ export class ScoreScene extends Phaser.Scene {
       bg = this.add.image(width / 2, height / 2, 'final'),
       scale = Math.max(width / bg.width, height / bg.height);
 
-    if (gameConfig.allowMusic) {
-      this.audio = this.sound.add('endAudio', { volume: 0.2, loop: true });
-      this.audio.play();
-    }
-
     bg.setScale(scale).setScrollFactor(0);
 
     let scoreImg = this.add.image(tileSize * 10, tileSize * 4, 'score');

@@ -118,10 +118,10 @@ export class ActionsLogic {
     }
   }
 
-  runFinalScene() {
+  runFinalScene(gameAudio: Phaser.Sound.BaseSound, endAudio: Phaser.Sound.BaseSound) {
     this.human.finalSceneInProgress = true;
     this.human.currentFlatEntity = this.flatMap.movableBlocksGroup.getClosest(this.human.x, this.human.y);
-    this.activeActionGroup = new FinalGroup(this.human, this.flatMap, this.navigationLogic);
+    this.activeActionGroup = new FinalGroup(this.human, this.flatMap, this.navigationLogic, gameAudio, endAudio);
     this.activeActionGroup.start();
     this.activeActionGroup.inProgress = true;
   }
