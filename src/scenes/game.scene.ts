@@ -36,6 +36,7 @@ export class GameScene extends Phaser.Scene {
     this.gameStats.reset();
     this.perSecondTime = 0;
     this.gameSceneTime = 0;
+    this.modal = null;
   }
 
   /**
@@ -100,10 +101,6 @@ export class GameScene extends Phaser.Scene {
       room.overlapHuman(this.humanEntity, this.gameStats);
       room.toggleLight();
     }
-
-    this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
-      console.log(pointer.x, pointer.y);
-    }, this);
 
     this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
       this.gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.vacuumProblem);
