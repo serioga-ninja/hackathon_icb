@@ -8,7 +8,7 @@
     "start-parcel": "parcel index.html --public-url /",
     "start": "parcel build --no-content-hash src/index.ts && electron-forge start",
     "package": "parcel build --no-content-hash src/index.ts && electron-forge package",
-    "make": "parcel build --no-content-hash src/index.ts && electron-forge make"
+    "make-win64": "parcel build --no-content-hash src/index.ts && electron-forge package --arch=ia32,x64 --platform=win32"
   },
   "staticFiles": {
     "staticPath": [
