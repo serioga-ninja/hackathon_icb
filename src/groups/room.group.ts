@@ -3,6 +3,7 @@ import { GameStats } from '../core/game.stats';
 import { AUCH_THAT_HURTS, HUMAN_IN_THE_DARK1, HUMAN_IN_THE_DARK2 } from '../core/game.vocabulary';
 import { EGroupTypes, GroupBase } from '../core/group.base';
 import { randomFromArr } from '../core/utils';
+import { DeviceEntity } from '../entity/device.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
 import { Vacuum } from '../furniture/vacuum';
@@ -12,6 +13,7 @@ export class RoomGroup extends GroupBase {
 
   private electricityDevicesPerTick: number;
   private connectedDoors: DoorGroup[];
+  private furniture: DeviceEntity[];
   private lightsOn: boolean;
 
   public relatedRooms: RoomGroup[];
@@ -28,11 +30,15 @@ export class RoomGroup extends GroupBase {
     super(scene, children, config);
 
     this.electricityDevicesPerTick = 0;
+    this.furniture = [];
     this.connectedDoors = [];
     this.relatedRooms = [];
-    this.lightOff();
+    this.lightsOn = true;
   }
 
+  addFurniture(furniture: DeviceEntity) {
+    this.furniture.push(furniture);
+  }
 
   overlapHuman(human: HumanEntity, gameStats: GameStats) {
     this.scene.physics.add.overlap(this, human, (block: FlatBlockEntity, human: HumanEntity) => {
@@ -52,15 +58,11 @@ export class RoomGroup extends GroupBase {
     });
   }
 
-  lightOff() {
-    this.lightsOn = false;
-    this.getChildren().forEach((sprite: FlatBlockEntity) => {
-      sprite.alpha = !this.lightsOn ? 0.5 : 1;
-    });
-  }
-
   toggleLight() {
     this.lightsOn = !this.lightsOn;
+    for (const device of this.furniture) {
+      device.alpha = !this.lightsOn ? 0.5 : 1;
+    }
     this.getChildren().forEach((sprite: FlatBlockEntity) => {
       sprite.alpha = !this.lightsOn ? 0.5 : 1;
     })
