@@ -5,7 +5,7 @@ import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
 import { MuteButtonEntity } from '../entity/mute-button.entity';
 import { FlatMap } from '../flat-map';
-import { gameConfig } from '../core/game.config';
+import { gameConfig, tileSize } from '../core/game.config';
 import { NameInputGraphics } from '../graphics/name-input.graphics';
 
 export class GameScene extends Phaser.Scene {
@@ -53,7 +53,8 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
-    new MuteButtonEntity(this);
+    new MuteButtonEntity(this, tileSize * 20.3, tileSize * .5);
+    
     this.anims.create({
       key: 'die',
       frames: this.anims.generateFrameNumbers('suicide', {}),
