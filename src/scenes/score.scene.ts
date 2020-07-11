@@ -1,3 +1,5 @@
+import { gameConfig, tileSize } from "../core/game.config";
+
 export class ScoreScene extends Phaser.Scene {
   private playerRankList: string = "";
   private playerNameList: string = "";
@@ -42,13 +44,21 @@ export class ScoreScene extends Phaser.Scene {
       bg = this.add.image(width / 2, height / 2, 'final'),
       scale = Math.max(width / bg.width, height / bg.height);
 
-    this.audio = this.sound.add('endAudio', {volume: 0.5, loop: true});
-    this.audio.play();
+    if (gameConfig.allowMusic) {
+      this.audio = this.sound.add('endAudio', {volume: 0.2, loop: true});
+      this.audio.play();
+    }
 
     bg.setScale(scale).setScrollFactor(0);
-    let scoreImg = this.add.image(500,400, 'score');
-    let leaderboardImg = this.add.image(500, 750, 'leaderboard');
+
+    let scoreImg = this.add.image(tileSize * 10, tileSize * 4, 'score');
+    scoreImg.setScale(scale);
+
+    let leaderboardImg = this.add.image(tileSize * 10, tileSize * 10, 'leaderboard');
+    leaderboardImg.setScale(scale);
+
     let replayImg = this.add.image(1375,725, 'replay').setInteractive();
+    replayImg.setScale(scale);
 
     this.add.bitmapText(300, 375, 'font', `YOUR SCORE: ${this.point}`, 50);
     this.add.bitmapText(350, 525, 'font', `LEADERBOARD`, 50);
@@ -57,7 +67,11 @@ export class ScoreScene extends Phaser.Scene {
 
     replayImg.on('pointerdown', function (/*pointer*/) {
       this.scene.stop();
-      this.audio.stop();
+
+      if (gameConfig.allowMusic) {
+        this.audio.stop();
+      }
+
       this.scene.start('GameScene');
     }, this);
 

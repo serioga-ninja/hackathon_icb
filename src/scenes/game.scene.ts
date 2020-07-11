@@ -52,8 +52,10 @@ export class GameScene extends Phaser.Scene {
       repeat: 0
     });
 
-    this.audio = this.sound.add('gameAudio', { volume: 0.1, loop: true });
-    this.audio.play();
+    if (gameConfig.allowMusic) {
+      this.audio = this.sound.add('gameAudio', { volume: 0.1, loop: true });
+      this.audio.play();
+    }
 
     this.gameStats.addToStat('score', 0);
 
@@ -121,7 +123,9 @@ export class GameScene extends Phaser.Scene {
       this.actionLogic.runFinalScene();
       
       setTimeout(() => {
-        this.audio.stop();
+        if (gameConfig.allowMusic) {
+          this.audio.stop();
+        }
         this.scene.stop();
         this.scene.start('ScoreScene');
       }, 10000);

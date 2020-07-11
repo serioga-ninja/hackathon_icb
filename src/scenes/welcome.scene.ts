@@ -1,4 +1,4 @@
-import { textures, audio } from "../core/game.config";
+import { textures, audio, gameConfig } from "../core/game.config";
 
 export class WelcomeScene extends Phaser.Scene {
   private audio: Phaser.Sound.BaseSound;
@@ -28,12 +28,19 @@ export class WelcomeScene extends Phaser.Scene {
         scale = Math.max(width / image.width, height / image.height);
 
     image.setScale(scale).setScrollFactor(0);
-    this.audio = this.sound.add('startAudio', {volume: 0.1, loop: true});
-    this.audio.play();
+
+    if (gameConfig.allowMusic) {
+      this.audio = this.sound.add('startAudio', {volume: 0.1, loop: true});
+      this.audio.play();
+    }
 
     this.input.on('pointerdown', function (/*pointer*/) {
       this.scene.stop();
-      this.audio.stop();
+
+      if (gameConfig.allowMusic) {
+        this.audio.stop();
+      }
+      
       this.scene.start('GameScene');
     }, this);
   }
