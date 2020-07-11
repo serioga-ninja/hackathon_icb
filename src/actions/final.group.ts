@@ -1,5 +1,5 @@
 import { endHuman } from '../core/game.config';
-import { WELCOME_MESSAGE } from '../core/game.vocabulary';
+import { VACUUM_END_MESSAGE, WELCOME_MESSAGE } from '../core/game.vocabulary';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -12,7 +12,9 @@ import { KillHumanAction } from './kill.human-action';
 import { MoveHumanAction } from './move.human-action';
 import { RotateHumanAction } from './rotate.human-action';
 import { SayHumanAction } from './say.human-action';
+import { SayVacuumAction } from './say.vacuum-action';
 import { TurnOnHumanAction } from './turn-on.human-action';
+import { VacuumCleanHumanHumanAction } from './vacuum-clean-human.human-action';
 import { WaitHumanAction } from './wait.human-action';
 
 export class FinalGroup extends ActionGroupBase {
@@ -39,18 +41,13 @@ export class FinalGroup extends ActionGroupBase {
 
   start() {
     this.actions.push(
-      // new ForceGoHumanAction(this.human, this.flatMap.generatedBlocks[this.human.currentFlatEntity.matrix.y - 1][this.human.currentFlatEntity.matrix.x], 3),
-
       new WaitHumanAction(this.human, 1000),
       new MoveHumanAction(this.human, this.block, this.navigationLogic),
       new RotateHumanAction(this.human, 180),
-      new SayHumanAction(this.human, WELCOME_MESSAGE, 2000),
+      new SayHumanAction(this.human, WELCOME_MESSAGE, 3000),
       new KillHumanAction(this.human),
-
-      // new ForceGoHumanAction(this.human, this.block, 0.5),
-      // new MoveHumanAction(this.human, this.humanSitBlock, this.navigationLogic),
-      // new TurnOnHumanAction(this.human, this.sinkBlock),
-      // new WaitHumanAction(this.human, this.speed)
+      new VacuumCleanHumanHumanAction(this.human, this.flatMap, this.navigationLogic),
+      new SayVacuumAction(this.human, this.flatMap.vacuum, VACUUM_END_MESSAGE, 3000)
     );
   }
 }

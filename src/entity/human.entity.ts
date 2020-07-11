@@ -67,7 +67,7 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
   private _garbageGroup: GarbageGroup;
   private _currentFlatEntity: FlatBlockEntity;
   private _movingAnimationTime: number;
-  private _garbage;
+  private _garbage: NodeJS.Timeout;
 
   public dead: boolean;
 
@@ -86,6 +86,7 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
     this._movingAnimationTime = 0;
     this.dead = false;
     this._finalSceneInProgress = false;
+    this.depth = 999;
 
     // left garbage
     this._garbage = setInterval(() => {

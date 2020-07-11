@@ -15,6 +15,7 @@ export class GameScene extends Phaser.Scene {
   private flatMap: FlatMap;
   private gameStats: GameStats;
   private perSecondTime: number;
+  private gameSceneTime: number;
 
   constructor() {
     super({
@@ -28,7 +29,9 @@ export class GameScene extends Phaser.Scene {
    */
   init(params: any): void {
     this.gameStats = GameStats.instance;
+    this.gameStats.reset();
     this.perSecondTime = 0;
+    this.gameSceneTime = 0;
   }
 
   /**
@@ -37,7 +40,7 @@ export class GameScene extends Phaser.Scene {
    */
 
   preload(): void {
-    this.load.spritesheet('suicide', 'textures/person/suicide.png', { frameWidth: 106, frameHeight: 106 });
+    this.load.spritesheet('suicide', 'textures/person/suicide.png', { frameWidth: 105, frameHeight: 106 });
   }
 
   /**
@@ -48,7 +51,7 @@ export class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'die',
       frames: this.anims.generateFrameNumbers('suicide', {}),
-      frameRate: 4,
+      frameRate: 9,
       repeat: 0
     });
 
@@ -101,11 +104,13 @@ export class GameScene extends Phaser.Scene {
     this.humanEntity.update(time);
     this.flatMap.update(time, secondLeft);
 
-    this.gameStats.updateStat('score', time * 0.001);
-
     //#region Per Second update area
     if (secondLeft) {
       this.perSecondTime = time;
+
+      if (!this.humanEntity.finalSceneInProgress) {
+        this.gameStats.addToStat('score', 1);
+      }
 
       this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
       this.gameStats.addToStat('water', this.flatMap.waterDevices.consumePerTick);
@@ -114,21 +119,19 @@ export class GameScene extends Phaser.Scene {
 
     // Counting cost of electricity and water
     let electricity = this.gameStats.getStat('electricity'),
-        water = this.gameStats.getStat('water'),
-        moneyLeft = gameConfig.initialMoney - (electricity * gameConfig.electricityCost) - (water * gameConfig.waterCost);
+      water = this.gameStats.getStat('water'),
+      moneyLeft = gameConfig.initialMoney - (electricity * gameConfig.electricityCost) - (water * gameConfig.waterCost);
 
     this.gameStats.updateStat('money', moneyLeft);
 
     if ((this.gameStats.getStat('humanMood') <= 0 || this.gameStats.getStat('money') <= 0) && gameConfig.allowToKill && !this.humanEntity.finalSceneInProgress) {
       this.actionLogic.runFinalScene();
-      
-      setTimeout(() => {
-        if (gameConfig.allowMusic) {
-          this.audio.stop();
-        }
-        this.scene.stop();
-        this.scene.start('ScoreScene');
-      }, 10000);
+    } else if (this.humanEntity.finalSceneInProgress && this.actionLogic.activeGroupFinished) {
+      if (gameConfig.allowMusic) {
+        this.audio.stop();
+      }
+      this.scene.stop();
+      this.scene.start('ScoreScene');
     }
   }
 }

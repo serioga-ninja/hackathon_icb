@@ -2,9 +2,9 @@ import { gameConfig, tileSize } from "../core/game.config";
 import { GameStats } from "../core/game.stats";
 
 export class ScoreScene extends Phaser.Scene {
-  private playerRankList: string = "";
-  private playerNameList: string = "";
-  private playerScoreList: string = "";
+  private playerRankList: string = '';
+  private playerNameList: string = '';
+  private playerScoreList: string = '';
   private audio: Phaser.Sound.BaseSound;
 
   name: Phaser.GameObjects.BitmapText;
@@ -24,10 +24,10 @@ export class ScoreScene extends Phaser.Scene {
     }, {
       heroName: 'Andrii 2',
       heroPoint: 123,
-    },{
+    }, {
       heroName: 'Andrii 3',
       heroPoint: 555,
-    },{
+    }, {
       heroName: 'Andrii 4',
       heroPoint: 996,
     },
@@ -46,7 +46,7 @@ export class ScoreScene extends Phaser.Scene {
       scale = Math.max(width / bg.width, height / bg.height);
 
     if (gameConfig.allowMusic) {
-      this.audio = this.sound.add('endAudio', {volume: 0.2, loop: true});
+      this.audio = this.sound.add('endAudio', { volume: 0.2, loop: true });
       this.audio.play();
     }
 
@@ -61,7 +61,7 @@ export class ScoreScene extends Phaser.Scene {
     let replayImg = this.add.image(tileSize * 22, tileSize * 10, 'replay').setInteractive();
     replayImg.setScale(scale);
 
-    this.add.bitmapText(300, 375, 'font', `YOUR SCORE: ${this.point}`, 50);
+    this.add.bitmapText(300, 375, 'font', `YOUR SCORE: ${GameStats.instance.getStat('score')}`, 50);
     this.add.bitmapText(350, 525, 'font', `LEADERBOARD`, 50);
     this.add.bitmapText(335, 600, 'font', `Leaderboard coming soon...`, 25);
 
@@ -76,19 +76,19 @@ export class ScoreScene extends Phaser.Scene {
       this.scene.start('GameScene');
     }, this);
 
-  //   // Leader Board with table
-  //   this.rank = this.add.bitmapText(100, 600, 'font', 'RANK', 25);
-  //   this.name = this.add.bitmapText(225, 600, 'font', 'NAME', 25);
-  //   this.score = this.add.bitmapText(600, 600, 'font', 'SCORE', 25);
-  //
-  //   this.makeScoreBoardGrid();
-  //
-  //   this.playerRankPosition = this.add.bitmapText(100, 650,'font', this.playerRankList, 20);
-  //   this.playerName = this.add.bitmapText(225, 650, 'font', this.playerNameList, 20);
-  //   this.playerScore = this.add.bitmapText(600, 650, 'font', this.playerScoreList, 20);
+    //   // Leader Board with table
+    //   this.rank = this.add.bitmapText(100, 600, 'font', 'RANK', 25);
+    //   this.name = this.add.bitmapText(225, 600, 'font', 'NAME', 25);
+    //   this.score = this.add.bitmapText(600, 600, 'font', 'SCORE', 25);
+    //
+    //   this.makeScoreBoardGrid();
+    //
+    //   this.playerRankPosition = this.add.bitmapText(100, 650,'font', this.playerRankList, 20);
+    //   this.playerName = this.add.bitmapText(225, 650, 'font', this.playerNameList, 20);
+    //   this.playerScore = this.add.bitmapText(600, 650, 'font', this.playerScoreList, 20);
   }
 
-  makeScoreBoardGrid(): void  {
+  makeScoreBoardGrid(): void {
     this.leaderBoardData.sort((a, b) => {
       return b.heroPoint - a.heroPoint;
     });
@@ -106,9 +106,9 @@ export class ScoreScene extends Phaser.Scene {
         rankPosition = rank + 'th '
       }
 
-      this.playerRankList += rankPosition + "\n";
-      this.playerNameList += plaer.heroName + "\n";
-      this.playerScoreList += plaer.heroPoint + "\n";
+      this.playerRankList += rankPosition + '\n';
+      this.playerNameList += plaer.heroName + '\n';
+      this.playerScoreList += plaer.heroPoint + '\n';
     });
   }
 }

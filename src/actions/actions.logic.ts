@@ -20,6 +20,11 @@ import { UseToiletGroup } from './use-toilet.group';
 import { WelcomeGroup } from './welcome.group';
 
 export class ActionsLogic {
+
+  get activeGroupFinished() {
+    return !this.activeActionGroup || this.activeActionGroup.finished;
+  }
+
   private flatGroup: FlatGroup;
   private human: HumanEntity;
   private navigationLogic: NavigationLogic;
