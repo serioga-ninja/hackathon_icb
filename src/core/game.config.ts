@@ -13,7 +13,7 @@ export const gameConfig = {
   maxWidth: 1600,
   height: window.innerHeight - 15,
   maxHeight: 1100,
-  debug: false,
+  debug: true,
   playerWidth: 20,
   allowToKill: true,
   allowMusic: true,
