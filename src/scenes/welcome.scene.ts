@@ -1,6 +1,11 @@
 import { textures, audio, gameConfig, tileSize } from '../core/game.config';
 import { MuteButtonEntity } from '../entity/mute-button.entity';
 
+export enum Emode {
+  Easy = 1,
+  Difficult = 2
+}
+
 export class WelcomeScene extends Phaser.Scene {
   private audio: Phaser.Sound.BaseSound;
 
@@ -47,15 +52,25 @@ export class WelcomeScene extends Phaser.Scene {
     this.audio = this.sound.add('startAudio', { volume: 0.1, loop: true });
     this.audio.play();
 
-    let playBtn = this.add.image(tileSize * 22, tileSize * 10, 'tile').setInteractive();
-    playBtn.setScale(scale);
+    let easyModeBtn = this.add.image(tileSize * 20.5, tileSize * 11.5, 'easy').setInteractive();
+    easyModeBtn.setScale(scale);
 
-    playBtn.on('pointerdown', function (/*pointer*/) {
-      this.scene.stop();
+    let hardModeBtn = this.add.image(tileSize * 20.5, tileSize * 13, 'difficult').setInteractive();
+    hardModeBtn.setScale(scale);
 
-      this.audio.stop();
-
-      this.scene.start('GameScene');
+    easyModeBtn.on('pointerdown', function (/*pointer*/) {
+      this.runGameWithMode(Emode.Easy);
     }, this);
+
+    hardModeBtn.on('pointerdown', function (/*pointer*/) {
+      this.runGameWithMode(Emode.Difficult);
+    }, this);
+  }
+
+  runGameWithMode(mode: EMode) {
+    this.scene.stop();
+    this.audio.stop();
+    gameConfig.levelMultiplier = mode;
+    this.scene.start('GameScene');
   }
 }

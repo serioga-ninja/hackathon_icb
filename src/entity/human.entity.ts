@@ -22,9 +22,13 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
   set finalSceneInProgress(value: boolean) {
     this._finalSceneInProgress = value;
 
-    if (value && this._humanMessage) {
-      this._humanMessage.destroy(true);
-      this._humanMessage = null;
+    if (value) {
+      if (this._humanMessage) {
+        this._humanMessage.destroy(true);
+        this._humanMessage = null;
+      }
+
+      clearTimeout(this._garbage);
     }
   }
 
@@ -90,7 +94,9 @@ export class HumanEntity extends SpriteEntity implements ICanSay {
 
     // left garbage
     this._garbage = setInterval(() => {
-      this._garbageGroup.throwGarbage(this.overlapBlock);
+      if (!this.finalSceneInProgress) {
+        this._garbageGroup.throwGarbage(this.overlapBlock);
+      }
     }, gameConfig.throwGarbageOncePerSec * 1000);
   }
 

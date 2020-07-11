@@ -362,6 +362,14 @@ export const textures: any = [
   {
     key: 'soundOff',
     path: 'textures/game/sound-off.png'
+  },
+  {
+    key: 'easy',
+    path: 'textures/game/easy.png'
+  },
+  {
+    key: 'difficult',
+    path: 'textures/game/easyNot.png'
   }
 ];
 
