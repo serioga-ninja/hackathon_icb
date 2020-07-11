@@ -122,12 +122,13 @@ export class GameScene extends Phaser.Scene {
     }
     //#endregion
 
-    // Counting cost of electricity and water
-    let electricity = this.gameStats.getStat('electricity'),
-      water = this.gameStats.getStat('water'),
-      moneyLeft = gameConfig.initialMoney - (electricity * gameConfig.electricityCost) - (water * gameConfig.waterCost);
+    if (!this.humanEntity.finalSceneInProgress) {
+      // Counting cost of electricity and water
+      const electricity = this.gameStats.getStat('electricity');
+      const water = this.gameStats.getStat('water');
+      this.gameStats.decreaseToStat('money', (electricity * gameConfig.electricityCost) + (water * gameConfig.waterCost));
+    }
 
-    this.gameStats.updateStat('money', moneyLeft);
 
     if ((this.gameStats.getStat('humanMood') <= 0 || this.gameStats.getStat('money') <= 0) && gameConfig.allowToKill && !this.humanEntity.finalSceneInProgress) {
       this.actionLogic.runFinalScene(this.audio, this.endAudio);
