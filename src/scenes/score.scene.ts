@@ -62,15 +62,15 @@ export class ScoreScene extends Phaser.Scene {
     }, this);
 
       // Leader Board with table
-      this.rank = this.add.bitmapText(100, 600, 'font', 'RANK', 25);
-      this.name = this.add.bitmapText(225, 600, 'font', 'NAME', 25);
-      this.score = this.add.bitmapText(600, 600, 'font', 'SCORE', 25);
+      this.rank = this.add.bitmapText(tileSize * 4, tileSize * 8, 'font', 'RANK', 25);
+      this.name = this.add.bitmapText(tileSize * 6, tileSize * 8, 'font', 'NAME', 25);
+      this.score = this.add.bitmapText(tileSize * 12, tileSize * 8, 'font', 'SCORE', 25);
     
       this.makeScoreBoardGrid();
     
-      this.playerRankPosition = this.add.bitmapText(100, 650,'font', this.playerRankList, 20);
-      this.playerName = this.add.bitmapText(225, 650, 'font', this.playerNameList, 20);
-      this.playerScore = this.add.bitmapText(600, 650, 'font', this.playerScoreList, 20);
+      this.playerRankPosition = this.add.bitmapText(tileSize * 4, tileSize * 9,'font', this.playerRankList, 20);
+      this.playerName = this.add.bitmapText(tileSize * 6, tileSize * 9, 'font', this.playerNameList, 20);
+      this.playerScore = this.add.bitmapText(tileSize * 12, tileSize * 9, 'font', this.playerScoreList, 20);
   }
 
   makeScoreBoardGrid(): void {
