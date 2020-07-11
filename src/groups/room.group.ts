@@ -2,6 +2,7 @@ import { gameConfig } from '../core/game.config';
 import { GameStats } from '../core/game.stats';
 import { AUCH_THAT_HURTS, HUMAN_IN_THE_DARK1, HUMAN_IN_THE_DARK2 } from '../core/game.vocabulary';
 import { EGroupTypes, GroupBase } from '../core/group.base';
+import { SpriteEntity } from '../core/sprite.entity';
 import { randomFromArr } from '../core/utils';
 import { DeviceEntity } from '../entity/device.entity';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
@@ -13,7 +14,7 @@ export class RoomGroup extends GroupBase {
 
   private electricityDevicesPerTick: number;
   private connectedDoors: DoorGroup[];
-  private furniture: DeviceEntity[];
+  private furniture: SpriteEntity[];
   private lightsOn: boolean;
 
   public relatedRooms: RoomGroup[];
@@ -36,7 +37,7 @@ export class RoomGroup extends GroupBase {
     this.lightsOn = true;
   }
 
-  addFurniture(furniture: DeviceEntity) {
+  addFurniture(furniture: SpriteEntity) {
     this.furniture.push(furniture);
   }
 
@@ -61,10 +62,10 @@ export class RoomGroup extends GroupBase {
   toggleLight() {
     this.lightsOn = !this.lightsOn;
     for (const device of this.furniture) {
-      device.alpha = !this.lightsOn ? 0.5 : 1;
+      device.alpha = !this.lightsOn ? 0.7 : 1;
     }
     this.getChildren().forEach((sprite: FlatBlockEntity) => {
-      sprite.alpha = !this.lightsOn ? 0.5 : 1;
+      sprite.alpha = !this.lightsOn ? 0.7 : 1;
     })
   }
 

@@ -115,11 +115,11 @@ export class FlatMap {
   init() {
     this.regenerateMapSymbolToEnum();
     this.generateFlatSpriteBlocks(this.scene);
-    this.generateDecoration();
     this.generateStats();
     this.generateMovableBlocks();
     this.generateDoors();
     this.generateRooms();
+    this.generateDecoration();
     this.generateDoorsEntranceBlocks();
 
     this.walls.correctWallSprites(this.generatedBlocks);
@@ -140,7 +140,11 @@ export class FlatMap {
         blockGroup.push(block);
       });
 
-      new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+      const cover = new CoverEntity(this.scene, new MovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
+      const group = blockGroup[0].getGroup(EGroupTypes.Room) as RoomGroup;
+      if (group) {
+        group.addFurniture(cover);
+      }
     });
   }
 
