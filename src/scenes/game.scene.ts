@@ -85,10 +85,6 @@ export class GameScene extends Phaser.Scene {
       room.toggleLight();
     }
 
-    this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {
-      console.log(pointer.x, pointer.y);
-    }, this);
-
     this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
       this.gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.vacuumProblem);
       if (!this.humanEntity.hasMessage) {
