@@ -1,4 +1,4 @@
-import { gameConfig } from "./game.config";
+import { gameConfig } from './game.config';
 
 export interface IGameStats {
   electricity: number;
@@ -17,7 +17,7 @@ export class GameStats {
   }
 
 
-  stats: IGameStats;
+  private stats: IGameStats;
 
   constructor() {
     this.stats = {
@@ -52,6 +52,16 @@ export class GameStats {
     } else {
       this.stats[key] -= value;
     }
+  }
+
+  reset() {
+    this.stats = {
+      humanMood: gameConfig.initialMood,
+      money: gameConfig.initialMoney,
+      electricity: 0,
+      water: 0,
+      score: 0
+    };
   }
 
 }

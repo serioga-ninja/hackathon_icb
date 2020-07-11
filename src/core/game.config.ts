@@ -68,7 +68,7 @@ export const startHuman = {
 };
 export const endHuman = {
   x: 12,
-  y: 11
+  y: 10
 };
 
 export const houseMap: string =

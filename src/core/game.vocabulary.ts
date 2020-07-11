@@ -10,3 +10,4 @@ export const CLOSE_FRIGE_HUMAN = `HEY! I wanted some coke!`;
 export const I_WAS_LISTENING = `HEY! I was listening!`;
 export const IM_GONA_BE_DIRTY = `I'm going to be dirty!`;
 export const SAD_FACE = `:-(`;
+export const VACUUM_END_MESSAGE = `We are ready for the next visitor master.`;

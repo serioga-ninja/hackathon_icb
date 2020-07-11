@@ -19,10 +19,10 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   placeToInteract: null;
   electricityConsumePerTime: number;
   overlapBlock: FlatBlockEntity;
+  currentPosition: FlatBlockEntity;
 
   private navigationLogic: NavigationLogic;
   private path: Phaser.Curves.Path;
-  private currentPosition: FlatBlockEntity;
   private chargeBlock: FlatBlockEntity;
   private garbageGroup: GarbageGroup;
   private moveToWrapper: MoveToWrapper;
@@ -46,6 +46,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     this.widthToHuman = Number.MAX_VALUE;
     this.evilMode = false;
     this.movableBlocksGroup = movableBlocksGroup;
+    this.depth = 998;
   }
 
   garbageAdded(movableBlocksGroup: MovableBlocksGroup) {
@@ -96,7 +97,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   }
 
   update(time: number, secondLeft: boolean) {
-    if (this.deviceState !== EDeviceState.Working) return;
+    if (this.deviceState !== EDeviceState.Working || this.human.dead) return;
 
     const point = this.moveToWrapper.getPoint();
     this.x = point.x;
@@ -118,7 +119,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
       this.generateNewPath();
     }
 
-    if (secondLeft) {
+    if (secondLeft && !this.human.finalSceneInProgress) {
       try {
         this.widthToHuman = this.widthTo(this.human);
         if (this.widthToHuman < gameConfig.evilModVacuumWidth && !this.evilMode) {
