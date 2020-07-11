@@ -26,8 +26,8 @@ export const gameConfig = {
   },
   initialMood: 100,
   initialMoney: 100,
-  electricityCost: 2.5,
-  waterCost: 2,
+  electricityCost: .5,
+  waterCost: 0.5,
   moodDestroyers: {
     basic: 5,
     turnOffBath: 5,
@@ -45,18 +45,18 @@ export const gameConfig = {
   },
   consumePerTick: {
     water: {
-      bath: 0.5,
+      bath: 0.05,
       sink: 0.05
     },
     electricity: {
-      light: 0.02,
-      tv: 0.1,
+      light: 0.01,
+      tv: 0.05,
       fan: 0.03,
       vacuum: 0.05,
-      teapot: 0.1,
+      teapot: 0.05,
       fridge: 0.04,
       music: 0.05,
-      microwave: 0.1,
+      microwave: 0.05,
       oven: 0.05,
       computer: 0.05,
     }

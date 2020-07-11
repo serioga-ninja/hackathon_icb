@@ -1,3 +1,4 @@
+import { DeviceType } from '../actions/action-group.base';
 import { gameConfig } from '../core/game.config';
 import { GameStats } from '../core/game.stats';
 import { AUCH_THAT_HURTS, HUMAN_IN_THE_DARK1, HUMAN_IN_THE_DARK2 } from '../core/game.vocabulary';
@@ -62,7 +63,9 @@ export class RoomGroup extends GroupBase {
   toggleLight() {
     this.lightsOn = !this.lightsOn;
     for (const device of this.furniture) {
-      device.alpha = !this.lightsOn ? 0.7 : 1;
+      if ((device as any).blockType !== DeviceType.Vacuum) {
+        device.alpha = !this.lightsOn ? 0.7 : 1;
+      }
     }
     this.getChildren().forEach((sprite: FlatBlockEntity) => {
       sprite.alpha = !this.lightsOn ? 0.7 : 1;

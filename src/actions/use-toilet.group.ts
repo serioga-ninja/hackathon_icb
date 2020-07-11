@@ -19,6 +19,7 @@ export class UseToiletGroup extends ActionGroupBase {
   }
 
   toiletBlock: Toilet;
+  block: FlatBlockEntity;
   navigationLogic: NavigationLogic;
   humanSitBlock: FlatBlockEntity;
   flatMap: FlatMap;
@@ -28,6 +29,7 @@ export class UseToiletGroup extends ActionGroupBase {
 
     this.toiletBlock = flatMap.getDevices(DeviceType.Toilet)[0] as Toilet;
     this.humanSitBlock = this.toiletBlock.placeToInteract;
+    this.block = flatMap.generatedBlocks[this.humanSitBlock.matrix.y + 1][this.humanSitBlock.matrix.x];
     this.navigationLogic = navigationLogic;
     this.flatMap = flatMap;
   }
@@ -36,7 +38,7 @@ export class UseToiletGroup extends ActionGroupBase {
     this.actions.push(
       new MoveHumanAction(this.human, this.humanSitBlock, this.navigationLogic),
       new RotateHumanAction(this.human, 0),
-      new ForceGoHumanAction(this.human, this.flatMap.flatGroup.getClosest(this.toiletBlock.x, this.toiletBlock.y), 3, false, EHumanState.siting),
+      new ForceGoHumanAction(this.human, this.block, 3, false, EHumanState.siting),
       new UseToiletHumanAction(this.human, this.toiletBlock),
       new WaitHumanAction(this.human, gameConfig.speedOfWaiting, EHumanState.siting),
       new ForceGoHumanAction(this.human, this.humanSitBlock, 3, false, EHumanState.siting),
