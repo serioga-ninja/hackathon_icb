@@ -36,6 +36,7 @@ export class GameScene extends Phaser.Scene {
     this.gameStats.reset();
     this.perSecondTime = 0;
     this.gameSceneTime = 0;
+    this.modal = null;
   }
 
   /**
