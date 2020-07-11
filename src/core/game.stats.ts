@@ -59,10 +59,6 @@ export class GameStats {
     return this.stats[key];
   }
 
-  updateStat<K extends keyof IGameStats>(key: K, value: number) {
-    this.stats[key] = value;
-  }
-
   addToStat<K extends keyof IGameStats>(key: K, value: number) {
     if (typeof this.stats[key] !== 'number') {
       this.stats[key] = value;
@@ -72,6 +68,8 @@ export class GameStats {
   }
 
   decreaseToStat<K extends keyof IGameStats>(key: K, value: number) {
+    value = value * gameConfig.levelMultiplier;
+
     if (typeof this.stats[key] !== 'number') {
       this.stats[key] = value;
     } else {

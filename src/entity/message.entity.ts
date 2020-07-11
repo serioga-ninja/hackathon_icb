@@ -1,10 +1,11 @@
 import { ICanSay } from '../core/interfaces';
 
-export interface IRelatedEntity {
-  x: number;
-  y: number;
-  height: number;
-};
+const coords = (entity: ICanSay) => {
+  return {
+    x: entity.x - (entity.width / 3),
+    y: entity.y - (entity.height / 1.3)
+  };
+}
 
 export class MessageEntity extends Phaser.GameObjects.Graphics {
   private _text: Phaser.GameObjects.Text;
@@ -16,7 +17,7 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
   public message: string;
 
   constructor(scene: Phaser.Scene, entity: ICanSay, width: number, height: number, lifeTime: number, message: string) {
-    super(scene, { x: entity.x, y: entity.y - entity.height });
+    super(scene, coords(entity));
     this.scene.add.existing(this);
 
 
@@ -79,11 +80,12 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
     this._text.setPosition(this.x + (this._width / 2) - (b.width / 2), this.y + (this._height / 2) - (b.height / 2));
   }
 
-  updatePosition(entity: IRelatedEntity) {
+  updatePosition(entity: ICanSay) {
     const b = this._text.getBounds();
 
-    this.x = entity.x;
-    this.y = entity.y - entity.height;
+    const c = coords(entity);
+    this.x = c.x;
+    this.y = c.y;
     this._text.x = this.x + (this._width / 2) - (b.width / 2);
     this._text.y = this.y + (this._height / 2) - (b.height / 2);
   }
