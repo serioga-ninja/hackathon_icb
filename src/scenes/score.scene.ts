@@ -28,6 +28,9 @@ export class ScoreScene extends Phaser.Scene {
 
   init() {
     this.leaderBoardData = GameStats.instance.leaderBoards;
+    this.playerRankList = '';
+    this.playerNameList = '';
+    this.playerScoreList = '';
   }
 
   create(): void {
