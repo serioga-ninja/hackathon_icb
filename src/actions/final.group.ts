@@ -54,8 +54,8 @@ export class FinalGroup extends ActionGroupBase {
       new RotateHumanAction(this.human, 180),
       new StopAudioHumanAction(this.human, this.gameAudio),
       new SayHumanAction(this.human, END_GAME, 3000),
-      new KillHumanAction(this.human),
       new StartAudioHumanAction(this.human, this.endAudio),
+      new KillHumanAction(this.human),
       new VacuumCleanHumanHumanAction(this.human, this.flatMap, this.navigationLogic),
       new SayVacuumAction(this.human, this.flatMap.vacuum, VACUUM_END_MESSAGE, 3000)
     );

@@ -52,7 +52,7 @@ export const gameConfig = {
       light: 0.005,
       tv: 0.05,
       fan: 0.03,
-      vacuum: 0.01,
+      vacuum: 0.005,
       teapot: 0.05,
       fridge: 0.04,
       music: 0.02,

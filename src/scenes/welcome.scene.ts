@@ -3,7 +3,7 @@ import { MuteButtonEntity } from '../entity/mute-button.entity';
 
 export enum Emode {
   Easy = 1,
-  Difficult = 2
+  Difficult = 3
 }
 
 export class WelcomeScene extends Phaser.Scene {

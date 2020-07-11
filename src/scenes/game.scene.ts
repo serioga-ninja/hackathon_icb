@@ -151,6 +151,7 @@ export class GameScene extends Phaser.Scene {
       if (!this.modal) {
         this.modal = new NameInputGraphics(this);
         this.modal.show().then(() => {
+          this.endAudio.stop();
           this.scene.stop();
           this.scene.start('ScoreScene');
         });

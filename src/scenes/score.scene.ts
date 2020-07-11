@@ -1,4 +1,4 @@
-import { tileSize } from '../core/game.config';
+import { gameConfig, tileSize } from '../core/game.config';
 import { GameStats, ILeaderBoard } from '../core/game.stats';
 import { MuteButtonEntity } from '../entity/mute-button.entity';
 
@@ -6,6 +6,7 @@ export class ScoreScene extends Phaser.Scene {
   private playerRankList: string = '';
   private playerNameList: string = '';
   private playerScoreList: string = '';
+  private audio: Phaser.Sound.BaseSound;
 
   name: Phaser.GameObjects.BitmapText;
   rank: Phaser.GameObjects.BitmapText;
@@ -30,6 +31,8 @@ export class ScoreScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.audio = this.sound.add('startAudio', { volume: 0.1, loop: true });
+    this.audio.play();
     new MuteButtonEntity(this, tileSize * 27, tileSize * 1.2);
 
     let width = this.cameras.main.width,
@@ -55,8 +58,9 @@ export class ScoreScene extends Phaser.Scene {
 
     replayImg.on('pointerdown', function (/*pointer*/) {
       this.scene.stop();
+      this.audio.stop();
 
-      this.scene.start('GameScene');
+      this.scene.start('WelcomeScene');
     }, this);
 
       // Leader Board with table
