@@ -11,6 +11,9 @@ const config: GameConfig = {
   height: gameConfig.height,
   parent: 'game',
   scene: [new WelcomeScene(), new GameScene(), new ScoreScene()],
+  dom: {
+    createContainer: true
+  },
   physics: {
     default: 'arcade',
     arcade: {

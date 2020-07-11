@@ -5,6 +5,7 @@ import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
 import { FlatMap } from '../flat-map';
 import { gameConfig } from '../core/game.config';
+import { NameInputGraphics } from '../graphics/name-input.graphics';
 
 export class GameScene extends Phaser.Scene {
 
@@ -16,6 +17,7 @@ export class GameScene extends Phaser.Scene {
   private gameStats: GameStats;
   private perSecondTime: number;
   private gameSceneTime: number;
+  private modal: NameInputGraphics;
 
   constructor() {
     super({
@@ -40,6 +42,7 @@ export class GameScene extends Phaser.Scene {
    */
 
   preload(): void {
+    this.load.html('input-name', 'html/input-name.html');
     this.load.spritesheet('suicide', 'textures/person/suicide.png', { frameWidth: 105, frameHeight: 106 });
   }
 
@@ -130,8 +133,14 @@ export class GameScene extends Phaser.Scene {
       if (gameConfig.allowMusic) {
         this.audio.stop();
       }
-      this.scene.stop();
-      this.scene.start('ScoreScene');
+
+      if (!this.modal) {
+        this.modal = new NameInputGraphics(this);
+        this.modal.show().then(() => {
+          this.scene.stop();
+          this.scene.start('ScoreScene');
+        });
+      }
     }
   }
 }

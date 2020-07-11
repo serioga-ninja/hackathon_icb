@@ -8,6 +8,10 @@ export interface IGameStats {
   score: number;
 }
 
+export interface ILeaderBoard {
+
+}
+
 let instance: GameStats;
 
 export class GameStats {
@@ -17,6 +21,7 @@ export class GameStats {
   }
 
 
+  private leaderBoards: ILeaderBoard[];
   private stats: IGameStats;
 
   constructor() {
@@ -62,6 +67,10 @@ export class GameStats {
       water: 0,
       score: 0
     };
+  }
+
+  updateLeaderBoard(leaderBoards: ILeaderBoard[]) {
+    this.leaderBoards = leaderBoards;
   }
 
 }
