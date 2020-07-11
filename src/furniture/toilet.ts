@@ -18,7 +18,7 @@ export class Toilet extends DeviceInteractiveEntity implements IWaterObject {
   constructor(scene: Phaser.Scene, blocksGroup: NotMovableBlocksGroup, placeToInteract: FlatBlockEntity) {
     super(scene, blocksGroup, spriteTextures.off, DeviceType.Toilet);
 
-    this.waterConsumePerTime = gameConfig.consumePerTick.water.toilet;
+    this.waterConsumePerTime = 0;
     this.placeToInteract = placeToInteract;
   }
 
