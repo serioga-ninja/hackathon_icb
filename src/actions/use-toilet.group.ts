@@ -38,7 +38,7 @@ export class UseToiletGroup extends ActionGroupBase {
       new RotateHumanAction(this.human, 0),
       new ForceGoHumanAction(this.human, this.flatMap.flatGroup.getClosest(this.toiletBlock.x, this.toiletBlock.y), 3, false, EHumanState.siting),
       new UseToiletHumanAction(this.human, this.toiletBlock),
-      new WaitHumanAction(this.human, gameConfig.speedOfWaiting),
+      new WaitHumanAction(this.human, gameConfig.speedOfWaiting, EHumanState.siting),
       new ForceGoHumanAction(this.human, this.humanSitBlock, 3, false, EHumanState.siting),
     );
   }
