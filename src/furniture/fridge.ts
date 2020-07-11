@@ -42,6 +42,7 @@ export class Fridge extends DeviceInteractiveEntity implements IElectricityObjec
 
     this.setInteractive();
     this.humanMessage = CLOSE_FRIGE_HUMAN;
+    this.messageWidth = 250;
     this.decreaseMood = gameConfig.moodDestroyers.closeFridge;
   }
 

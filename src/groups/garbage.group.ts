@@ -23,7 +23,7 @@ export class GarbageGroup extends GroupBase {
     this.scene.physics.add.overlap(this, human, (garbage: GarbageEntity) => {
       if (garbage.readyToDecreaseMood) {
         gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.garbage);
-        human.say(HUMAN_DISGUSTING, 150, 50, 2000);
+        human.say(HUMAN_DISGUSTING, 150, 40, 2000);
       }
     });
   }

@@ -89,7 +89,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.flatMap.vacuum, this.humanEntity, () => {
       this.gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.vacuumProblem);
       if (!this.humanEntity.hasMessage) {
-        this.humanEntity.say(AUCH_THAT_HURTS, 100, 50, 2000);
+        this.humanEntity.say(AUCH_THAT_HURTS, 200, 30, 2000);
       }
     });
 

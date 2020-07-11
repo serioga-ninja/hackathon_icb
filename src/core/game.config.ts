@@ -14,9 +14,9 @@ export const gameConfig = {
   maxHeight: 1100,
   debug: false,
   playerWidth: 20,
-  allowToKill: true,
+  allowToKill: false,
   allowMusic: false,
-  speedOfWaiting: 500,
+  speedOfWaiting: 2000,
   throwGarbageOncePerSec: 15,
   evilModVacuumWidth: ((window.innerHeight - 15) / 15) * 3,
   speed: {
@@ -28,12 +28,13 @@ export const gameConfig = {
   electricityCost: 1.5,
   waterCost: 1,
   moodDestroyers: {
+    basic: 5,
     turnOffBath: 5,
     turnOffMusic: 5,
     turnOffTV: 5,
     closeFridge: 5,
     garbage: 0.1,
-    lightsOff: 0.3, // 0.03
+    lightsOff: 0.03,
     vacuumProblem: 0.1,
   },
   consumePerClick: {

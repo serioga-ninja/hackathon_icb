@@ -19,7 +19,7 @@ export class SayVacuumAction extends HumanActionBase {
   }
 
   start() {
-    this.vacuum.say(this.message, 300, 50, this.lifeTime);
+    this.vacuum.say(this.message, 300, 40, this.lifeTime);
 
     if (this.stop) {
       setTimeout(() => {

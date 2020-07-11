@@ -70,7 +70,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
       }
     } else if (this.currentPosition.objID === this.chargeBlock.objID) {
       // if there is nothing to do - just turn of
-      this.say(VACUUM_CLEAN_DONE, 300, 50, 3000);
+      this.say(VACUUM_CLEAN_DONE, 300, 40, 3000);
       this.path = null;
       this.turnOff();
 
@@ -149,7 +149,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
 
   turnOnEvilMod() {
     this.evilMode = true;
-    this.say(VACUUM_EVIL_MODE_ACTIVATED, 350, 75, 2000);
+    this.say(VACUUM_EVIL_MODE_ACTIVATED, 350, 50, 2000);
   }
 
   say(message: string, width: number, height: number, liveTime: number = 5000) {

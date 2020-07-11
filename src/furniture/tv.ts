@@ -32,6 +32,7 @@ export class TV extends DeviceInteractiveEntity implements IElectricityObject {
 
     this.setInteractive();
     this.humanMessage = I_WAS_WATCHING;
+    this.messageWidth = 250;
     this.decreaseMood = gameConfig.moodDestroyers.turnOffTV;
   }
 
