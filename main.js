@@ -6,11 +6,12 @@ let win;
 
 function createWindow(){
     win = new BrowserWindow({
-        width: 1245,
+        width: 1200,
         height: 800,
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        icon: 'assets//icon.ico'
     });
 
     win.removeMenu();
@@ -25,7 +26,7 @@ function createWindow(){
         win = null;
     });
 
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
 }
 
 

@@ -70,7 +70,8 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
-    new MuteButtonEntity(this);
+    new MuteButtonEntity(this, tileSize * 20.3, tileSize * .5);
+    
     this.anims.create({
       key: 'die',
       frames: this.anims.generateFrameNumbers('suicide', {}),
@@ -97,6 +98,7 @@ export class GameScene extends Phaser.Scene {
 
     for (const room of this.flatMap.rooms) {
       room.overlapHuman(this.humanEntity, this.gameStats);
+      room.toggleLight();
     }
 
     this.input.on('pointerdown', (pointer: { x: number; y: number; }) => {

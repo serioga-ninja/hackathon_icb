@@ -31,7 +31,8 @@ export class ScoreScene extends Phaser.Scene {
   }
 
   create(): void {
-    new MuteButtonEntity(this);
+    new MuteButtonEntity(this, tileSize * 27, tileSize * 1.2);
+
     let width = this.cameras.main.width,
       height = this.cameras.main.height,
       bg = this.add.image(width / 2, height / 2, 'final'),

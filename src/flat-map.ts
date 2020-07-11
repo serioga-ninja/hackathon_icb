@@ -161,8 +161,8 @@ export class FlatMap {
 
   updateStatsValue(type?: EStat, x?: number, y?: number, create?: boolean) {
     let moodStat = this.gameStats.getStat('humanMood').toFixed(2),
-        moneyStat = this.gameStats.getStat('money').toFixed(2),
-        scoreStat = this.gameStats.getStat('score').toFixed();
+      moneyStat = this.gameStats.getStat('money').toFixed(2),
+      scoreStat = this.gameStats.getStat('score').toFixed();
 
     if (create) {
       switch (type) {
@@ -181,7 +181,7 @@ export class FlatMap {
       this.stats.mood.text = this.gameStats.getStat('humanMood') > 0 ? moodStat.toString() : '0';
       this.stats.money.text = this.gameStats.getStat('money') > 0 ? `$${moneyStat.toString()}` : '0';
     }
-    
+
   }
 
   generateDevices(navigationLogic: NavigationLogic) {
@@ -207,7 +207,7 @@ export class FlatMap {
       blockGroup.push(block);
     });
 
-    const group = blockGroup[0].getGroup(EGroupTypes.Room);
+    const group = blockGroup[0].getGroup(EGroupTypes.Room) as RoomGroup;
     const x = device.blocks[0][0];
     const y = device.blocks[0][1];
 
@@ -268,7 +268,10 @@ export class FlatMap {
         furniture = new DeviceEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), device.key, device.type);
     }
 
-    furniture.addGroup(group);
+    if (group) {
+      furniture.addGroup(group);
+      group.addFurniture(furniture);
+    }
 
     return furniture;
 
@@ -402,7 +405,6 @@ export class FlatMap {
     }
   }
 
-  
 
   update(time: number, secondLeft: boolean) {
     this.vacuum.update(time, secondLeft);

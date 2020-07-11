@@ -34,7 +34,7 @@ export const gameConfig = {
     turnOffMusic: 5,
     turnOffTV: 5,
     closeFridge: 5,
-    garbage: 0.1,
+    garbage: 0.05,
     lightsOff: 0.03,
     vacuumProblem: 0.1,
   },
@@ -350,6 +350,18 @@ export const textures: any = [
   {
     key: 'start',
     path: 'textures/game/start.jpg'
+  },
+  {
+    key: 'soundOn',
+    path: 'textures/game/sound-on.png'
+  },
+  {
+    key: 'soundOn',
+    path: 'textures/game/sound-on.png'
+  },
+  {
+    key: 'soundOff',
+    path: 'textures/game/sound-off.png'
   }
 ];
 
