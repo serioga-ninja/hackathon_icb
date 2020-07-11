@@ -8,6 +8,7 @@ export interface IFurniture {
 }
 
 export const gameConfig = {
+  levelMultiplier: 1,
   width: window.innerWidth - 15,
   maxWidth: 1600,
   height: window.innerHeight - 15,

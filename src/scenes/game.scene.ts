@@ -65,8 +65,6 @@ export class GameScene extends Phaser.Scene {
 
     this.audio.play();
 
-    this.gameStats.addToStat('score', 0);
-
     this.flatMap = new FlatMap(this);
     this.flatMap.init();
 
