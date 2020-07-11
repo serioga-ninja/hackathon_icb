@@ -17,6 +17,7 @@ export class GarbageEntity extends SpriteEntity {
     this.currentBlock = block;
     this.scene.physics.world.enableBody(this, STATIC_BODY);
     this.readyToDecreaseMood = false;
+    this.depth = 800;
 
     setTimeout(() => {
       this.readyToDecreaseMood = true;
@@ -24,11 +25,11 @@ export class GarbageEntity extends SpriteEntity {
   }
 
   getGarbage(): string {
-    const min = 0;
-    const max = 9;
-    const rnd = Math.floor(min + Math.random() * (max + 1 - min));
     const garbageList: string[] = ['apple', 'banana', 'bottle', 'chips', 'paper'];
-  
+    const min = 0;
+    const max = garbageList.length - 1;
+    const rnd = Math.floor(min + Math.random() * (max + 1 - min));
+
     return garbageList[rnd];
   }
 }

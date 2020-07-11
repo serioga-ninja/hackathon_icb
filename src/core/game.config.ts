@@ -1,4 +1,5 @@
 import { DeviceType } from '../actions/action-group.base';
+import { EStat } from '../entity/stat.entity';
 
 export interface IFurniture {
   blocks: any;
@@ -7,40 +8,55 @@ export interface IFurniture {
 }
 
 export const gameConfig = {
+  levelMultiplier: 1,
   width: window.innerWidth - 15,
   maxWidth: 1600,
   height: window.innerHeight - 15,
   maxHeight: 1100,
   debug: false,
   playerWidth: 20,
-  allowToKill: false,
-  speedOfWaiting: 100,
-  throwGarbageOncePerSec: 25,
+  allowToKill: true,
+  allowMusic: true,
+  speedOfWaiting: 2000,
+  throwGarbageOncePerSec: 15,
   evilModVacuumWidth: ((window.innerHeight - 15) / 15) * 3,
   speed: {
     human: 3,
     vacuum: 2
   },
+  initialMood: 100,
+  initialMoney: 100,
+  electricityCost: 1.5,
+  waterCost: 1,
   moodDestroyers: {
-    garbage: 0.05,
-    lightsOff: 0.05,
-    vacuumProblem: 0.05,
+    basic: 5,
+    turnOffBath: 5,
+    turnOffMusic: 5,
+    turnOffTV: 5,
+    closeFridge: 5,
+    garbage: 0.1,
+    lightsOff: 0.03,
+    vacuumProblem: 0.1,
+  },
+  consumePerClick: {
+    water: {
+      toilet: 5
+    }
   },
   consumePerTick: {
     water: {
-      bath: 0.05,
-      sink: 0.05,
-      toilet: 0.05,
+      bath: 0.5,
+      sink: 0.05
     },
     electricity: {
-      light: 0.05,
-      tv: 0.05,
-      fan: 0.05,
+      light: 0.02,
+      tv: 0.1,
+      fan: 0.03,
       vacuum: 0.05,
-      teapot: 0.05,
-      fridge: 0.05,
+      teapot: 0.1,
+      fridge: 0.04,
       music: 0.05,
-      microwave: 0.05,
+      microwave: 0.1,
       oven: 0.05,
       computer: 0.05,
     }
@@ -48,9 +64,13 @@ export const gameConfig = {
 };
 
 export const tileSize: number = gameConfig.height / 15;
-export const startHuman: any = {
-  x: 14,
-  y: 12
+export const startHuman = {
+  y: 14,
+  x: 12
+};
+export const endHuman = {
+  x: 12,
+  y: 10
 };
 
 export const houseMap: string =
@@ -110,6 +130,10 @@ export const textures: any = [
   {
     key: 'human',
     path: 'textures/person/stand.png'
+  },
+  {
+    key: 'human-sit',
+    path: 'textures/person/sit.png'
   },
   {
     key: 'human-go-1',
@@ -306,13 +330,41 @@ export const textures: any = [
   {
     key: 'cover2',
     path: 'textures/house/carpet2.png'
+  },
+  {
+    key: 'final',
+    path: 'textures/game/final.jpg'
+  },
+  {
+    key: 'leaderboard',
+    path: 'textures/game/leaderboard.jpg'
+  },
+  {
+    key: 'replay',
+    path: 'textures/game/replay.png'
+  },
+  {
+    key: 'score',
+    path: 'textures/game/score.jpg'
+  },
+  {
+    key: 'start',
+    path: 'textures/game/start.jpg'
   }
 ];
 
-export const audio: any = [
+export const audio = [
+  {
+    key: 'startAudio',
+    path: 'sounds/start.ogg'
+  },
   {
     key: 'gameAudio',
     path: 'sounds/game.ogg'
+  },
+  {
+    key: 'endAudio',
+    path: 'sounds/death.ogg'
   }
 ]
 
@@ -514,13 +566,28 @@ export const decor: IFurniture[] = [
     type: DeviceType.Cover
   },
   {
-    blocks: [[9, 4], [9, 5], [9, 6], [10, 4], [10, 5], [10, 6], [11, 4], [11, 5], [11, 6]],
+    blocks: [[8, 4], [8, 5], [8, 6], [9, 4], [9, 5], [9, 6], [10, 4], [10, 5], [10, 6], [11, 4], [11, 5], [11, 6], [12, 4], [12, 5], [12, 6]],
     key: 'cover1',
     type: DeviceType.Cover
   },
   {
-    blocks: [[2, 16], [2, 17], [2, 18], [3, 16], [3, 17], [3, 18], [4, 16], [4, 17], [4, 18]],
+    blocks: [[3, 16], [3, 17], [3, 18], [4, 16], [4, 17], [4, 18], [5, 16], [5, 17], [5, 18]],
     key: 'cover2',
     type: DeviceType.Cover
   },
+]
+
+export const stats: any = [
+  {
+    blocks: [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6]],
+    type: EStat.Score
+  },
+  {
+    blocks: [[0, 7], [0, 8], [0, 9], [0, 10], [0, 11], [0, 12], [0, 13]],
+    type: EStat.Mood
+  },
+  {
+    blocks: [[0, 14], [0, 15], [0, 16], [0, 17], [0, 18], [0, 19], [0, 20]],
+    type: EStat.Money
+  }
 ]

@@ -16,7 +16,7 @@ export class SayHumanAction extends HumanActionBase {
   }
 
   start() {
-    this.human.say(this.message, 300, 50, this.lifeTime);
+    this.human.say(this.message, 300, 40, this.lifeTime, true);
 
     if (this.stop) {
       setTimeout(() => {

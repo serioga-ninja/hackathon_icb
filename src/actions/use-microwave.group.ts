@@ -1,3 +1,5 @@
+import { gameConfig } from '../core/game.config';
+import { GameStats } from '../core/game.stats';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -6,8 +8,7 @@ import { Microwave } from '../furniture/microwave';
 import { ActionGroupBase, EActionTypes, DeviceType } from './action-group.base';
 import { MoveHumanAction } from './move.human-action';
 import { RotateHumanAction } from './rotate.human-action';
-import { TurnOnHumanAction } from './turn-on.human-action';
-import { WaitHumanAction } from './wait.human-action';
+import { UseDeviceHumanAction } from './use-device.human-action';
 
 export class UseMicrowaveGroup extends ActionGroupBase {
 
@@ -19,8 +20,8 @@ export class UseMicrowaveGroup extends ActionGroupBase {
   navigationLogic: NavigationLogic;
   humanSitBlock: FlatBlockEntity;
 
-  constructor(human: HumanEntity, flatMap: FlatMap, navigationLogic: NavigationLogic) {
-    super(human);
+  constructor(human: HumanEntity, gameStats: GameStats, flatMap: FlatMap, navigationLogic: NavigationLogic) {
+    super(human, gameStats);
 
     this.microwaveBlock = flatMap.getDevices(DeviceType.Microwave)[0] as Microwave;
     this.humanSitBlock = this.microwaveBlock.placeToInteract;
@@ -31,8 +32,7 @@ export class UseMicrowaveGroup extends ActionGroupBase {
     this.actions.push(
       new MoveHumanAction(this.human, this.humanSitBlock, this.navigationLogic),
       new RotateHumanAction(this.human, 0),
-      new TurnOnHumanAction(this.human, this.microwaveBlock),
-      new WaitHumanAction(this.human, this.speed)
+      new UseDeviceHumanAction(this.human, this.gameStats, this.microwaveBlock, gameConfig.speedOfWaiting)
     );
   }
 }

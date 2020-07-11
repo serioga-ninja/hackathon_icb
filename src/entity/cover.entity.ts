@@ -17,10 +17,6 @@ export class CoverEntity extends SpriteEntity {
 
     this.setSizeOfBlock(this.blocksGroup);
     this.alpha = 1;
-
-    if (this.texture.key !== 'vacuum') {
-      //blocksGroup.removeBlocksMovableRelations();
-    }
   }
 
   setSizeOfBlock(group: MovableBlocksGroup): void {
@@ -35,21 +31,12 @@ export class CoverEntity extends SpriteEntity {
     });
 
     switch (entry.length) {
-      case 2:
-        size.width = 2;
-        break;
-      case 3:
+      case 9:
         size.width = 3;
+        size.height = 3;
         break;
-      case 4:
-        size.width = 2;
-        size.height = 2;
-        break;
-      case 5:
-        size.height = 5;
-        break;
-      case 6:
-        size.width = 2;
+      case 15:
+        size.width = 5;
         size.height = 3;
         break;
     }

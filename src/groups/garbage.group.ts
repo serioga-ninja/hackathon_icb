@@ -1,5 +1,6 @@
 import { gameConfig, tileSize } from '../core/game.config';
 import { GameStats } from '../core/game.stats';
+import { HUMAN_DISGUSTING } from '../core/game.vocabulary';
 import { EGroupTypes, GroupBase } from '../core/group.base';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { GarbageEntity } from '../entity/garbage.entity';
@@ -22,6 +23,7 @@ export class GarbageGroup extends GroupBase {
     this.scene.physics.add.overlap(this, human, (garbage: GarbageEntity) => {
       if (garbage.readyToDecreaseMood) {
         gameStats.decreaseToStat('humanMood', gameConfig.moodDestroyers.garbage);
+        human.say(HUMAN_DISGUSTING, 150, 40, 2000);
       }
     });
   }

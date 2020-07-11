@@ -1,6 +1,7 @@
 import { DeviceType } from '../actions/action-group.base';
 import { gameConfig } from '../core/game.config';
-import { IElectricityObject } from '../core/interfaces';
+import { VACUUM_CLEAN_DONE, VACUUM_EVIL_MODE_ACTIVATED } from '../core/game.vocabulary';
+import { ICanSay, IElectricityObject } from '../core/interfaces';
 import { MoveToWrapper } from '../core/move-to-wrapper';
 import { NavigationLogic } from '../core/navigation.logic';
 import { DeviceInteractiveEntity, EDeviceState } from '../entity/device-interactive.entity';
@@ -13,22 +14,22 @@ import { MovableBlocksGroup } from '../groups/movable-blocks.group';
 import { NotMovableBlocksGroup } from '../groups/not-movable-blocks.group';
 import DYNAMIC_BODY = Phaser.Physics.Arcade.DYNAMIC_BODY;
 
-export class Vacuum extends DeviceInteractiveEntity implements IElectricityObject {
+export class Vacuum extends DeviceInteractiveEntity implements IElectricityObject, ICanSay {
 
   placeToInteract: null;
   electricityConsumePerTime: number;
   overlapBlock: FlatBlockEntity;
+  currentPosition: FlatBlockEntity;
 
   private navigationLogic: NavigationLogic;
   private path: Phaser.Curves.Path;
-  private currentPosition: FlatBlockEntity;
   private chargeBlock: FlatBlockEntity;
   private garbageGroup: GarbageGroup;
   private moveToWrapper: MoveToWrapper;
   private _movingAnimationTime: number;
   private message: MessageEntity;
   private widthToHuman: number;
-  private human: HumanEntity;
+  protected human: HumanEntity;
   private evilMode: boolean;
   private movableBlocksGroup: MovableBlocksGroup;
 
@@ -45,6 +46,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     this.widthToHuman = Number.MAX_VALUE;
     this.evilMode = false;
     this.movableBlocksGroup = movableBlocksGroup;
+    this.depth = 998;
   }
 
   garbageAdded(movableBlocksGroup: MovableBlocksGroup) {
@@ -68,7 +70,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
       }
     } else if (this.currentPosition.objID === this.chargeBlock.objID) {
       // if there is nothing to do - just turn of
-      this.say(`Everything is clean! I'm a good boy!`, 300, 50, 3000);
+      this.say(VACUUM_CLEAN_DONE, 300, 40, 3000);
       this.path = null;
       this.turnOff();
 
@@ -79,7 +81,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   }
 
   turnOn() {
-    super.turnOn();
+    super.turnOn(this.human);
 
     this.setTexture('vacuum-on1');
 
@@ -95,7 +97,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
   }
 
   update(time: number, secondLeft: boolean) {
-    if (this.deviceState !== EDeviceState.Working) return;
+    if (this.deviceState !== EDeviceState.Working || this.human.dead) return;
 
     const point = this.moveToWrapper.getPoint();
     this.x = point.x;
@@ -117,17 +119,21 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
       this.generateNewPath();
     }
 
-    if (secondLeft) {
-      this.widthToHuman = this.widthTo(this.human);
-      if (this.widthToHuman < gameConfig.evilModVacuumWidth && !this.evilMode) {
-        this.turnOnEvilMod();
-      } else if (this.widthToHuman < gameConfig.evilModVacuumWidth && this.evilMode) {
-        this.path = new Phaser.Curves.Path(this.x, this.y);
-        this.currentPosition = this.movableBlocksGroup.getClosest(this.x, this.y);
-        this.navigationLogic.generatePath(this.currentPosition, this.human.overlapBlock, this.path);
-        this.moveToWrapper = new MoveToWrapper(this.currentPosition, this.human.overlapBlock, this.path, gameConfig.speed.vacuum);
-      } else if (this.widthToHuman > gameConfig.evilModVacuumWidth && this.evilMode) {
-        this.turnOffEvilMod();
+    if (secondLeft && !this.human.finalSceneInProgress) {
+      try {
+        this.widthToHuman = this.widthTo(this.human);
+        if (this.widthToHuman < gameConfig.evilModVacuumWidth && !this.evilMode) {
+          this.turnOnEvilMod();
+        } else if (this.widthToHuman < gameConfig.evilModVacuumWidth && this.evilMode) {
+          this.path = new Phaser.Curves.Path(this.x, this.y);
+          this.currentPosition = this.movableBlocksGroup.getClosest(this.human.x, this.human.y);
+          this.navigationLogic.generatePath(this.currentPosition, this.human.overlapBlock, this.path);
+          this.moveToWrapper = new MoveToWrapper(this.currentPosition, this.human.overlapBlock, this.path, gameConfig.speed.vacuum);
+        } else if (this.widthToHuman > gameConfig.evilModVacuumWidth && this.evilMode) {
+          this.turnOffEvilMod();
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
 
@@ -143,7 +149,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
 
   turnOnEvilMod() {
     this.evilMode = true;
-    this.say(`The reason of garbage detected! DESTROY! DESTROY! DESTROY!`, 350, 75, 2000);
+    this.say(VACUUM_EVIL_MODE_ACTIVATED, 350, 50, 2000);
   }
 
   say(message: string, width: number, height: number, liveTime: number = 5000) {
@@ -159,4 +165,7 @@ export class Vacuum extends DeviceInteractiveEntity implements IElectricityObjec
     this.human = human;
   }
 
+  messageDestroyed() {
+    this.message = null;
+  }
 }

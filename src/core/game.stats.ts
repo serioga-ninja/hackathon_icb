@@ -1,19 +1,54 @@
+import { gameConfig } from './game.config';
+
 export interface IGameStats {
   electricity: number;
   water: number;
   humanMood: number;
   money: number;
+  score: number;
 }
 
-export class GameStats {
+export interface ILeaderBoard {
+  heroName: string;
+  heroPoint: number;
+}
 
-  stats: IGameStats;
+let instance: GameStats;
+
+export class GameStats {
+  get leaderBoards(): ILeaderBoard[] {
+    return this._leaderBoards;
+  }
+
+  static get instance(): GameStats {
+    return instance || (instance = new GameStats());
+  }
+
+
+  private _leaderBoards: ILeaderBoard[];
+  private stats: IGameStats;
 
   constructor() {
     this.stats = {
-      humanMood: 100,
-      money: 100,
+      humanMood: gameConfig.initialMood,
+      money: gameConfig.initialMoney,
     } as IGameStats;
+
+    this._leaderBoards = [ // dummy data
+      {
+        heroName: 'Andrii 1',
+        heroPoint: 765,
+      }, {
+        heroName: 'Andrii 2',
+        heroPoint: 123,
+      }, {
+        heroName: 'Andrii 3',
+        heroPoint: 555,
+      }, {
+        heroName: 'Andrii 4',
+        heroPoint: 996,
+      },
+    ];
   }
 
   getStat<K extends keyof IGameStats>(key: K): IGameStats[K] {
@@ -30,17 +65,30 @@ export class GameStats {
     } else {
       this.stats[key] += value;
     }
-
-    console.log(key, this.stats[key]);
   }
 
   decreaseToStat<K extends keyof IGameStats>(key: K, value: number) {
+    value = value * gameConfig.levelMultiplier;
+
     if (typeof this.stats[key] !== 'number') {
       this.stats[key] = value;
     } else {
       this.stats[key] -= value;
     }
-    console.log(key, this.stats[key]);
+  }
+
+  reset() {
+    this.stats = {
+      humanMood: gameConfig.initialMood,
+      money: gameConfig.initialMoney,
+      electricity: 0,
+      water: 0,
+      score: 0
+    };
+  }
+
+  updateLeaderBoard(leaderBoards: ILeaderBoard[] = []) {
+    this._leaderBoards = leaderBoards;
   }
 
 }

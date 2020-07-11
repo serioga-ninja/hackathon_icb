@@ -1,4 +1,6 @@
+import { GameStats } from '../core/game.stats';
 import { ActionGroupBase, EActionTypes } from './action-group.base';
+import { FinalGroup } from './final.group';
 import { GoToActionGroup } from './go-to.action-group';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -18,21 +20,31 @@ import { UseToiletGroup } from './use-toilet.group';
 import { WelcomeGroup } from './welcome.group';
 
 export class ActionsLogic {
+
+  get activeGroupFinished() {
+    return !this.activeActionGroup || this.activeActionGroup.finished;
+  }
+
   private flatGroup: FlatGroup;
   private human: HumanEntity;
   private navigationLogic: NavigationLogic;
   private debugBlock: FlatBlockEntity;
   private flatMap: FlatMap;
+  private gameStats: GameStats;
 
   private activeActionGroup: ActionGroupBase;
 
-  constructor(flatMap: FlatMap, human: HumanEntity, navigationLogic: NavigationLogic, debugBlock?: FlatBlockEntity) {
+  public finalSceneInProgress: boolean;
+
+  constructor(flatMap: FlatMap, human: HumanEntity, navigationLogic: NavigationLogic, gameStats: GameStats, debugBlock?: FlatBlockEntity) {
+    this.gameStats = gameStats;
     this.flatMap = flatMap;
     this.flatGroup = flatMap.flatGroup;
     this.human = human;
     this.navigationLogic = navigationLogic;
     this.debugBlock = debugBlock;
-    this.activeActionGroup = new WelcomeGroup(human, flatMap, navigationLogic);
+    this.activeActionGroup = new WelcomeGroup(human, gameStats, flatMap, navigationLogic);
+    this.finalSceneInProgress = false;
   }
 
   generateAction(): ActionGroupBase {
@@ -47,34 +59,34 @@ export class ActionsLogic {
         actionGroup = new GoToActionGroup(this.human, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.WatchTV:
-        actionGroup = new WatchTVGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new WatchTVGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.ListenMusic:
-        actionGroup = new ListenMusicGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new ListenMusicGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.PlayComputer:
         actionGroup = new PlayComputerGroup(this.human, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.TakeBath:
-        actionGroup = new TakeBathGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new TakeBathGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.OpenFridge:
-        actionGroup = new OpenFridgeGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new OpenFridgeGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.DrinkTea:
-        actionGroup = new DrinkTeaGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new DrinkTeaGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.TurnOven:
-        actionGroup = new TurnOvenGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new TurnOvenGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.UseMicrowave:
-        actionGroup = new UseMicrowaveGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new UseMicrowaveGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.UseSink:
-        actionGroup = new UseSinkGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new UseSinkGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
       case EActionTypes.UseToilet:
-        actionGroup = new UseToiletGroup(this.human, this.flatMap, this.navigationLogic);
+        actionGroup = new UseToiletGroup(this.human, this.gameStats, this.flatMap, this.navigationLogic);
         break;
     }
 
@@ -87,6 +99,8 @@ export class ActionsLogic {
   }
 
   update(time: number) {
+    if (this.human.dead && (!this.activeActionGroup || this.activeActionGroup.finished)) return;
+
     if (!this.activeActionGroup || this.activeActionGroup && this.activeActionGroup.finished) {
       this.activeActionGroup = this.generateAction();
       if (this.activeActionGroup) {
@@ -102,5 +116,13 @@ export class ActionsLogic {
         this.activeActionGroup.done();
       }
     }
+  }
+
+  runFinalScene(gameAudio: Phaser.Sound.BaseSound, endAudio: Phaser.Sound.BaseSound) {
+    this.human.finalSceneInProgress = true;
+    this.human.currentFlatEntity = this.flatMap.movableBlocksGroup.getClosest(this.human.x, this.human.y);
+    this.activeActionGroup = new FinalGroup(this.human, this.flatMap, this.navigationLogic, gameAudio, endAudio);
+    this.activeActionGroup.start();
+    this.activeActionGroup.inProgress = true;
   }
 }
