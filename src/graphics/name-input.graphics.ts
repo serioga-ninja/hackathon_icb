@@ -32,9 +32,10 @@ export class NameInputGraphics extends Phaser.GameObjects.Graphics {
 
         if (event.target.name === 'submit') {
           const inputUsername = this.getChildByName('name');
+          let userName = inputUsername.value;
 
           //  Have they entered anything?
-          if (inputUsername.value !== '') {
+          if (userName !== '') {
             //  Turn off the click events
             this.removeListener('click');
             element.node.className = 'loading';
@@ -45,7 +46,7 @@ export class NameInputGraphics extends Phaser.GameObjects.Graphics {
                   'Content-Type': 'application/json;charset=utf-8'
                 },
                 body: JSON.stringify({
-                  heroName: inputUsername.value,
+                  heroName: userName,
                   heroPoint: GameStats.instance.getStat('score')
                 })
               }
