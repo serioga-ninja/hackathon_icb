@@ -13,13 +13,11 @@ export class NameInputGraphics extends Phaser.GameObjects.Graphics {
   show() {
     this.clear();
 
-    const canvasWidth = tileSize * 22;
-
     this.fillStyle(0x000, 0.5);
-    this.fillRect(0, 0, canvasWidth, gameConfig.height);
+    this.fillRect(0, 0, gameConfig.width, gameConfig.height);
 
-    const modalX = canvasWidth / 2 - 300;
-    const modalY = gameConfig.height / 2 - 200;
+    const modalX = gameConfig.width / 2;
+    const modalY = gameConfig.height / 2;
 
     const element: Phaser.GameObjects.DOMElement = this.scene.add.dom(modalX, modalY).createFromCache('input-name');
     element.depth = 3000;
@@ -28,7 +26,7 @@ export class NameInputGraphics extends Phaser.GameObjects.Graphics {
 
     return new Promise((resolve) => {
 
-      element.on('click', function (event) {
+      element.on('click', function (event: any) {
 
         if (event.target.name === 'submit') {
           const inputUsername = this.getChildByName('name');

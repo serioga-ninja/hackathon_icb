@@ -26,8 +26,8 @@ export const gameConfig = {
   },
   initialMood: 100,
   initialMoney: 100,
-  electricityCost: 1.5,
-  waterCost: 1,
+  electricityCost: 2.5,
+  waterCost: 2,
   moodDestroyers: {
     basic: 5,
     turnOffBath: 5,
