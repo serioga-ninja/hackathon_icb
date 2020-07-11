@@ -54,7 +54,7 @@ export class GameScene extends Phaser.Scene {
    */
   create(): void {
     new MuteButtonEntity(this, tileSize * 20.3, tileSize * .5);
-    
+
     this.anims.create({
       key: 'die',
       frames: this.anims.generateFrameNumbers('suicide', {}),
@@ -116,17 +116,13 @@ export class GameScene extends Phaser.Scene {
       if (!this.humanEntity.finalSceneInProgress) {
         this.gameStats.addToStat('score', 1);
       }
-
-      this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
-      this.gameStats.addToStat('water', this.flatMap.waterDevices.consumePerTick);
     }
     //#endregion
 
     if (!this.humanEntity.finalSceneInProgress) {
       // Counting cost of electricity and water
-      const electricity = this.gameStats.getStat('electricity');
-      const water = this.gameStats.getStat('water');
-      this.gameStats.decreaseToStat('money', (electricity * gameConfig.electricityCost) + (water * gameConfig.waterCost));
+      this.gameStats.decreaseToStat('money', this.flatMap.electricDevices.consumePerTick * gameConfig.electricityCost);
+      this.gameStats.decreaseToStat('water', this.flatMap.waterDevices.consumePerTick * gameConfig.waterCost);
     }
 
 
