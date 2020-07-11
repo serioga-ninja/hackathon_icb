@@ -1,4 +1,5 @@
 import { gameConfig, tileSize } from "../core/game.config";
+import { GameStats } from "../core/game.stats";
 
 export class ScoreScene extends Phaser.Scene {
   private playerRankList: string = "";
@@ -57,7 +58,7 @@ export class ScoreScene extends Phaser.Scene {
     let leaderboardImg = this.add.image(tileSize * 10, tileSize * 10, 'leaderboard');
     leaderboardImg.setScale(scale);
 
-    let replayImg = this.add.image(1375,725, 'replay').setInteractive();
+    let replayImg = this.add.image(tileSize * 22, tileSize * 10, 'replay').setInteractive();
     replayImg.setScale(scale);
 
     this.add.bitmapText(300, 375, 'font', `YOUR SCORE: ${this.point}`, 50);
