@@ -107,7 +107,10 @@ export class GameScene extends Phaser.Scene {
     //#region Per Second update area
     if (secondLeft) {
       this.perSecondTime = time;
-      this.gameStats.addToStat('score', 1);
+
+      if (!this.humanEntity.finalSceneInProgress) {
+        this.gameStats.addToStat('score', 1);
+      }
 
       this.gameStats.addToStat('electricity', this.flatMap.electricDevices.consumePerTick);
       this.gameStats.addToStat('water', this.flatMap.waterDevices.consumePerTick);
