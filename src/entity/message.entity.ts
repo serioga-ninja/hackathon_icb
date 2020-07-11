@@ -20,6 +20,7 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
     this.scene.add.existing(this);
 
 
+    this.depth = 5000;
     this.message = message;
     this.entity = entity;
     this._width = width;
@@ -71,6 +72,7 @@ export class MessageEntity extends Phaser.GameObjects.Graphics {
       align: 'center',
       wordWrap: { width: this._width - (bubblePadding * 2) }
     });
+    this._text.depth = 5001;
 
     const b = this._text.getBounds();
 

@@ -1,5 +1,6 @@
 import { gameConfig, tileSize } from '../core/game.config';
 import { GameStats, ILeaderBoard } from '../core/game.stats';
+import { MuteButtonEntity } from '../entity/mute-button.entity';
 
 export class ScoreScene extends Phaser.Scene {
   private playerRankList: string = '';
@@ -30,6 +31,7 @@ export class ScoreScene extends Phaser.Scene {
   }
 
   create(): void {
+    new MuteButtonEntity(this);
     let width = this.cameras.main.width,
       height = this.cameras.main.height,
       bg = this.add.image(width / 2, height / 2, 'final'),
@@ -53,10 +55,7 @@ export class ScoreScene extends Phaser.Scene {
 
     replayImg.on('pointerdown', function (/*pointer*/) {
       this.scene.stop();
-
-      if (gameConfig.allowMusic) {
-        this.audio.stop();
-      }
+      this.audio.stop();
 
       this.scene.start('GameScene');
     }, this);

@@ -3,6 +3,7 @@ import { GameStats } from '../core/game.stats';
 import { AUCH_THAT_HURTS } from '../core/game.vocabulary';
 import { NavigationLogic } from '../core/navigation.logic';
 import { HumanEntity } from '../entity/human.entity';
+import { MuteButtonEntity } from '../entity/mute-button.entity';
 import { FlatMap } from '../flat-map';
 import { gameConfig } from '../core/game.config';
 import { NameInputGraphics } from '../graphics/name-input.graphics';
@@ -52,6 +53,7 @@ export class GameScene extends Phaser.Scene {
    * obstacles, enemies, etc.)
    */
   create(): void {
+    new MuteButtonEntity(this);
     this.anims.create({
       key: 'die',
       frames: this.anims.generateFrameNumbers('suicide', {}),
@@ -61,9 +63,7 @@ export class GameScene extends Phaser.Scene {
     this.endAudio = this.sound.add('endAudio', { volume: 0.1, loop: true });
     this.audio = this.sound.add('gameAudio', { volume: 0.1, loop: true });
 
-    if (gameConfig.allowMusic) {
-      this.audio.play();
-    }
+    this.audio.play();
 
     this.gameStats.addToStat('score', 0);
 
@@ -132,9 +132,7 @@ export class GameScene extends Phaser.Scene {
     if ((this.gameStats.getStat('humanMood') <= 0 || this.gameStats.getStat('money') <= 0) && gameConfig.allowToKill && !this.humanEntity.finalSceneInProgress) {
       this.actionLogic.runFinalScene(this.audio, this.endAudio);
     } else if (this.humanEntity.finalSceneInProgress && this.actionLogic.activeGroupFinished) {
-      if (gameConfig.allowMusic) {
-        this.audio.stop();
-      }
+      this.audio.stop();
 
       if (!this.modal) {
         this.modal = new NameInputGraphics(this);

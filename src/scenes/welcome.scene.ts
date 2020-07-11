@@ -1,4 +1,5 @@
-import { textures, audio, gameConfig } from "../core/game.config";
+import { textures, audio, gameConfig } from '../core/game.config';
+import { MuteButtonEntity } from '../entity/mute-button.entity';
 
 export class WelcomeScene extends Phaser.Scene {
   private audio: Phaser.Sound.BaseSound;
@@ -22,25 +23,22 @@ export class WelcomeScene extends Phaser.Scene {
   }
 
   create(): void {
+    new MuteButtonEntity(this);
     let width = this.cameras.main.width,
-        height = this.cameras.main.height,
-        image = this.add.image(width / 2, height / 2, 'start'),
-        scale = Math.max(width / image.width, height / image.height);
+      height = this.cameras.main.height,
+      image = this.add.image(width / 2, height / 2, 'start'),
+      scale = Math.max(width / image.width, height / image.height);
 
     image.setScale(scale).setScrollFactor(0);
 
-    if (gameConfig.allowMusic) {
-      this.audio = this.sound.add('startAudio', {volume: 0.1, loop: true});
-      this.audio.play();
-    }
+    this.audio = this.sound.add('startAudio', { volume: 0.1, loop: true });
+    this.audio.play();
 
     this.input.on('pointerdown', function (/*pointer*/) {
       this.scene.stop();
 
-      if (gameConfig.allowMusic) {
-        this.audio.stop();
-      }
-      
+      this.audio.stop();
+
       this.scene.start('GameScene');
     }, this);
   }

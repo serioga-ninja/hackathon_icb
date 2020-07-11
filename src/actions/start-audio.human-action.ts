@@ -12,9 +12,7 @@ export class StartAudioHumanAction extends HumanActionBase {
   }
 
   start() {
-    if (gameConfig.allowMusic) {
-      this.audio.play();
-    }
+    this.audio.play();
     this._finished = true;
 
   }
