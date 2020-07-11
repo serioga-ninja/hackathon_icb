@@ -1,4 +1,4 @@
-import { gameConfig, tileSize } from '../core/game.config';
+import { tileSize } from '../core/game.config';
 import { GameStats, ILeaderBoard } from '../core/game.stats';
 import { MuteButtonEntity } from '../entity/mute-button.entity';
 
@@ -6,7 +6,6 @@ export class ScoreScene extends Phaser.Scene {
   private playerRankList: string = '';
   private playerNameList: string = '';
   private playerScoreList: string = '';
-  private audio: Phaser.Sound.BaseSound;
 
   name: Phaser.GameObjects.BitmapText;
   rank: Phaser.GameObjects.BitmapText;
@@ -56,7 +55,6 @@ export class ScoreScene extends Phaser.Scene {
 
     replayImg.on('pointerdown', function (/*pointer*/) {
       this.scene.stop();
-      this.audio.stop();
 
       this.scene.start('GameScene');
     }, this);
@@ -65,9 +63,9 @@ export class ScoreScene extends Phaser.Scene {
       this.rank = this.add.bitmapText(tileSize * 4, tileSize * 8, 'font', 'RANK', 25);
       this.name = this.add.bitmapText(tileSize * 6, tileSize * 8, 'font', 'NAME', 25);
       this.score = this.add.bitmapText(tileSize * 12, tileSize * 8, 'font', 'SCORE', 25);
-    
+
       this.makeScoreBoardGrid();
-    
+
       this.playerRankPosition = this.add.bitmapText(tileSize * 4, tileSize * 9,'font', this.playerRankList, 20);
       this.playerName = this.add.bitmapText(tileSize * 6, tileSize * 9, 'font', this.playerNameList, 20);
       this.playerScore = this.add.bitmapText(tileSize * 12, tileSize * 9, 'font', this.playerScoreList, 20);
