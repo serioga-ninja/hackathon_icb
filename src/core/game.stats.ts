@@ -5,6 +5,7 @@ export interface IGameStats {
   water: number;
   humanMood: number;
   money: number;
+  score: number;
 }
 
 let instance: GameStats;

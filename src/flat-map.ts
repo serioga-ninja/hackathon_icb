@@ -155,18 +155,19 @@ export class FlatMap {
 
       new StatEntity(this.scene, new NotMovableBlocksGroup(this.scene, blockGroup), stat.type);
 
-      this.updateStatsValue(0, stat.type, blockGroup[0].x + tileSize * 1.7, blockGroup[0].y - tileSize * .17, true);
+      this.updateStatsValue(stat.type, blockGroup[0].x + tileSize * 1.7, blockGroup[0].y - tileSize * .17, true);
     });
   }
 
-  updateStatsValue(time: number, type?: EStat, x?: number, y?: number, create?: boolean) {
+  updateStatsValue(type?: EStat, x?: number, y?: number, create?: boolean) {
     let moodStat = this.gameStats.getStat('humanMood').toFixed(2),
-        moneyStat = this.gameStats.getStat('money').toFixed(2);
+        moneyStat = this.gameStats.getStat('money').toFixed(2),
+        scoreStat = this.gameStats.getStat('score').toFixed();
 
     if (create) {
       switch (type) {
         case EStat.Score:
-          this.stats.score = this.scene.add.bitmapText(x, y, 'font', '0', 25);
+          this.stats.score = this.scene.add.bitmapText(x, y, 'font', scoreStat.toString(), 25);
           break;
         case EStat.Mood:
           this.stats.mood = this.scene.add.bitmapText(x, y, 'font', moodStat.toString(), 25);
@@ -176,10 +177,9 @@ export class FlatMap {
           break;
       }
     } else {
-      this.stats.score.text = time.toFixed().toString();
+      this.stats.score.text = scoreStat.toString();
       this.stats.mood.text = this.gameStats.getStat('humanMood') > 0 ? moodStat.toString() : '0';
       this.stats.money.text = this.gameStats.getStat('money') > 0 ? `$${moneyStat.toString()}` : '0';
-      
     }
     
   }
@@ -407,7 +407,7 @@ export class FlatMap {
   update(time: number, secondLeft: boolean) {
     this.vacuum.update(time, secondLeft);
 
-    this.updateStatsValue(time * 0.001);
+    this.updateStatsValue();
   }
 
   onGarbageAddCallback(item: GarbageEntity) {

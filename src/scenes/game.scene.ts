@@ -52,8 +52,10 @@ export class GameScene extends Phaser.Scene {
       repeat: 0
     });
 
-    this.audio = this.sound.add('gameAudio', { volume: 0.3, loop: true });
+    this.audio = this.sound.add('gameAudio', { volume: 0.1, loop: true });
     this.audio.play();
+
+    this.gameStats.addToStat('score', 0);
 
     this.flatMap = new FlatMap(this);
     this.flatMap.init();
@@ -97,6 +99,8 @@ export class GameScene extends Phaser.Scene {
     this.humanEntity.update(time);
     this.flatMap.update(time, secondLeft);
 
+    this.gameStats.updateStat('score', time * 0.001);
+
     //#region Per Second update area
     if (secondLeft) {
       this.perSecondTime = time;
@@ -116,11 +120,11 @@ export class GameScene extends Phaser.Scene {
     if ((this.gameStats.getStat('humanMood') <= 0 || this.gameStats.getStat('money') <= 0) && gameConfig.allowToKill && !this.humanEntity.finalSceneInProgress) {
       this.actionLogic.runFinalScene();
       
-      /*if (!this.actionLogic.finalSceneInProgress) {
+      setTimeout(() => {
         this.audio.stop();
         this.scene.stop();
         this.scene.start('ScoreScene');
-      }*/
+      }, 10000);
     }
   }
 }
