@@ -46,16 +46,16 @@ export const gameConfig = {
   consumePerTick: {
     water: {
       bath: 0.05,
-      sink: 0.05
+      sink: 0.02
     },
     electricity: {
-      light: 0.01,
+      light: 0.005,
       tv: 0.05,
       fan: 0.03,
-      vacuum: 0.05,
+      vacuum: 0.01,
       teapot: 0.05,
       fridge: 0.04,
-      music: 0.05,
+      music: 0.02,
       microwave: 0.05,
       oven: 0.05,
       computer: 0.05,

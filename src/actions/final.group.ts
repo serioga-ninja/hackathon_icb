@@ -1,5 +1,5 @@
 import { endHuman } from '../core/game.config';
-import { VACUUM_END_MESSAGE, WELCOME_MESSAGE } from '../core/game.vocabulary';
+import { VACUUM_END_MESSAGE, END_GAME } from '../core/game.vocabulary';
 import { NavigationLogic } from '../core/navigation.logic';
 import { FlatBlockEntity } from '../entity/flat-block.entity';
 import { HumanEntity } from '../entity/human.entity';
@@ -53,7 +53,7 @@ export class FinalGroup extends ActionGroupBase {
       new MoveHumanAction(this.human, this.block, this.navigationLogic),
       new RotateHumanAction(this.human, 180),
       new StopAudioHumanAction(this.human, this.gameAudio),
-      new SayHumanAction(this.human, WELCOME_MESSAGE, 3000),
+      new SayHumanAction(this.human, END_GAME, 3000),
       new KillHumanAction(this.human),
       new StartAudioHumanAction(this.human, this.endAudio),
       new VacuumCleanHumanHumanAction(this.human, this.flatMap, this.navigationLogic),
