@@ -1,5 +1,5 @@
-import { gameConfig, tileSize } from "../core/game.config";
-import { GameStats } from "../core/game.stats";
+import { gameConfig, tileSize } from '../core/game.config';
+import { GameStats, ILeaderBoard } from '../core/game.stats';
 
 export class ScoreScene extends Phaser.Scene {
   private playerRankList: string = '';
@@ -17,26 +17,16 @@ export class ScoreScene extends Phaser.Scene {
 
   point: number = 150;
 
-  leaderBoardData = [
-    {
-      heroName: 'Andrii 1',
-      heroPoint: 765,
-    }, {
-      heroName: 'Andrii 2',
-      heroPoint: 123,
-    }, {
-      heroName: 'Andrii 3',
-      heroPoint: 555,
-    }, {
-      heroName: 'Andrii 4',
-      heroPoint: 996,
-    },
-  ];
+  leaderBoardData: ILeaderBoard[];
 
   constructor() {
     super({
       key: 'ScoreScene'
     });
+  }
+
+  init() {
+    this.leaderBoardData = GameStats.instance.leaderBoards;
   }
 
   create(): void {

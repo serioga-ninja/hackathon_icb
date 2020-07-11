@@ -9,19 +9,23 @@ export interface IGameStats {
 }
 
 export interface ILeaderBoard {
-
+  heroName: string;
+  heroPoint: number;
 }
 
 let instance: GameStats;
 
 export class GameStats {
+  get leaderBoards(): ILeaderBoard[] {
+    return this._leaderBoards;
+  }
 
   static get instance(): GameStats {
     return instance || (instance = new GameStats());
   }
 
 
-  private leaderBoards: ILeaderBoard[];
+  private _leaderBoards: ILeaderBoard[];
   private stats: IGameStats;
 
   constructor() {
@@ -29,6 +33,22 @@ export class GameStats {
       humanMood: gameConfig.initialMood,
       money: gameConfig.initialMoney,
     } as IGameStats;
+
+    this._leaderBoards = [ // dummy data
+      {
+        heroName: 'Andrii 1',
+        heroPoint: 765,
+      }, {
+        heroName: 'Andrii 2',
+        heroPoint: 123,
+      }, {
+        heroName: 'Andrii 3',
+        heroPoint: 555,
+      }, {
+        heroName: 'Andrii 4',
+        heroPoint: 996,
+      },
+    ];
   }
 
   getStat<K extends keyof IGameStats>(key: K): IGameStats[K] {
@@ -69,8 +89,8 @@ export class GameStats {
     };
   }
 
-  updateLeaderBoard(leaderBoards: ILeaderBoard[]) {
-    this.leaderBoards = leaderBoards;
+  updateLeaderBoard(leaderBoards: ILeaderBoard[] = []) {
+    this._leaderBoards = leaderBoards;
   }
 
 }
