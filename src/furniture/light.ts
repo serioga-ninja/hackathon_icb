@@ -18,7 +18,19 @@ export class Light extends DeviceInteractiveEntity implements IElectricityObject
     this.electricityConsumePerTime = gameConfig.consumePerTick.electricity.light;
   }
 
-  onPointerdown() {
+  turnOn() {
+    super.turnOn();
+
+    this.toggleRoomLights();
+  }
+
+  turnOff() {
+    super.turnOff();
+
+    this.toggleRoomLights();
+  }
+
+  toggleRoomLights() {
     const rooms = this.getGroup(EGroupTypes.Room) as RoomGroup;
     rooms.toggleLight();
   }

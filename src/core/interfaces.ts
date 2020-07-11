@@ -12,6 +12,7 @@ export interface ICanSay {
   x: number;
   y: number;
   height: number;
+  width: number;
 
   say(message: string, width: number, height: number, liveTime?: number): void;
   messageDestroyed(): void;
